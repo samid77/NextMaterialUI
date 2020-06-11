@@ -24,7 +24,7 @@ const SignIn = (props) => {
                         className={classes.title}
                         variant="h2"
                     >
-                        Portal Login
+                        Login Portal
                 </Typography>
                     <Typography
                         color="textSecondary"
@@ -59,16 +59,7 @@ const SignIn = (props) => {
                         variant="contained"
                     >
                         Sign in
-                </Button>
-                    <Typography
-                        color="textSecondary"
-                        variant="body1"
-                    >
-                        Don't have an account?{' '}
-                        <Link href="#">
-                            <a>Sign Up</a>
-                </Link>
-                    </Typography>
+                    </Button>
                 </form>
             </div>
         </div>

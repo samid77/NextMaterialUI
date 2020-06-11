@@ -1,4 +1,4 @@
-import React, { useState }from 'react';
+import React, { useState, useEffect }from 'react';
 import clsx from 'clsx';
 import { Box, Container, CssBaseline } from '@material-ui/core';
 import red from '@material-ui/core/colors/red';
@@ -14,6 +14,7 @@ import { useMediaQuery, colors } from '@material-ui/core';
 import palette from '../theme/palette';
 import typography from '../theme/typography';
 import overrides from '../theme/overrides';
+import {Layout} from '../components/Layout';
 
 // Create a theme instance.
 export const theme = createMuiTheme({
@@ -45,6 +46,7 @@ function MyApp({ Component, pageProps }) {
 
   const [openSidebar, setOpenSidebar] = useState(false);
 
+
   const isDesktop = useMediaQuery('(min-width:1280px)', {
     defaultMatches: true
   });
@@ -72,22 +74,38 @@ function MyApp({ Component, pageProps }) {
         </Head>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <div className={clsx({
-              [classes.root]: true,
-              [classes.shiftContent]: isDesktop
-            })}>
-            <Topbar onSidebarOpen={handleSidebarOpen}/>
-            <Sidebar
-              onClose={handleSidebarClose}
-              open={shouldOpenSidebar}
-              variant={isDesktop ? 'persistent' : 'temporary'}
+          {Component.name !== 'Login' 
+            ? <div className={clsx({
+                [classes.root]: true,
+                [classes.shiftContent]: isDesktop
+              })}>
+              <Topbar 
+                onSidebarOpen={handleSidebarOpen}
+                component={Component}
+              />
+              {Component.name !== 'Login' ? <Sidebar
+                  onClose={handleSidebarClose}
+                  open={shouldOpenSidebar}
+                  variant={isDesktop ? 'persistent' : 'temporary'}
+              />: null}
+              <Container maxWidth={true}>
+                <Box marginTop={2}>
+                  <Component {...pageProps} />
+                </Box>
+              </Container>
+            </div> 
+          : <div className={classes.root}>
+            <Topbar 
+              component={Component}
             />
-            <Container maxWidth={false}>
-              <Box marginTop={2}>
-                <Component {...pageProps} />
-              </Box>
-            </Container>
-          </div>
+            <main className={classes.content}>
+              <Container maxWidth={true}>
+                <Box marginTop={2}>
+                  <Component {...pageProps} />
+                </Box>
+              </Container>
+            </main>
+          </div>}
         </ThemeProvider>
       </React.Fragment>
   );

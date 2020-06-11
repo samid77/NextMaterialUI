@@ -14,6 +14,7 @@ import AssignmentIndRoundedIcon from '@material-ui/icons/AssignmentIndRounded';
 import AccountBalanceRoundedIcon from '@material-ui/icons/AccountBalanceRounded';
 import PlaylistAddCheckRoundedIcon from '@material-ui/icons/PlaylistAddCheckRounded';
 import Brightness5RoundedIcon from '@material-ui/icons/Brightness5Rounded';
+import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
 import StarsRoundedIcon from '@material-ui/icons/StarsRounded';
 import { Profile } from './Profile';
 import { SidebarNav } from './SidebarNav';
@@ -54,35 +55,54 @@ export function Sidebar(props) {
       icon: <DashboardRoundedIcon />
     },
     {
-      title: 'Pengelolaan Mitra',
-      href: '/mitra',
-      icon: <AccountBalanceRoundedIcon />
-    },
-    {
-      title: 'Pengelolaan Peserta',
-      href: '/peserta',
-      icon: <AssignmentIndRoundedIcon />
-    },
-    {
-      title: 'Produk Konvensional',
-      href: '/konvensional',
-      icon: <StarsRoundedIcon />
-    },
-    {
-      title: 'Produk Syariah',
-      href: '/syariah',
-      icon: <Brightness5RoundedIcon />
-    },
-    {
       title: 'Daftar Eligible',
       href: '/eligible',
       icon: <PlaylistAddCheckRoundedIcon />
     },
     {
-      title: 'Pengelolaan Bank',
-      href: '/pengelolaan',
-      icon: <AccountBalanceRoundedIcon />
+      title: 'Master Data',
+      nested: true,
+      href:'#',
+      icon: <StorageRoundedIcon />,
+      items: [
+        {
+          title: 'Mitra Penyalur',
+          href: '/mitra',
+          icon: <AccountBalanceRoundedIcon />
+        },
+        {
+          title: 'Produk',
+          href: '/produk',
+          icon: <StarsRoundedIcon />
+        },
+      ]
     },
+    // {
+    //   title: 'Pengelolaan Bank',
+    //   href: '/pengelolaan',
+    //   icon: <AccountBalanceRoundedIcon />
+    // },
+    // {
+    //   title: 'Pengelolaan Mitra',
+    //   href: '/mitra',
+    //   icon: <AccountBalanceRoundedIcon />
+    // },
+    // {
+    //   title: 'Pengelolaan Peserta',
+    //   href: '/peserta',
+    //   icon: <AssignmentIndRoundedIcon />
+    // },
+    // {
+    //   title: 'Produk Konvensional',
+    //   href: '/konvensional',
+    //   icon: <StarsRoundedIcon />
+    // },
+    // {
+    //   title: 'Produk Syariah',
+    //   href: '/syariah',
+    //   icon: <Brightness5RoundedIcon />
+    // },
+    
   ];
 
   return (

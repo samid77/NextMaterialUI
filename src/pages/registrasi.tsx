@@ -63,18 +63,18 @@ const Registrasi = props => {
       >
         <Grid
           className={classes.content}
-          lg={6}
+          lg={8}
           item
         >
           <SignUp useStyles = {classes}/>
         </Grid>
-        <Grid
+        {/* <Grid
           className={classes.content}
           lg={6}
           item
         >
           <SignIn useStyles = {classes} />
-        </Grid>
+        </Grid> */}
       </Grid>
     </div>
   );

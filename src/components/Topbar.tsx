@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function Topbar(props) {
-  const { className, onSidebarOpen, ...rest } = props;
+  const { className, onSidebarOpen, component: Component, ...rest } = props;
 
   const classes = useStyles();
 
@@ -50,29 +50,31 @@ export function Topbar(props) {
             />
           </Link>
           <div className={classes.flexGrow} />
-          <Hidden mdDown>
+          {Component.name !== 'Login' ? <Fragment><Hidden mdDown>
             <IconButton color="inherit">
               <Badge
-                badgeContent={notifications.length}
+                badgeContent={5}
                 color="primary"
                 variant="dot"
               >
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton
-              className={classes.signOutButton}
-              color="inherit"
-            >
-              <InputIcon />
-            </IconButton>
+            <Link href="/login">
+              <IconButton
+                className={classes.signOutButton}
+                color="inherit"
+              >
+                <InputIcon />
+              </IconButton>
+            </Link>
           </Hidden>
           <IconButton
             color="inherit"
             onClick={onSidebarOpen}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton></Fragment> : null }
         </Toolbar>
       </AppBar>
       <div className={classes.toolbarMargin} />
