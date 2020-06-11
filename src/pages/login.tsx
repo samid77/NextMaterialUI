@@ -6,6 +6,8 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import SignIn from '../components/SignIn';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import GitHubIcon from '@material-ui/icons/GitHub';
+import { blue, purple } from '@material-ui/core/colors';
+import router, { useRouter } from 'next/router'
 
 const schema = {
   email: {
@@ -128,6 +130,16 @@ const Login = props => {
 
   const classes = useStyles();
 
+  const [formState, setFormState] = useState({
+    isValid: false,
+    values: {},
+    touched: {},
+    errors: {}
+  });
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   useEffect(() => {
     const errors = validate(formState.values, schema);
 
@@ -138,19 +150,25 @@ const Login = props => {
     }));
   }, [formState.values]);
 
-  const handleSignIn = event => {
-    event.preventDefault();
-    history.push('/dashboard');
-  };
-  const [formState, setFormState] = useState({
-    isValid: false,
-    values: {},
-    touched: {},
-    errors: {}
-  });
-
   const handleChange = event => {
     event.persist();
+    
+    try {
+      const { name, value } = event.currentTarget;
+
+      switch (name) {
+        case 'email':
+          setEmail(value);
+          break;
+
+        default:
+          setPassword(value);
+          break;
+      }
+    } catch(err) {
+      const errorMessage = `error onChange: ${error.message}`;
+      console.log(errorMessage);
+    }
 
     setFormState(formState => ({
       ...formState,
@@ -166,6 +184,24 @@ const Login = props => {
         [event.target.name]: true
       }
     }));
+  };
+
+  const handleSignIn = event => {
+    try {
+      
+      event.preventDefault();
+      const payload = { password, email };
+      localStorage.setItem('accesstoken', '4eg%aM7ajjayee8383'); 
+
+    } catch (error) {
+      
+      const errorMessage = `error onSubmit: ${error.message}`;
+      console.log(errorMessage);
+      
+    }
+    // router.push({
+    //   pathname: '/dashboard'
+    // });
   };
 
   const hasError = field =>
@@ -224,7 +260,7 @@ const Login = props => {
                 >
                   <Grid item>
                     <Button
-                      color="primary"
+                      color="secondary"
                       onClick={handleSignIn}
                       size="large"
                       variant="contained"

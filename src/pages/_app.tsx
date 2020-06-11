@@ -99,7 +99,7 @@ function MyApp({ Component, pageProps }) {
               component={Component}
             />
             <main className={classes.content}>
-              <Container maxWidth={true}>
+              <Container maxWidth={false}>
                 <Box marginTop={2}>
                   <Component {...pageProps} />
                 </Box>

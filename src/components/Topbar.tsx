@@ -32,6 +32,10 @@ export function Topbar(props) {
 
   const [notifications] = useState([]);
 
+  const handleSignOut = () => {
+    localStorage.removeItem('accesstoken');
+  }
+
 
   return (
     <Fragment>
@@ -64,6 +68,7 @@ export function Topbar(props) {
               <IconButton
                 className={classes.signOutButton}
                 color="inherit"
+                onClick={handleSignOut}
               >
                 <InputIcon />
               </IconButton>
