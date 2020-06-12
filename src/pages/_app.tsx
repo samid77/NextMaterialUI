@@ -71,7 +71,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <Fragment>
       <Head>
-        <title>BP-TAPERA</title>
+        <title>BP TAPERA | PMF</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
@@ -79,38 +79,38 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        {Component.name !== 'Login' 
+          {Component.name !== 'Login' 
           ? <div className={clsx({
               [classes.root]: true,
               [classes.shiftContent]: isDesktop
             })}>
-            <Topbar 
-              onSidebarOpen={handleSidebarOpen}
-              component={Component}
-            />
-            {Component.name !== 'Login' ? <Sidebar
-                onClose={handleSidebarClose}
-                open={shouldOpenSidebar}
-                variant={isDesktop ? 'persistent' : 'temporary'}
-            />: null}
-            <Container maxWidth={false}>
-              <Box marginTop={2}>
-                <Component {...pageProps} />
-              </Box>
-            </Container>
-          </div> 
-        : <div className={classes.root}>
-          <Topbar 
-            component={Component}
-          />
-          <main className={classes.content}>
-            <Container maxWidth={false}>
-              <Box marginTop={2}>
-                <Component {...pageProps} />
-              </Box>
-            </Container>
-          </main>
-        </div>}
+              <Topbar 
+                onSidebarOpen={handleSidebarOpen}
+                component={Component}
+              />
+              {Component.name !== 'Login' ? <Sidebar
+                  onClose={handleSidebarClose}
+                  open={shouldOpenSidebar}
+                  variant={isDesktop ? 'persistent' : 'temporary'}
+              />: null}
+              <Container maxWidth={false}>
+                <Box marginTop={2}>
+                  <Component {...pageProps} />
+                </Box>
+              </Container>
+            </div> 
+          : <div className={classes.root}>
+              <Topbar 
+                component={Component}
+              />
+              <main className={classes.content}>
+                <Container maxWidth={false}>
+                  <Box marginTop={2}>
+                    <Component {...pageProps} />
+                  </Box>
+                </Container>
+              </main>
+            </div>}
       </ThemeProvider>
     </Fragment>
   );

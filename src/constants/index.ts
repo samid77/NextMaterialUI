@@ -2,9 +2,8 @@ import 'dotenv/config';
 import { SweetAlertConfig, AlertState } from '../interfaces';
 import { CONFIRM_SWEET_ALERT } from '../redux-global/Global.actions';
 
-export const apiKey = process.env.REACT_APP_MOVIE_DB_KEY;
-export const movieDbBaseUrl = process.env.REACT_APP_MOVIE_DB_BASE_URL;
-export const movieDbImageBaseUrl = process.env.REACT_APP_MOVIE_IMAGE_BASE;
+export const apiKey = process.env.REACT_APP_KEY;
+export const baseUrl = process.env.REACT_APP_BASE_URL;
 
 export const initialState = {
   fetch: false, // set to true/false if its related with api call

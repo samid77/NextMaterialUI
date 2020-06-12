@@ -1,9 +1,8 @@
-import { ReducerAuth } from '../reducer';
-import { sidebarVisibilityReducer, sweetAlertReducer } from '../redux-global/Global.reducers';
+import { ReducerAuth } from '../auth.reducer';
+import { sweetAlertReducer } from '../redux-global/Global.reducers';
 
 const configReducer = {
     auth: ReducerAuth,
-    sidebarVisibility: sidebarVisibilityReducer,
     sweetAlert: sweetAlertReducer,
 };
 

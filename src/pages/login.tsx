@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect } from 'react';
+import React, {Fragment, useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import router, { useRouter } from 'next/router'
 import validate from 'validate.js';
@@ -11,6 +11,11 @@ import SignIn from '../components/SignIn';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import { blue, purple } from '@material-ui/core/colors';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { green } from '@material-ui/core/colors';
+
 
 import { fetchLogin } from '../actions';
 
@@ -47,7 +52,7 @@ const useStyles = makeStyles(theme => ({
   },
   quote: {
     backgroundColor: theme.palette.neutral,
-    height: '155%',
+    height: '170%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -76,7 +81,7 @@ const useStyles = makeStyles(theme => ({
   },
   contentContainer: {},
   content: {
-    height: '100%',
+    height: '170%',
     display: 'flex',
     flexDirection: 'column',
     marginTop: '2vw'
@@ -127,6 +132,21 @@ const useStyles = makeStyles(theme => ({
   },
   signInButton: {
     margin: theme.spacing(2, 0)
+  },
+  buttonProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
+  wrapper: {
+    margin: theme.spacing(1),
+    position: 'relative',
+  },
+  alert: {
+    position: 'absolute',
   }
 }));
 
@@ -148,6 +168,9 @@ const Login = props => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(true);
+  const timer = useRef<number>();
 
   useEffect(() => {
     const errors = validate(formState.values, schema);
@@ -164,6 +187,12 @@ const Login = props => {
       router.push('/dashboard')
     }
   }, [])
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, []);
 
   const handleChange = event => {
     event.persist();
@@ -209,29 +238,32 @@ const Login = props => {
         'Access-Control-Allow-Origin': '*'
       },
     }
+    
     try { 
       event.preventDefault();
       const payload = { email, password };
-      const res = await axios.post('http://localhost:5000/api/auth', payload, config)
-      console.log(`data: ${res.data.token}`);
-      if(res.data.token !== null || '') {
-        localStorage.setItem('accesstoken', res.data.token); 
-        router.push('/dashboard');
+      if (!loading) {
+        setLoading(true);
+        const res = await axios.post('http://localhost:5000/api/auth', payload, config)
+        timer.current = setTimeout(() => {
+          if(res.data.token !== null || '') {
+            localStorage.setItem('accesstoken', res.data.token); 
+            router.push('/dashboard');
+          }
+          console.log(res.status)
+          // dispatch(fetchLogin(payload));
+        }, 1000);
       }
-      console.log(res.status)
-      // dispatch(fetchLogin(payload));
-
     } catch (error) {
-      
+      setSuccess(false);
+      setLoading(false);
       const errorMessage = `error onSubmit: ${error.message}`;
-      console.log(errorMessage);
-      console.log(JSON.stringify(error))
-      
+      timer.current = setTimeout(() => {
+        setSuccess(true)
+      }, 5000);
     }
-    // router.push({
-    //   pathname: '/dashboard'
-    // });
   };
+
 
   const hasError = field =>
     formState.touched[field] && formState.errors[field] ? true : false;
@@ -241,7 +273,7 @@ const Login = props => {
       <Grid
         className={classes.grid}
         container
-      >
+      > 
         <Grid
           className={classes.quoteContainer}
           item
@@ -269,7 +301,7 @@ const Login = props => {
               <form
                 className={classes.form}
                 onSubmit={handleSignIn}
-              >
+              > 
                 <Typography
                   className={classes.title}
                   variant="h2"
@@ -280,42 +312,7 @@ const Login = props => {
                   color="textSecondary"
                   gutterBottom
                 >
-                  Sign in with social media
-                </Typography>
-                <Grid
-                  className={classes.socialButtons}
-                  container
-                  spacing={2}
-                >
-                  <Grid item>
-                    <Button
-                      color="secondary"
-                      onClick={handleSignIn}
-                      size="large"
-                      variant="contained"
-                    >
-                      <FacebookIcon className={classes.socialIcon} />
-                      Login with Facebook
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button
-                      onClick={handleSignIn}
-                      size="large"
-                      variant="contained"
-                    >
-                      <GitHubIcon className={classes.socialIcon} />
-                      Login with Github
-                    </Button>
-                  </Grid>
-                </Grid>
-                <Typography
-                  align="center"
-                  className={classes.sugestion}
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  or login with email address
+                  Signing in to system
                 </Typography>
                 <TextField
                   className={classes.textField}
@@ -345,29 +342,24 @@ const Login = props => {
                   value={formState.values.password || ''}
                   variant="outlined"
                 />
-                <Button
-                  className={classes.signInButton}
-                  color="primary"
-                  disabled={!formState.isValid}
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                >
-                  Sign in now
-                </Button>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  Don't have an account?{' '}
-                  <Link
-                    to="/sign-up"
-                    variant="h6"
+                <div className={classes.wrapper}>
+                  <Button
+                    className={classes.signInButton}
+                    color="primary"
+                    disabled={!formState.isValid || loading}
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
                   >
-                    Sign up
-                  </Link>
-                </Typography>
+                    Sign in
+                  </Button>
+                  {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+                </div>
+                {!success ? <Alert className={classes.alert} severity="error">
+                <AlertTitle>Login Failed</AlertTitle>
+                Username or password is invalid
+              </Alert> : <div></div>}
               </form>
             </div>
           </div>

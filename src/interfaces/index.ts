@@ -1,4 +1,5 @@
 import { SweetAlertProps } from 'react-bootstrap-sweetalert/dist/components/SweetAlert';
+import { History } from 'history';
 
 export interface Auth {
   auth: string;
@@ -37,4 +38,8 @@ export interface PagingProps {
   onClickPage: (page: number) => void;
   onClickNext: () => void;
   onClickPrev: () => void;
+}
+
+export interface AuthSelector extends Omit<State, 'res'> {
+  res: Auth;
 }

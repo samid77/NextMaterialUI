@@ -2,7 +2,7 @@ import { Action, State } from './interfaces';
 import { initialAction, initialState } from './constants';
 import { FETCH_LOGIN, FETCH_LOGIN_SUCCESS, FETCH_LOGIN_FAILED } from './auth.actions';
 
-function ReducerAuth(state: State = initialState, action: Action = initialAction) {
+export function ReducerAuth(state: State = initialState, action: Action = initialAction) {
   switch (action.type) {
     case FETCH_LOGIN:
       return {
@@ -33,4 +33,3 @@ function ReducerAuth(state: State = initialState, action: Action = initialAction
   }
 }
 
-export default reducer
