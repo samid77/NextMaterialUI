@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
+import router from 'next/router';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 import { Budget } from '../components/Budget';
@@ -19,6 +20,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function Dashboard() {
     const classes = useStyles();
+
+    useEffect(() => {
+      if(localStorage.getItem('accesstoken') === null || '' || undefined) {
+        router.push('/login');
+      }
+    }, [])
 
     return(
         <div className={classes.root}>

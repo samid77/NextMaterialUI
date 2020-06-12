@@ -1,6 +1,83 @@
-export const FETCH_LOGIN = 'FETCH_LOGIN';
-export const FETCH_LOGIN_SUCCESS = 'FETCH_LOGIN_SUCCESS';
-export const FETCH_LOGIN_FAILED = 'FETCH_LOGIN_FAILED';
-export const fetchLogin = (data: object) => ({ type: FETCH_LOGIN, data });
-export const fetchLoginSuccess = (data: object) => ({ type: FETCH_LOGIN_SUCCESS, data });
-export const fetchLoginFailed = (data: object) => ({ type: FETCH_LOGIN_FAILED, data });
+import axios from 'axios'
+
+export const actionTypes = {
+  FAILURE: 'FAILURE',
+  INCREMENT: 'INCREMENT',
+  DECREMENT: 'DECREMENT',
+  RESET: 'RESET',
+  LOAD_DATA: 'LOAD_DATA',
+  LOAD_DATA_SUCCESS: 'LOAD_DATA_SUCCESS',
+  START_CLOCK: 'START_CLOCK',
+  TICK_CLOCK: 'TICK_CLOCK',
+  HYDRATE: 'HYDRATE',
+  FETCH_LOGIN: 'FETCH_LOGIN',
+  FETCH_LOGIN_SUCCESS: 'FETCH_LOGIN_SUCCESS',
+  FETCH_LOGIN_FAILED: 'FETCH_LOGIN_FAILED'
+}
+
+export function failure(error) {
+  return {
+    type: actionTypes.FAILURE,
+    error,
+  }
+}
+
+export function increment() {
+  return { type: actionTypes.INCREMENT }
+}
+
+export function decrement() {
+  return { type: actionTypes.DECREMENT }
+}
+
+export function reset() {
+  return { type: actionTypes.RESET }
+}
+
+export function loadData() {
+  return { type: actionTypes.LOAD_DATA }
+}
+
+export function loadDataSuccess(data) {
+  return {
+    type: actionTypes.LOAD_DATA_SUCCESS,
+    data,
+  }
+}
+
+export function startClock() {
+  return { type: actionTypes.START_CLOCK }
+}
+
+export function tickClock(isServer) {
+  return {
+    type: actionTypes.TICK_CLOCK,
+    light: !isServer,
+    ts: Date.now(),
+  }
+}
+
+export function fetchLogin(data: object) {
+  return {
+    type: actionTypes.FETCH_LOGIN,
+    data
+  }
+}
+
+
+export function fetchLoginSuccess(data: object) {
+  console.log(`fetchLoginSuccess action: ${JSON.stringify(data)}`)
+  return {
+    type: actionTypes.FETCH_LOGIN_SUCCESS,
+    data
+  }
+}
+
+export function fetchLoginFailed(data: object) {
+  return {
+    type: actionTypes.FETCH_LOGIN_FAILED,
+    data
+  }
+}
+
+

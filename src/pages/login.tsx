@@ -1,13 +1,19 @@
 import React, {Fragment, useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import router, { useRouter } from 'next/router'
+import validate from 'validate.js';
+import axios from 'axios';
+
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Button,IconButton,TextField,Link,Typography} from '@material-ui/core';
-import validate from 'validate.js';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import SignIn from '../components/SignIn';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import { blue, purple } from '@material-ui/core/colors';
-import router, { useRouter } from 'next/router'
+
+import { fetchLogin } from '../actions';
+
 
 const schema = {
   email: {
@@ -127,6 +133,8 @@ const useStyles = makeStyles(theme => ({
 
 const Login = props => {
   const { history } = props;
+  
+  const dispatch = useDispatch();
 
   const classes = useStyles();
 
@@ -139,6 +147,7 @@ const Login = props => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState<any>(null);
 
   useEffect(() => {
     const errors = validate(formState.values, schema);
@@ -149,6 +158,12 @@ const Login = props => {
       errors: errors || {}
     }));
   }, [formState.values]);
+
+  useEffect(() => {
+    if(localStorage.getItem('accesstoken') !== null || '') {
+      router.push('/dashboard')
+    }
+  }, [])
 
   const handleChange = event => {
     event.persist();
@@ -166,7 +181,7 @@ const Login = props => {
           break;
       }
     } catch(err) {
-      const errorMessage = `error onChange: ${error.message}`;
+      const errorMessage = `error onChange: ${err.message}`;
       console.log(errorMessage);
     }
 
@@ -186,17 +201,31 @@ const Login = props => {
     }));
   };
 
-  const handleSignIn = event => {
-    try {
-      
+
+  const handleSignIn = async event => {
+    const config = {
+      headers:{
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+    }
+    try { 
       event.preventDefault();
-      const payload = { password, email };
-      localStorage.setItem('accesstoken', '4eg%aM7ajjayee8383'); 
+      const payload = { email, password };
+      const res = await axios.post('http://localhost:5000/api/auth', payload, config)
+      console.log(`data: ${res.data.token}`);
+      if(res.data.token !== null || '') {
+        localStorage.setItem('accesstoken', res.data.token); 
+        router.push('/dashboard');
+      }
+      console.log(res.status)
+      // dispatch(fetchLogin(payload));
 
     } catch (error) {
       
       const errorMessage = `error onSubmit: ${error.message}`;
       console.log(errorMessage);
+      console.log(JSON.stringify(error))
       
     }
     // router.push({

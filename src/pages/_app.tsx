@@ -1,20 +1,25 @@
-import React, { useState, useEffect }from 'react';
-import clsx from 'clsx';
-import { Box, Container, CssBaseline } from '@material-ui/core';
+import React, { Fragment, useState, useEffect }from 'react';
+import { wrapper } from '../store'
+
+import { Box, Container, CssBaseline, useMediaQuery, colors } from '@material-ui/core';
 import red from '@material-ui/core/colors/red';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { makeStyles, useTheme } from '@material-ui/styles';
+
 import axios from 'axios';
+import { SWRConfig } from 'swr';
+import clsx from 'clsx';
+
 import App from 'next/app';
 import Head from 'next/head';
-import { SWRConfig } from 'swr';
+
 import { Topbar } from '../components/Topbar';
 import { Sidebar } from '../components/Sidebar';
-import { useMediaQuery, colors } from '@material-ui/core';
+import {Layout} from '../components/Layout';
 import palette from '../theme/palette';
 import typography from '../theme/typography';
 import overrides from '../theme/overrides';
-import {Layout} from '../components/Layout';
+
 
 // Create a theme instance.
 export const theme = createMuiTheme({
@@ -64,52 +69,53 @@ function MyApp({ Component, pageProps }) {
   const shouldOpenSidebar = isDesktop ? true : openSidebar;
 
   return (
-      <React.Fragment>
-        <Head>
-          <title>BP-TAPERA</title>
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width"
-          />
-        </Head>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {Component.name !== 'Login' 
-            ? <div className={clsx({
-                [classes.root]: true,
-                [classes.shiftContent]: isDesktop
-              })}>
-              <Topbar 
-                onSidebarOpen={handleSidebarOpen}
-                component={Component}
-              />
-              {Component.name !== 'Login' ? <Sidebar
-                  onClose={handleSidebarClose}
-                  open={shouldOpenSidebar}
-                  variant={isDesktop ? 'persistent' : 'temporary'}
-              />: null}
-              <Container maxWidth={true}>
-                <Box marginTop={2}>
-                  <Component {...pageProps} />
-                </Box>
-              </Container>
-            </div> 
-          : <div className={classes.root}>
+    <Fragment>
+      <Head>
+        <title>BP-TAPERA</title>
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width"
+        />
+      </Head>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {Component.name !== 'Login' 
+          ? <div className={clsx({
+              [classes.root]: true,
+              [classes.shiftContent]: isDesktop
+            })}>
             <Topbar 
+              onSidebarOpen={handleSidebarOpen}
               component={Component}
             />
-            <main className={classes.content}>
-              <Container maxWidth={false}>
-                <Box marginTop={2}>
-                  <Component {...pageProps} />
-                </Box>
-              </Container>
-            </main>
-          </div>}
-        </ThemeProvider>
-      </React.Fragment>
+            {Component.name !== 'Login' ? <Sidebar
+                onClose={handleSidebarClose}
+                open={shouldOpenSidebar}
+                variant={isDesktop ? 'persistent' : 'temporary'}
+            />: null}
+            <Container maxWidth={false}>
+              <Box marginTop={2}>
+                <Component {...pageProps} />
+              </Box>
+            </Container>
+          </div> 
+        : <div className={classes.root}>
+          <Topbar 
+            component={Component}
+          />
+          <main className={classes.content}>
+            <Container maxWidth={false}>
+              <Box marginTop={2}>
+                <Component {...pageProps} />
+              </Box>
+            </Container>
+          </main>
+        </div>}
+      </ThemeProvider>
+    </Fragment>
   );
 }
 
-export default MyApp
+// export default MyApp
+export default wrapper.withRedux(MyApp)
 

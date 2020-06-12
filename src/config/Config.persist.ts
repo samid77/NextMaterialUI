@@ -1,10 +1,9 @@
 import storage from 'redux-persist/lib/storage';
 import createEncryptor from 'redux-persist-transform-encrypt';
 import { createBlacklistFilter } from 'redux-persist-transform-filter';
-import 'dotenv/config';
 
 const encryptor = createEncryptor({
-  secretKey: process.env.REACT_APP_PERSIST_SECRET || '',
+  secretKey: 'rahasia',
   onError(error) {
     console.log('createEncryptor error ', error);
   },

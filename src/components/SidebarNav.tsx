@@ -80,7 +80,7 @@ export function SidebarNav(props) {
         className={clsx(classes.root, className)}
       >
         {pages.map(page => (
-          <Fragment>
+          <Fragment key={page.title}>
             {page.nested 
                 ? <ListItem
                     className={classes.item}
