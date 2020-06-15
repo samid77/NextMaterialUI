@@ -122,7 +122,7 @@ export function SidebarNav(props) {
               className={classes.nested}
               disableGutters
             >
-              <Link href='/'>
+              <Link href='/mitra'>
                 <Button
                   activeClassName={classes.active}
                   className={classes.button}
@@ -138,7 +138,7 @@ export function SidebarNav(props) {
               className={classes.nested}
               disableGutters
             >
-              <Link href='/'>
+              <Link href='/konvensional'>
                 <Button
                   activeClassName={classes.active}
                   className={classes.button}

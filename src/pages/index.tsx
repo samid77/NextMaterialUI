@@ -4,9 +4,11 @@ import router from 'next/router';
 export default function Search() {
   
   useEffect(() => {
-      if(localStorage.getItem('accesstoken') === null || '' || undefined) {
-        router.push('/login');
-      }
+    if(localStorage.getItem('accesstoken') === null || '' || undefined) {
+      router.push('/login');
+    } else {
+      router.push('/dashboard');
+    }
   }, [])
 
   return(
