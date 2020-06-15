@@ -1,0 +1,136 @@
+import { v4 as uuidv4 } from 'uuid';
+
+export default [
+  {
+    id: uuidv4(),
+    nama: 'BTN',
+    tanggalPKS: '15-06-2020',
+    tanggalLimit: '15-06-2020',
+    targetUnit: 15000000000,
+    targetNominal: 15000000000,
+    maxLimit: 55000000000,
+    targetNominal: 15000000000,
+    approvalStatus: 'Menunggu Persetujuan',
+    createdAt: 1555016400000
+  },
+  {
+    id: uuidv4(),
+    nama: 'BCA',
+    tanggalPKS: '15-06-2020',
+    tanggalLimit: '15-06-2020',
+    targetUnit: 15000000000,
+    targetNominal: 15000000000,
+    maxLimit: 55000000000,
+    targetNominal: 15000000000,
+    approvalStatus: 'Menunggu Persetujuan',
+    createdAt: 1555016400000
+  },
+  {
+    id: uuidv4(),
+    nama: 'BNI',
+    tanggalPKS: '15-06-2020',
+    tanggalLimit: '15-06-2020',
+    targetUnit: 15000000000,
+    targetNominal: 15000000000,
+    maxLimit: 55000000000,
+    targetNominal: 15000000000,
+    approvalStatus: 'Disetujui',
+    createdAt: 1555016400000
+  },
+  {
+    id: uuidv4(),
+    nama: 'KSEI',
+    tanggalPKS: '15-06-2020',
+    tanggalLimit: '15-06-2020',
+    targetUnit: 15000000000,
+    targetNominal: 15000000000,
+    maxLimit: 55000000000,
+    targetNominal: 15000000000,
+    approvalStatus: 'Disetujui',
+    createdAt: 1555016400000
+  },
+  {
+    id: uuidv4(),
+    nama: 'Bank DKI',
+    tanggalPKS: '15-06-2020',
+    tanggalLimit: '15-06-2020',
+    targetUnit: 15000000000,
+    targetNominal: 15000000000,
+    maxLimit: 55000000000,
+    targetNominal: 15000000000,
+    approvalStatus: 'Menunggu Persetujuan',
+    createdAt: 1555016400000
+  },
+  {
+    id: uuidv4(),
+    nama: 'BNI Syariah',
+    tanggalPKS: '15-06-2020',
+    tanggalLimit: '15-06-2020',
+    targetUnit: 15000000000,
+    targetNominal: 15000000000,
+    maxLimit: 55000000000,
+    targetNominal: 15000000000,
+    approvalStatus: 'Ditolak',
+    createdAt: 1555016400000
+  },
+  {
+    id: uuidv4(),
+    nama: 'Bank Century',
+    tanggalPKS: '15-06-2020',
+    tanggalLimit: '15-06-2020',
+    targetUnit: 15000000000,
+    targetNominal: 15000000000,
+    maxLimit: 55000000000,
+    targetNominal: 15000000000,
+    approvalStatus: 'Ditolak',
+    createdAt: 1555016400000
+  },
+  {
+    id: uuidv4(),
+    nama: 'Bank of America',
+    tanggalPKS: '15-06-2020',
+    tanggalLimit: '15-06-2020',
+    targetUnit: 15000000000,
+    targetNominal: 15000000000,
+    maxLimit: 55000000000,
+    targetNominal: 15000000000,
+    approvalStatus: 'Ditolak',
+    createdAt: 1555016400000
+  },
+  {
+    id: uuidv4(),
+    nama: 'OCBC NISP',
+    tanggalPKS: '15-06-2020',
+    tanggalLimit: '15-06-2020',
+    targetUnit: 15000000000,
+    targetNominal: 15000000000,
+    maxLimit: 55000000000,
+    targetNominal: 15000000000,
+    approvalStatus: 'Menunggu Persetujuan',
+    createdAt: 1555016400000
+  },
+  {
+    id: uuidv4(),
+    nama: 'Bank Sulsel',
+    tanggalPKS: '15-06-2020',
+    tanggalLimit: '15-06-2020',
+    targetUnit: 15000000000,
+    targetNominal: 15000000000,
+    maxLimit: 55000000000,
+    targetNominal: 15000000000,
+    approvalStatus: 'Menunggu Persetujuan',
+    createdAt: 1555016400000
+  },
+  {
+    id: uuidv4(),
+    nama: 'Bank Jabar',
+    tanggalPKS: '15-06-2020',
+    tanggalLimit: '15-06-2020',
+    targetUnit: 15000000000,
+    targetNominal: 15000000000,
+    maxLimit: 55000000000,
+    targetNominal: 15000000000,
+    approvalStatus: 'Menunggu Persetujuan',
+    createdAt: 1555016400000
+  },
+];

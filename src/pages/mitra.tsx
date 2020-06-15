@@ -1,8 +1,8 @@
 import React, { Fragment, useStyle, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { UsersToolbar } from '../components/UsersToolbar';
-import { UsersTable } from '../components/UsersTable';
-import mockData from '../components/usersdata';
+import { MitraToolbar } from '../components/MitraToolbar';
+import { MitraList } from '../components/MitraList';
+import mockData from '../components/mitradata';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,13 +15,13 @@ const useStyles = makeStyles(theme => ({
 
 export default function Mitra() {
     const classes = useStyles();
-    const [users] = useState(mockData);
+    const [mitra] = useState(mockData);
 
     return (
         <div className={classes.root}>
-        <UsersToolbar />
+        <MitraToolbar />
             <div className={classes.content}>
-                <UsersTable users={users} />
+                <MitraList mitra={mitra} />
             </div>
         </div>
     );

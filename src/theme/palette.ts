@@ -18,6 +18,12 @@ export default {
     main: colors.blue['A400'],
     light: colors.blue['A400']
   },
+  custom: {
+    contrastText: white,
+    dark: colors.red[900],
+    main: colors.red[500],
+    light: colors.red[100]
+  },
   success: {
     contrastText: white,
     dark: colors.green[900],
