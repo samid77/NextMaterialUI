@@ -60,6 +60,21 @@ export function Sidebar(props) {
       icon: <PlaylistAddCheckRoundedIcon />
     },
     {
+      title: 'Dummy Menu',
+      href: '/peserta',
+      icon: <AssignmentIndRoundedIcon />
+    },
+    {
+      title: 'Dummy Menu',
+      href: '/konvensional',
+      icon: <StarsRoundedIcon />
+    },
+    {
+      title: 'Dummy Menu',
+      href: '/syariah',
+      icon: <Brightness5RoundedIcon />
+    },
+    {
       title: 'Master Data',
       nested: true,
       href:'#',
@@ -77,31 +92,6 @@ export function Sidebar(props) {
         },
       ]
     },
-    // {
-    //   title: 'Pengelolaan Bank',
-    //   href: '/pengelolaan',
-    //   icon: <AccountBalanceRoundedIcon />
-    // },
-    // {
-    //   title: 'Pengelolaan Mitra',
-    //   href: '/mitra',
-    //   icon: <AccountBalanceRoundedIcon />
-    // },
-    // {
-    //   title: 'Pengelolaan Peserta',
-    //   href: '/peserta',
-    //   icon: <AssignmentIndRoundedIcon />
-    // },
-    // {
-    //   title: 'Produk Konvensional',
-    //   href: '/konvensional',
-    //   icon: <StarsRoundedIcon />
-    // },
-    // {
-    //   title: 'Produk Syariah',
-    //   href: '/syariah',
-    //   icon: <Brightness5RoundedIcon />
-    // },
     
   ];
 

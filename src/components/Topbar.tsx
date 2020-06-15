@@ -2,12 +2,13 @@ import React, { useState, Fragment } from 'react';
 import Link from 'next/link';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles, useTheme } from '@material-ui/styles';
+import { makeStyles, useTheme, Theme } from '@material-ui/styles';
 import { AppBar, Toolbar, Badge, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
 import { useMediaQuery } from '@material-ui/core';
+import router from 'next/router';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,6 +35,8 @@ export function Topbar(props) {
 
   const handleSignOut = () => {
     localStorage.removeItem('accesstoken');
+    router.push('/login');
+
   }
 
 
@@ -54,32 +57,37 @@ export function Topbar(props) {
             />
           </Link>
           <div className={classes.flexGrow} />
-          {Component.name !== 'Login' ? <Fragment><Hidden mdDown>
-            <IconButton color="inherit">
-              <Badge
-                badgeContent={5}
-                color="primary"
-                variant="dot"
-              >
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <Link href="/login">
-              <IconButton
-                className={classes.signOutButton}
-                color="inherit"
-                onClick={handleSignOut}
-              >
-                <InputIcon />
+          {Component.name !== 'Login' 
+            ? <Fragment>
+            <Hidden mdDown>
+              <IconButton color="inherit">
+                <Badge
+                  badgeContent={5}
+                  color="primary"
+                  variant="dot"
+                >
+                  <NotificationsIcon />
+                </Badge>
               </IconButton>
-            </Link>
-          </Hidden>
-          <IconButton
-            color="inherit"
-            onClick={onSidebarOpen}
-          >
-            <MenuIcon />
-          </IconButton></Fragment> : null }
+              <Link href="/login">
+                <IconButton
+                  className={classes.signOutButton}
+                  color="inherit"
+                  onClick={handleSignOut}
+                >
+                  <InputIcon />
+                </IconButton>
+              </Link>
+            </Hidden>
+            <Hidden mdUp>
+              <IconButton
+                color="inherit"
+                onClick={onSidebarOpen}
+              >
+                <MenuIcon />
+              </IconButton>    
+            </Hidden>
+          </Fragment> : null }
         </Toolbar>
       </AppBar>
       <div className={classes.toolbarMargin} />

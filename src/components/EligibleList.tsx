@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Bar } from 'react-chartjs-2';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, Theme } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 import {
   Card,
@@ -19,15 +19,23 @@ import ListItem, { ListItemProps } from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+
 
 import { data, options } from './chart';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
       backgroundColor: '#dcf2e3'
   },
   listContainer: {
-    height: 230,
+    height: 300,
+    [theme.breakpoints.down('sm')]: {
+      height: 280,
+    },
+    [theme.breakpoints.down('xs')]: {
+      height: 320,
+    },
     position: 'relative',
   },
   actions: {

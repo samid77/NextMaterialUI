@@ -51,7 +51,6 @@ const useStyles = makeStyles(theme => ({
     }
   },
   quote: {
-    backgroundColor: theme.palette.neutral,
     height: '170%',
     display: 'flex',
     justifyContent: 'center',
@@ -70,7 +69,7 @@ const useStyles = makeStyles(theme => ({
   },
   quoteText: {
     color: theme.palette.white,
-    fontWeight: 700
+    fontWeight: 400,
   },
   name: {
     marginTop: theme.spacing(3),
@@ -283,9 +282,9 @@ const Login = props => {
             <div className={classes.quoteInner}>
               <Typography
                 className={classes.quoteText}
-                variant="h1"
+                variant="h3"
               >
-                BP TAPERA
+                Rumah sebagai kebutuhan dasar manusia, disamping sandang dan pangan, merupakan harapan setiap manusia untuk dapat memenuhinya.
               </Typography>
             </div>
           </div>
