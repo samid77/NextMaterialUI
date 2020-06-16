@@ -90,7 +90,7 @@ export function SidebarNav(props) {
                   >
                     <Link href={page.href}>
                       <Button
-                        activeClassName={classes.active}
+                        activeclassname={classes.active}
                         className={classes.button}
                       >
                         <div className={classes.icon}>{page.icon}</div>
@@ -106,7 +106,7 @@ export function SidebarNav(props) {
                   >
                     <Link href={page.href}>
                       <Button
-                        activeClassName={classes.active}
+                        activeclassname={classes.active}
                         className={classes.button}
                       >
                         <div className={classes.icon}>{page.icon}</div>
@@ -124,7 +124,7 @@ export function SidebarNav(props) {
             >
               <Link href='/mitra'>
                 <Button
-                  activeClassName={classes.active}
+                  activeclassname={classes.active}
                   className={classes.button}
                 >
                   <div className={classes.icon}>
@@ -140,7 +140,7 @@ export function SidebarNav(props) {
             >
               <Link href='/konvensional'>
                 <Button
-                  activeClassName={classes.active}
+                  activeclassname={classes.active}
                   className={classes.button}
                 >
                   <div className={classes.icon}>

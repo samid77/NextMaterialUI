@@ -60,17 +60,17 @@ export function Sidebar(props) {
       icon: <PlaylistAddCheckRoundedIcon />
     },
     {
-      title: 'Dummy Menu',
+      title: 'Dummy Menu One',
       href: '/peserta',
       icon: <AssignmentIndRoundedIcon />
     },
     {
-      title: 'Dummy Menu',
+      title: 'Dummy Menu Two',
       href: '/konvensional',
       icon: <StarsRoundedIcon />
     },
     {
-      title: 'Dummy Menu',
+      title: 'Dummy Menu Three',
       href: '/syariah',
       icon: <Brightness5RoundedIcon />
     },

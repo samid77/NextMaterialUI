@@ -19,10 +19,10 @@ export default function Mitra() {
 
     return (
         <div className={classes.root}>
-        <MitraToolbar />
-            <div className={classes.content}>
-                <MitraList mitra={mitra} />
-            </div>
+          <MitraToolbar />
+          <div className={classes.content}>
+            <MitraList mitra={mitra} />
+          </div>
         </div>
     );
 }
