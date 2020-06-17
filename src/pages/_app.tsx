@@ -14,6 +14,9 @@ import {Layout} from '../components/Layout';
 import palette from '../theme/palette';
 import typography from '../theme/typography';
 import overrides from '../theme/overrides';
+import { Provider } from 'react-redux';
+import { Store, Persistore } from '../redux/core/store';
+import { PersistGate } from 'redux-persist/integration/react';
 
 
 // Create a theme instance.
@@ -64,6 +67,11 @@ function MyApp({ Component, pageProps }) {
   const shouldOpenSidebar = isDesktop ? true : openSidebar;
 
   return (
+    <Provider store={Store}>
+      <PersistGate
+          loading={null}
+          persistor={Persistore}
+        >
     <Fragment>
       <Head>
         <title>PMF|BP TAPERA</title>
@@ -108,6 +116,8 @@ function MyApp({ Component, pageProps }) {
             </div>}
       </ThemeProvider>
     </Fragment>
+    </PersistGate>
+    </Provider>
   );
 }
 

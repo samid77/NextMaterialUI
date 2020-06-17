@@ -1,10 +1,10 @@
 import storage from 'redux-persist/lib/storage'
 import createEncryptor from 'redux-persist-transform-encrypt';
 import { createBlacklistFilter } from 'redux-persist-transform-filter';
-import { persistSecretKey } from 'configurations/index';
+// import { persistSecretKey } from 'configurations/index';
 
 const encryptor = createEncryptor({
-  secretKey: persistSecretKey,
+  secretKey: 'persistSecretKey',
   onError(error) {
     console.log('createEncryptor error ', error); // eslint-disable-line
   },
@@ -18,7 +18,7 @@ const persistConfig = {
   storeConfig: {
     key: 'root',
     storage,
-    transforms: [saveAuthSubsetBlacklistFilter, encryptor],
+    transforms: [],
   },
 };
 

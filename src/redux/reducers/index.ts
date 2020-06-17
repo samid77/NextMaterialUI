@@ -1,7 +1,12 @@
-import TestReducers from 'redux/reducers/TestReducers';
+import MitraDataReducers from "./MasterDataMitraReducer";
+import { combineReducers } from "redux";
 
-const reducers: object = {
-  test: TestReducers,
+const AppReducers = combineReducers({
+  mitraData: MitraDataReducers
+});
+
+export type AppState = ReturnType<typeof AppReducers>;
+
+export {
+  AppReducers
 };
-
-export default reducers;

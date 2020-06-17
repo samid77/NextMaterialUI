@@ -3,6 +3,10 @@ import axios from 'axios';
 import { makeStyles } from '@material-ui/styles';
 import { MitraToolbar } from '../components/MitraToolbar';
 import { MitraList } from '../components/MitraList';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from '../redux/reducers';
+import { MitraDataListState } from '../interfaces/MitraData';
+import { getMitraData } from '../redux/actions/MitraDataAction';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,25 +19,19 @@ const useStyles = makeStyles(theme => ({
 
 export default function Mitra() {
     const classes = useStyles();
-    const [data, setData] = useState([]);
-
-    const getMitraData = async () => {
-      const result = await axios(
-        'http://localhost:3001/datamitra',
-      );
-      setData(result.data);
-    }
+    const mitraDataState: MitraDataListState = useSelector((state: AppState) => state.mitraData);
+    const dispatch = useDispatch();
  
     useEffect(() => {
-      getMitraData();
-      // eslint-disable-next-line
+      console.log(mitraDataState);
+      dispatch(getMitraData(''));
     }, []);
 
     return (
         <div className={classes.root}>
           <MitraToolbar />
           <div className={classes.content}>
-            <MitraList mitra={data} />
+            <MitraList mitra={mitraDataState.response} />
           </div>
         </div>
     );
