@@ -1,11 +1,12 @@
 import React, { useState, Fragment, useEffect } from 'react';
-import axios from 'axios';
 import clsx from 'clsx';
+import axios from 'axios';
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles } from '@material-ui/styles';
+import { useTheme } from '@material-ui/core/styles';
 import {
   Card,
   CardActions,
@@ -19,7 +20,10 @@ import {
   TableHead,
   TableRow,
   Typography,
-  TablePagination
+  TablePagination,
+  Grid,
+  Divider,
+  TextField
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -39,9 +43,21 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import MUIDataTable from 'mui-datatables';
-
-// import { getInitials } from '../helpers/getInitials';
+import { getMitra } from '../redux/actions/TestActions';
+import DateFnsUtils from '@date-io/date-fns';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
+import SearchIcon from '@material-ui/icons/Search';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -87,10 +103,67 @@ export function MitraList(props) {
   const [deleteConfirm, setOpenDeleteConfirm] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
+  const [mitraId, setMitraId] = useState(0);
+  const [data, setData] = useState([]);
+  const [openForm, setOpenForm] = React.useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const [namamitra, setNamaMitra] = React.useState<string | null>(daftarMitra[0]);
+  const [values, setValues] = useState({
+    nama: '',
+    tanggalPKS: '',
+    tanggalLimit: '',
+    targetUnit: 0,
+    targetNominal: 0,
+    maxLimit: 0,
+    approvalStatus: 1,
+    createdAt: 1555016400000
+  });
 
-  useEffect(() => {
-    console.log(`useEffect mitra list called`)
-  }, [])
+  const handleChange = event => {
+    setValues({
+      ...values,
+      [event.target.name]: event.target.value
+    });
+  };
+
+  const [pksStartDate, setPksStartDate] = React.useState<Date | null>(
+    new Date(),
+  );
+  const handlePksStartDateChange = (date: Date | null) => {
+    setPksStartDate(date);
+  };
+  const [pksEndDate, setPksEndDate] = React.useState<Date | null>(
+    new Date(),
+  );
+  const handlePksEndDateChange = (date: Date | null) => {
+    setPksEndDate(date);
+  };
+  const [limitStartDate, setLimitStartDate] = React.useState<Date | null>(
+    new Date(),
+  );
+  const handleLimitStartDateChange = (date: Date | null) => {
+    setLimitStartDate(date);
+  };
+  const [limitEndDate, setLimitEndDate] = React.useState<Date | null>(
+    new Date(),
+  );
+  const handleLimitEndDateChange = (date: Date | null) => {
+    setLimitEndDate(date);
+  };
+
+  const openFormModal = (data) => {
+    const indexMitra = daftarMitra.findIndex(d => d.nama === data.nama);
+    setNamaMitra(daftarMitra[indexMitra]);
+    values.targetNominal = data.targetNominal;
+    values.targetUnit = data.targetUnit;
+    values.maxLimit = data.maxLimit
+    setOpenForm(true);
+  };
+
+  const closeFormModal = () => {
+    setOpenForm(false);
+  };
 
   const handlePageChange = (event, page) => {
     setPage(page);
@@ -100,13 +173,33 @@ export function MitraList(props) {
     setRowsPerPage(event.target.value);
   };
 
-  const openDeleteConfirm = () => {
+  const openDeleteConfirm = (id: number) => {
+    setMitraId(id);
     setOpenDeleteConfirm(true);
   };
 
   const closeDeleteConfirm = () => {
     setOpenDeleteConfirm(false);
   };
+
+  const getMitraData = async () => {
+    const result = await axios(
+      'http://localhost:3001/datamitra',
+    );
+    setData(result.data);
+  }
+
+  const deleteDataMitra = async () => {
+    try {
+        const res = await fetch(`http://localhost:3001/datamitra/${mitraId}`, {
+            method: 'DELETE',
+        });
+    } catch (err) {
+        console.error(err.message);
+    }
+    getMitraData();
+    setOpenDeleteConfirm(false);
+  }
 
   return (
     <Fragment>
@@ -119,70 +212,123 @@ export function MitraList(props) {
             <div className={classes.inner}>
               <TableContainer>
                   <Table stickyHeader>
-                      <TableHead>
-                          <TableRow>
-                          <TableCell>Nama</TableCell>
-                          <TableCell>Tanggal PKS</TableCell>
-                          <TableCell>Tanggal Limit</TableCell>
-                          <TableCell>Target Unit</TableCell>
-                          <TableCell>Target Nominal</TableCell>
-                          <TableCell>Maksimal Limit</TableCell>
-                          <TableCell>Approval Status</TableCell>
-                          <TableCell>Actions</TableCell>
-                          </TableRow>
-                      </TableHead>
-                      <TableBody>
-                          {mitra.slice(0, rowsPerPage).map(m => (
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Nama</TableCell>
+                        <TableCell>Tanggal PKS</TableCell>
+                        <TableCell>Tanggal Limit</TableCell>
+                        <TableCell>Target Unit</TableCell>
+                        <TableCell>Target Nominal</TableCell>
+                        <TableCell>Maksimal Limit</TableCell>
+                        <TableCell>Approval Status</TableCell>
+                        <TableCell>Actions</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        { data.length > 0 ? data.slice(0, rowsPerPage).map(m => (
                           <TableRow
                               className={classes.tableRow}
                               hover
                               key={m.id}
                           >
-                              <TableCell>
+                            <TableCell>
                               <div className={classes.nameContainer}>
                                   <Typography variant="body1">{m.nama}</Typography>
                               </div>
-                              </TableCell>
-                              <TableCell>{m.tanggalPKS}</TableCell>
-                              <TableCell>{m.tanggalLimit}</TableCell>
-                              <TableCell>{m.targetUnit}</TableCell>
-                              <TableCell>{m.targetNominal}</TableCell>
-                              <TableCell>{m.maxLimit}</TableCell>
-                              <TableCell>
-                                {m.approvalStatus === 3 
-                                  ?  <Chip
-                                        icon={<CheckCircleRoundedIcon />}
-                                        label='Disetujui'
-                                        color="primary"
-                                      /> 
-                                  : m.approvalStatus === 2 ? <Chip
-                                      icon={<CancelRoundedIcon className={classes.ditolakChip}/>}
-                                      label='Ditolak'
-                                      className={classes.ditolakChip}
-                                    />
-                                  : <Chip
-                                      icon={<TimerRoundedIcon className={classes.menungguChip}/>}
-                                      label='Menunggu Persetujuan'
-                                      className={classes.menungguChip}
-                                    />
-                                }
-                              </TableCell>
-                              <TableCell>
-                                  <div>
-                                      <IconButton onClick={openDeleteConfirm} aria-label="delete">
-                                          <DeleteIcon />
-                                      </IconButton>
-                                      <IconButton aria-label="edit">
-                                          <EditRoundedIcon />
-                                      </IconButton>
-                                      <IconButton aria-label="view" color="primary">
-                                          <VisibilityRoundedIcon />
-                                      </IconButton>
-                                  </div>
-                              </TableCell>
+                            </TableCell>
+                            <TableCell>{m.tanggalPKS}</TableCell>
+                            <TableCell>{m.tanggalLimit}</TableCell>
+                            <TableCell>{m.targetUnit}</TableCell>
+                            <TableCell>{m.targetNominal}</TableCell>
+                            <TableCell>{m.maxLimit}</TableCell>
+                            <TableCell>
+                              {m.approvalStatus === 3 
+                                ?  <Chip
+                                      icon={<CheckCircleRoundedIcon />}
+                                      label='Disetujui'
+                                      color="primary"
+                                    /> 
+                                : m.approvalStatus === 2 ? <Chip
+                                    icon={<CancelRoundedIcon className={classes.ditolakChip}/>}
+                                    label='Ditolak'
+                                    className={classes.ditolakChip}
+                                  />
+                                : <Chip
+                                    icon={<TimerRoundedIcon className={classes.menungguChip}/>}
+                                    label='Menunggu Persetujuan'
+                                    className={classes.menungguChip}
+                                  />
+                              }
+                            </TableCell>
+                            <TableCell>
+                                <div>
+                                    <IconButton 
+                                      onClick={() => openDeleteConfirm(m.id)} 
+                                      aria-label="delete">
+                                        <DeleteIcon />
+                                    </IconButton>
+                                    <IconButton 
+                                      onClick={() => openFormModal(m)}
+                                      aria-label="edit">
+                                        <EditRoundedIcon />
+                                    </IconButton>
+                                    <IconButton aria-label="view" color="primary">
+                                        <VisibilityRoundedIcon />
+                                    </IconButton>
+                                </div>
+                            </TableCell>
                           </TableRow>
-                          ))}
-                      </TableBody>
+                        )) : mitra.slice(0, rowsPerPage).map(m => (
+                          <TableRow
+                              className={classes.tableRow}
+                              hover
+                              key={m.id}
+                          >
+                            <TableCell>
+                              <div className={classes.nameContainer}>
+                                  <Typography variant="body1">{m.nama}</Typography>
+                              </div>
+                            </TableCell>
+                            <TableCell>{m.tanggalPKS}</TableCell>
+                            <TableCell>{m.tanggalLimit}</TableCell>
+                            <TableCell>{m.targetUnit}</TableCell>
+                            <TableCell>{m.targetNominal}</TableCell>
+                            <TableCell>{m.maxLimit}</TableCell>
+                            <TableCell>
+                              {m.approvalStatus === 3 
+                                ?  <Chip
+                                      icon={<CheckCircleRoundedIcon />}
+                                      label='Disetujui'
+                                      color="primary"
+                                    /> 
+                                : m.approvalStatus === 2 ? <Chip
+                                    icon={<CancelRoundedIcon className={classes.ditolakChip}/>}
+                                    label='Ditolak'
+                                    className={classes.ditolakChip}
+                                  />
+                                : <Chip
+                                    icon={<TimerRoundedIcon className={classes.menungguChip}/>}
+                                    label='Menunggu Persetujuan'
+                                    className={classes.menungguChip}
+                                  />
+                              }
+                            </TableCell>
+                            <TableCell>
+                                <div>
+                                    <IconButton onClick={() => openDeleteConfirm(m.id)} aria-label="delete">
+                                        <DeleteIcon />
+                                    </IconButton>
+                                    <IconButton onClick={() => openFormModal(m)} aria-label="edit">
+                                        <EditRoundedIcon />
+                                    </IconButton>
+                                    <IconButton aria-label="view" color="primary">
+                                        <VisibilityRoundedIcon />
+                                    </IconButton>
+                                </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
                   </Table>
               </TableContainer>
             </div>
@@ -211,14 +357,174 @@ export function MitraList(props) {
           <Button onClick={closeDeleteConfirm} color="primary">
             Batal
           </Button>
-          <Button onClick={closeDeleteConfirm} color="primary" autoFocus>
+          <Button onClick={deleteDataMitra} color="primary" autoFocus>
             Hapus
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        fullScreen={fullScreen}
+        open={openForm}
+        onClose={closeFormModal}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle id="tambahdatamitra">Edit Data Mitra</DialogTitle>
+        <DialogContent className={classes.dialogContent}>
+           <form autoComplete="off" noValidate>
+            <CardContent>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <Grid container spacing={3}>
+                      <Grid item md={12} xs={12}>
+                      <Autocomplete
+                        id="namamitra"
+                        autoComplete
+                        disableClearable
+                        options={daftarMitra}
+                        getOptionLabel={(option: NamaMitraType) => option.nama}
+                        value={namamitra}
+                        onChange={(event: any, newValue: string | null) => {
+                          setNamaMitra(newValue);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Nama Mitra"
+                            margin="dense"
+                            variant="outlined"
+                            InputProps={{ ...params.InputProps, type: 'search' }}
+                          />
+                        )}
+                      />
+                      </Grid>
+                      <Grid item md={12} xs={12} className={classes.dateLabel}>
+                        <Divider />
+                        <h3>Tanggal PKS</h3>
+                      </Grid>
+                      <Grid item md={6} xs={12}>
+                      <KeyboardDatePicker
+                        variant="inline"
+                        format="dd/MM/yyyy"
+                        margin="dense"
+                        id="pksStartDate"
+                        label="Dari"
+                        value={pksStartDate}
+                        onChange={handlePksStartDateChange}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                      />
+                      </Grid>
+                      <Grid item md={6} xs={12}>
+                      <KeyboardDatePicker
+                        variant="inline"
+                        format="dd/MM/yyyy"
+                        margin="dense"
+                        id="pksEndDate"
+                        label="Sampai"
+                        value={pksEndDate}
+                        onChange={handlePksEndDateChange}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                        />
+                      </Grid>
+                      <Grid item md={12} xs={12} className={classes.dateLabel}>
+                        <Divider />
+                        <h3>Tanggal Limit</h3>
+                      </Grid>
+                      <Grid item md={6} xs={12}>
+                      <KeyboardDatePicker
+                        variant="inline"
+                        format="dd/MM/yyyy"
+                        margin="dense"
+                        id="limitStartDate"
+                        label="Dari"
+                        value={limitStartDate}
+                        onChange={handleLimitStartDateChange}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                      />
+                      </Grid>
+                      <Grid item md={6} xs={12}>
+                      <KeyboardDatePicker
+                        variant="inline"
+                        format="dd/MM/yyyy"
+                        margin="dense"
+                        id="limitEndDate"
+                        label="Sampai"
+                        value={limitEndDate}
+                        onChange={handleLimitEndDateChange}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                      />
+                      </Grid>
+                      <Grid item md={12} xs={12}>
+                      <TextField
+                          fullWidth
+                          label="Target Unit"
+                          margin="dense"
+                          name="targetUnit"
+                          onChange={handleChange}
+                          type="number"
+                          value={values.targetUnit}
+                          variant="outlined"
+                      />
+                      </Grid>
+                      <Grid item md={12} xs={12}>
+                      <TextField
+                          fullWidth
+                          label="Target Nominal"
+                          margin="dense"
+                          name="targetNominal"
+                          onChange={handleChange}
+                          type="number"
+                          value={values.targetNominal}
+                          variant="outlined"
+                      />
+                      </Grid>
+                      <Grid item md={12} xs={12}>
+                      <TextField
+                          fullWidth
+                          label="Maksimal Limit"
+                          margin="dense"
+                          name="maxLimit"
+                          onChange={handleChange}
+                          type="number"
+                          value={values.maxLimit}
+                          variant="outlined"
+                      />
+                      </Grid>
+                  </Grid>
+              </MuiPickersUtilsProvider>
+            </CardContent>
+            <Divider />
+          </form>
+        </DialogContent>
+        <DialogActions className={classes.dialogAction}>
+          <Button
+              color="secondary"
+              variant="contained"
+              startIcon={<SaveRoundedIcon />}
+              onClick={() => {}}
+          >
+              Update Data
           </Button>
         </DialogActions>
       </Dialog>
     </Fragment>
   );
 };
+
+const daftarMitra = [
+  { nama: 'Bank Negara Indonesia - BNI'},
+  { nama: 'Bank Central Asia - BCA'},
+  { nama: 'Bank DKI'},
+  { nama: 'Bank OCBC NISP'},
+  { nama: 'Bank Tabungan Negara - BTN'}
+];
 
 MitraList.propTypes = {
   className: PropTypes.string,

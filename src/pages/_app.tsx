@@ -1,18 +1,13 @@
 import React, { Fragment, useState, useEffect }from 'react';
-import { wrapper } from '../store'
-
 import { Box, Container, CssBaseline, useMediaQuery, colors } from '@material-ui/core';
 import red from '@material-ui/core/colors/red';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { makeStyles, useTheme } from '@material-ui/styles';
-
 import axios from 'axios';
 import { SWRConfig } from 'swr';
 import clsx from 'clsx';
-
 import App from 'next/app';
 import Head from 'next/head';
-
 import { Topbar } from '../components/Topbar';
 import { Sidebar } from '../components/Sidebar';
 import {Layout} from '../components/Layout';
@@ -71,7 +66,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <Fragment>
       <Head>
-        <title>BP TAPERA | PMF</title>
+        <title>PMF|BP TAPERA</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
@@ -116,6 +111,5 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-// export default MyApp
-export default wrapper.withRedux(MyApp)
+export default MyApp
 

@@ -1,17 +1,18 @@
-import storage from 'redux-persist/lib/storage';
+import storage from 'redux-persist/lib/storage'
 import createEncryptor from 'redux-persist-transform-encrypt';
 import { createBlacklistFilter } from 'redux-persist-transform-filter';
+import { persistSecretKey } from 'configurations/index';
 
 const encryptor = createEncryptor({
-  secretKey: 'rahasia',
+  secretKey: persistSecretKey,
   onError(error) {
-    console.log('createEncryptor error ', error);
+    console.log('createEncryptor error ', error); // eslint-disable-line
   },
 });
-
+ 
 const saveAuthSubsetBlacklistFilter = createBlacklistFilter('auth', ['data', 'action']);
 
-const ConfigPersist = {
+const persistConfig = {
   active: true,
   reducerVersion: '1.0',
   storeConfig: {
@@ -21,4 +22,4 @@ const ConfigPersist = {
   },
 };
 
-export default ConfigPersist;
+export default persistConfig;

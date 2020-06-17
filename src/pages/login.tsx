@@ -17,9 +17,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
 
 
-import { fetchLogin } from '../actions';
-
-
 const schema = {
   email: {
     presence: { allowEmpty: false, message: 'is required' },
@@ -152,8 +149,6 @@ const useStyles = makeStyles(theme => ({
 
 const Login = props => {
   const { history } = props;
-  
-  const dispatch = useDispatch();
 
   const classes = useStyles();
 
@@ -250,7 +245,6 @@ const Login = props => {
             router.push('/dashboard');
           }
           console.log(res.status)
-          // dispatch(fetchLogin(payload));
         }, 1000);
       }
     } catch (error) {

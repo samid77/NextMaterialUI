@@ -1,8 +1,8 @@
 import storage from 'redux-persist/lib/storage';
 
-const HookReducer: any = (state: any, action: any) => {
+const hook: any = (state: any, action: any) => {
   // do your hook here
   return { state, action };
 };
 
-export default HookReducer;
+export default hook;

@@ -161,13 +161,14 @@ export function MitraToolbar(props) {
   const [namamitra, setNamaMitra] = React.useState<string | null>(daftarMitra[0]);
 
   const [values, setValues] = useState({
-    namaMitra: '',
+    nama: '',
     tanggalPKS: '',
     tanggalLimit: '',
-    targetUnit: '',
-    targetNominal: '',
-    maxLimit: '',
-    approvalStatus: 0,
+    targetUnit: 0,
+    targetNominal: 0,
+    maxLimit: 123456,
+    approvalStatus: 1,
+    createdAt: 1555016400000
   });
 
   const handleChange = event => {
@@ -177,11 +178,25 @@ export function MitraToolbar(props) {
     });
   };
 
-  const addMitra = () => {
-    values.namaMitra = namamitra.nama;
-    values.approvalStatus = approvalStatus;
+  const addMitra = async () => {
+    values.nama = namamitra.nama;
     values.tanggalPKS = pksStartDate;
     values.tanggalLimit = limitStartDate;
+    try {
+        const res = await fetch('http://localhost:3001/datamitra', {
+            method: 'POST',
+            body: JSON.stringify(values),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await res.json();
+        console.log(`Data add: ${JSON.stringify(data)}`);
+
+    } catch (err) {
+        console.error(err.message);
+    }
+
     console.log(`Values: ${JSON.stringify(values)}`);
     
   }

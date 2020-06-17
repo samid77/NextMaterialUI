@@ -1,8 +1,8 @@
-import React, { Fragment, useStyle, useState } from 'react';
+import React, { Fragment, useStyle, useState, useEffect } from 'react';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/styles';
 import { MitraToolbar } from '../components/MitraToolbar';
 import { MitraList } from '../components/MitraList';
-import mockData from '../components/mitradata';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,13 +15,25 @@ const useStyles = makeStyles(theme => ({
 
 export default function Mitra() {
     const classes = useStyles();
-    const [mitra] = useState(mockData);
+    const [data, setData] = useState([]);
+
+    const getMitraData = async () => {
+      const result = await axios(
+        'http://localhost:3001/datamitra',
+      );
+      setData(result.data);
+    }
+ 
+    useEffect(() => {
+      getMitraData();
+      // eslint-disable-next-line
+    }, []);
 
     return (
         <div className={classes.root}>
           <MitraToolbar />
           <div className={classes.content}>
-            <MitraList mitra={mitra} />
+            <MitraList mitra={data} />
           </div>
         </div>
     );
