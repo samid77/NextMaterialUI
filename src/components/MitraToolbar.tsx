@@ -26,6 +26,11 @@ import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
 import SearchIcon from '@material-ui/icons/Search';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
+import SweetAlert from 'react-bootstrap-sweetalert';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from '../redux/reducers';
+import { MitraDataListState } from '../interfaces/MitraData';
+import { getMitraData } from '../redux/actions/MitraDataAction';
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -104,9 +109,12 @@ interface NamaMitraType {
 }
 
 export function MitraToolbar(props) {
+  const mitraDataState: MitraDataListState = useSelector((state: AppState) => state.mitraData);
+  const dispatch = useDispatch();
   const { className, ...rest } = props;
   const [openForm, setOpenForm] = React.useState(false);
   const [openAdvanceSearch, setOpenAdvanceSearch] = React.useState(false);
+  const [successAlert, setSuccessAlert] = React.useState(false);
   const classes = useStyles();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -170,9 +178,9 @@ export function MitraToolbar(props) {
     limitEndDate: '',
     targetUnit: 0,
     targetNominal: 0,
-    maxLimit: 123456,
+    maxLimit: 0,
     approvalStatus: 1,
-    createdAt: 1555016400000
+    createdAt: new Date()
   });
 
   const handleChange = event => {
@@ -199,7 +207,9 @@ export function MitraToolbar(props) {
             }
         });
         const data = await res.json();
-        console.log(`Data add: ${JSON.stringify(data)}`);
+        setOpenForm(false);
+        setSuccessAlert(true);
+        window.location.reload();
 
     } catch (err) {
         console.error(err.message);
@@ -217,6 +227,22 @@ export function MitraToolbar(props) {
       {/* <div className={classes.row}>
         
       </div> */}
+      <SweetAlert success title="Data Added!" 
+          customButtons={
+            <React.Fragment>
+              <Button
+                  color="primary"
+                  variant="contained"
+                  className={classes.buttons}
+                  onClick={() => setSuccessAlert(false)}
+              >
+                <a style={{color: "white", textDecoration: "none"}}>OK</a>
+              </Button>
+            </React.Fragment>
+          } 
+        show={successAlert} onConfirm={() => setSuccessAlert(false)}>
+        Data is successfully added!
+      </SweetAlert>
       <div className={classes.row}>
         <SearchInputCustom
           className={classes.searchInput}

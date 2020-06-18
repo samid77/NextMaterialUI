@@ -53,6 +53,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
 import SearchIcon from '@material-ui/icons/Search';
+import SweetAlert from 'react-bootstrap-sweetalert';
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -87,15 +88,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const getInitials = (name = '') => {
-  name
-    .replace(/\s+/, ' ')
-    .split(' ')
-    .slice(0, 2)
-    .map(v => v && v[0].toUpperCase())
-    .join('');
-}
-
 export function MitraList(props) {
   const { className, mitra, ...rest } = props;
 
@@ -103,6 +95,7 @@ export function MitraList(props) {
   const [deleteConfirm, setOpenDeleteConfirm] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
+  const [successAlert, setSuccessAlert] = useState(false);
   const [mitraId, setMitraId] = useState(0);
   const [data, setData] = useState([]);
   const [openForm, setOpenForm] = React.useState(false);
@@ -223,8 +216,9 @@ export function MitraList(props) {
             }
         });
         const data = await res.json();
-        console.log(`Data add: ${JSON.stringify(data)}`);
-
+        setSuccessAlert(true);
+        setOpenForm(false);
+        getMitraData();
     } catch (err) {
         console.error(err.message);
     }
@@ -237,6 +231,22 @@ export function MitraList(props) {
 
   return (
     <Fragment>
+      <SweetAlert success title="Data Updated!" 
+          customButtons={
+            <React.Fragment>
+              <Button
+                  color="primary"
+                  variant="contained"
+                  className={classes.buttons}
+                  onClick={() => setSuccessAlert(false)}
+              >
+                <a style={{color: "white", textDecoration: "none"}}>OK</a>
+              </Button>
+            </React.Fragment>
+          } 
+        show={successAlert} onConfirm={() => setSuccessAlert(false)}>
+        Data is successfully updated!
+      </SweetAlert>
       <Card
         {...rest}
         className={clsx(classes.root, className)}

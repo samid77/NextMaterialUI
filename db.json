@@ -16,7 +16,6 @@
       "id": 1
     },
     {
-      "id": 2,
       "nama": "Bank Central Asia - BCA",
       "tanggalPKS": "2020-06-15",
       "pksStartDate": "2020-06-15",
@@ -24,14 +23,14 @@
       "tanggalLimit": "2020-06-30",
       "limitStartDate": "2020-06-30",
       "limitEndDate": "2020-06-30",
-      "targetUnit": 16000000000,
-      "maxLimit": 5566789292,
+      "targetUnit": "1600000001",
       "targetNominal": 87662226226,
-      "approvalStatus": 2,
-      "createdAt": 1555016400000
+      "maxLimit": 5566789292,
+      "approvalStatus": 1,
+      "createdAt": 1555016400000,
+      "id": 2
     },
     {
-      "id": 4,
       "nama": "Bank OCBC NISP",
       "tanggalPKS": "2020-07-17",
       "pksStartDate": "2020-07-17",
@@ -39,11 +38,12 @@
       "tanggalLimit": "2020-08-20",
       "limitStartDate": "2020-08-20",
       "limitEndDate": "2020-08-20",
-      "targetUnit": 17000000000,
-      "maxLimit": 124550000,
+      "targetUnit": "17000000011",
       "targetNominal": 882729922200,
-      "approvalStatus": 2,
-      "createdAt": 1555016400000
+      "maxLimit": 124550000,
+      "approvalStatus": 1,
+      "createdAt": 1555016400000,
+      "id": 4
     },
     {
       "nama": "Bank DKI",
@@ -62,18 +62,33 @@
     },
     {
       "nama": "Bank Tabungan Negara - BTN",
-      "tanggalPKS": "2020-06-19T05:59:00.000Z",
-      "pksStartDate": "2020-06-19T05:59:00.000Z",
-      "pksEndDate": "2020-06-21T05:59:00.000Z",
-      "tanggalLimit": "2020-07-19T05:59:00.000Z",
-      "limitStartDate": "2020-07-19T05:59:00.000Z",
-      "limitEndDate": "2020-07-22T05:59:00.000Z",
-      "targetUnit": "130000000001",
-      "targetNominal": "140000001",
-      "maxLimit": "150000001",
+      "tanggalPKS": "2020-06-18T09:39:55.102Z",
+      "pksStartDate": "2020-06-18T09:39:55.102Z",
+      "pksEndDate": "2020-06-19T09:39:00.000Z",
+      "tanggalLimit": "2020-06-18T09:39:55.102Z",
+      "limitStartDate": "2020-06-18T09:39:55.102Z",
+      "limitEndDate": "2020-06-19T09:39:00.000Z",
+      "targetUnit": "122929229",
+      "targetNominal": "229292292",
+      "maxLimit": "929229229229",
       "approvalStatus": 1,
-      "createdAt": 1555016400000,
+      "createdAt": "2020-06-18T09:39:55.102Z",
       "id": 6
+    },
+    {
+      "nama": "Bank Negara Indonesia - BNI",
+      "tanggalPKS": "2020-06-18T09:42:39.620Z",
+      "pksStartDate": "2020-06-18T09:42:39.620Z",
+      "pksEndDate": "2020-06-18T09:42:39.620Z",
+      "tanggalLimit": "2020-06-18T09:42:39.620Z",
+      "limitStartDate": "2020-06-18T09:42:39.620Z",
+      "limitEndDate": "2020-06-18T09:42:39.620Z",
+      "targetUnit": "122121211",
+      "targetNominal": "02121211",
+      "maxLimit": "021212121",
+      "approvalStatus": 1,
+      "createdAt": "2020-06-18T09:42:39.620Z",
+      "id": 7
     }
   ]
 }
