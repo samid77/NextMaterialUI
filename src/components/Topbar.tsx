@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import Link from 'next/link';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -9,6 +9,7 @@ import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
 import { useMediaQuery } from '@material-ui/core';
 import router from 'next/router';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,15 +29,23 @@ const useStyles = makeStyles(theme => ({
 
 export function Topbar(props) {
   const { className, onSidebarOpen, component: Component, ...rest } = props;
-
   const classes = useStyles();
-
   const [notifications] = useState([]);
+  const [indexPage, setIndexPage] = useState(false);
+
+  useEffect(() => {
+    if(window.location.href === 'http://localhost:3000/' || window.location.href === 'http://localhost:3000/#') {
+      console.log(`this block called 1`)
+      setIndexPage(true);
+    } else {
+      setIndexPage(false);
+      console.log(`this block called`)
+    }
+  }, [])
 
   const handleSignOut = () => {
     localStorage.removeItem('accesstoken');
     router.push('/login');
-
   }
 
 
@@ -49,12 +58,12 @@ export function Topbar(props) {
       >
         <Toolbar>
           <Link href="/">
-            <img
+            {indexPage ? <Skeleton animation="wave" variant="circle" width={40} height={40} /> : <img
               alt="Logo"
               src="/images/logos/tapera-logo.svg"
               height={75}
               width={75}
-            />
+            />}
           </Link>
           <div className={classes.flexGrow} />
           {Component.name !== 'Login' 

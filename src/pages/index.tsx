@@ -1,17 +1,74 @@
 import React, { Fragment, useEffect } from 'react';
 import router from 'next/router';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { Grid, Typography } from '@material-ui/core';
+import LinearProgress from '@material-ui/core/LinearProgress';
+
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 1,
+      color: '#fff',
+    },
+    root: {
+      backgroundColor: theme.palette.background.default,
+      height: '100%',
+      maxWidth: '100%'
+    },
+    grid: {
+      height: '100%',
+      marginTop: theme.spacing(15)
+    },
+    background: {
+      display: 'flex',
+      backgroundImage: 'url(/images/houses.jpg)',
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+    },
+    loadingText: {
+      marginTop: theme.spacing(2)
+    },
+    loading: {
+      marginTop: theme.spacing(2)
+    }
+  })
+)
 
 export default function Search() {
+  const classes = useStyles();
   
   useEffect(() => {
-    if(localStorage.getItem('accesstoken') === null || '' || undefined) {
-      router.push('/login');
-    } else {
-      router.push('/dashboard');
-    }
+    setTimeout(() => {
+      if(localStorage.getItem('accesstoken') === null || '' || undefined) {
+        router.push('/login');
+      } else {
+        router.push('/dashboard');
+      }
+    }, 3000);
   }, [])
 
   return(
-    <div>Search</div>
+    <div className={classes.root}>
+      <Grid className={classes.grid} container justify="center">
+        <Grid item>
+          <img src={'/images/background_001.svg'} />
+        </Grid>
+      </Grid>
+      <Grid container justify="center">
+        <Grid item>
+          <LinearProgress className={classes.loading}/>
+          <Typography
+                className={classes.loadingText}
+                variant="h2"
+            >
+              Loading the system...
+            </Typography>
+        </Grid>
+      </Grid>
+    </div>
   )
 }

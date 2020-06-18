@@ -1,6 +1,6 @@
 /* eslint-disable react/no-multi-comp */
 /* eslint-disable react/display-name */
-import React, { forwardRef, useState, Fragment } from 'react';
+import React, { forwardRef, useState, Fragment, useEffect } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
@@ -13,6 +13,8 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import AccountBalanceRoundedIcon from '@material-ui/icons/AccountBalanceRounded';
 import StarsRoundedIcon from '@material-ui/icons/StarsRounded';
+import Skeleton from '@material-ui/lab/Skeleton';
+import Hidden from '@material-ui/core/Hidden';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -68,6 +70,15 @@ export function SidebarNav(props) {
   const { pages, className, ...rest } = props;
   const [open, setOpen] = useState(false);
   const classes = useStyles();
+  const [indexPage, setIndexPage] = useState(false);
+
+  useEffect(() => {
+    if(window.location.href === 'http://localhost:3000/' || window.location.href === 'http://localhost:3000/#') {
+      setIndexPage(true);
+    } else {
+      setIndexPage(false);
+    }
+  }, [])
 
   const handleClick = () => {
     setOpen(!open);
@@ -93,9 +104,15 @@ export function SidebarNav(props) {
                         activeclassname={classes.active}
                         className={classes.button}
                       >
-                        <div className={classes.icon}>{page.icon}</div>
+                      {indexPage 
+                        ? <Fragment>
+                          <Skeleton animation="wave" variant="circle" width={40} height={40} /> <Skeleton animation="wave" style={{marginLeft: '1vw'}}variant="text" width={130} height={30}/>
+                        </Fragment>
+                        : <Fragment>
+                          <div className={classes.icon}>{page.icon}</div>
                         {page.title}
                         {open ? <ExpandLess className={classes.expand}/> : <ExpandMore className={classes.expand}/>}
+                        </Fragment>}
                       </Button>
                     </Link>
                   </ListItem>
@@ -109,8 +126,11 @@ export function SidebarNav(props) {
                         activeclassname={classes.active}
                         className={classes.button}
                       >
-                        <div className={classes.icon}>{page.icon}</div>
-                        {page.title}
+                        {indexPage 
+                          ? <Fragment>
+                            <Skeleton animation="wave" variant="circle" width={40} height={40} /> <Skeleton animation="wave" style={{marginLeft: '1vw'}}variant="text" width={130} height={30}/>
+                          </Fragment>
+                          : <Fragment><div className={classes.icon}>{page.icon}</div>{page.title}</Fragment>}
                       </Button>
                     </Link>
                   </ListItem>
