@@ -112,7 +112,11 @@ export function MitraList(props) {
   const [values, setValues] = useState({
     nama: '',
     tanggalPKS: '',
+    pksStartDate: '',
+    pksEndDate: '',
     tanggalLimit: '',
+    limitStartDate: '',
+    limitEndDate: '',
     targetUnit: 0,
     targetNominal: 0,
     maxLimit: 0,
@@ -127,37 +131,43 @@ export function MitraList(props) {
     });
   };
 
-  const [pksStartDate, setPksStartDate] = React.useState<Date | null>(
-    new Date(),
-  );
+  const [pksStartDate, setPksStartDate] = React.useState('');
   const handlePksStartDateChange = (date: Date | null) => {
     setPksStartDate(date);
+    values.pksStartDate = date;
+    values.tanggalPKS = date;
   };
-  const [pksEndDate, setPksEndDate] = React.useState<Date | null>(
-    new Date(),
-  );
+  const [pksEndDate, setPksEndDate] = React.useState('');
   const handlePksEndDateChange = (date: Date | null) => {
     setPksEndDate(date);
+    values.pksEndDate = date;
   };
-  const [limitStartDate, setLimitStartDate] = React.useState<Date | null>(
-    new Date(),
-  );
+  const [limitStartDate, setLimitStartDate] = React.useState('');
   const handleLimitStartDateChange = (date: Date | null) => {
     setLimitStartDate(date);
+    values.limitStartDate = date;
+    values.tanggalLimit = date;
   };
-  const [limitEndDate, setLimitEndDate] = React.useState<Date | null>(
-    new Date(),
-  );
+  const [limitEndDate, setLimitEndDate] = React.useState('');
   const handleLimitEndDateChange = (date: Date | null) => {
     setLimitEndDate(date);
+    values.limitEndDate = date;
   };
 
   const openFormModal = (data) => {
+    setMitraId(data.id);
     const indexMitra = daftarMitra.findIndex(d => d.nama === data.nama);
     setNamaMitra(daftarMitra[indexMitra]);
+    values.nama = daftarMitra[indexMitra].nama;
     values.targetNominal = data.targetNominal;
     values.targetUnit = data.targetUnit;
-    values.maxLimit = data.maxLimit
+    values.maxLimit = data.maxLimit;
+    values.tanggalPKS = data.pksStartDate;
+    values.pksStartDate = data.pksStartDate;
+    values.pksEndDate = data.pksEndDate;
+    values.tanggalLimit = data.limitStartDate;
+    values.limitStartDate = data.limitStartDate;
+    values.limitEndDate = data.limitEndDate;
     setOpenForm(true);
   };
 
@@ -201,6 +211,30 @@ export function MitraList(props) {
     setOpenDeleteConfirm(false);
   }
 
+  const updateData = async () => {
+    values.nama = namamitra.nama;
+    console.log(`Updated data: ${JSON.stringify(values)}`);
+    try {
+        const res = await fetch(`http://localhost:3001/datamitra/${mitraId}`, {
+            method: 'PUT',
+            body: JSON.stringify(values),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await res.json();
+        console.log(`Data add: ${JSON.stringify(data)}`);
+
+    } catch (err) {
+        console.error(err.message);
+    }
+  }
+
+  const currency = new Intl.NumberFormat('in-IN', {
+    style: 'currency',
+    currency: 'IDR',
+  });
+
   return (
     <Fragment>
       <Card
@@ -236,11 +270,11 @@ export function MitraList(props) {
                                   <Typography variant="body1">{m.nama}</Typography>
                               </div>
                             </TableCell>
-                            <TableCell>{m.tanggalPKS}</TableCell>
-                            <TableCell>{m.tanggalLimit}</TableCell>
-                            <TableCell>{m.targetUnit}</TableCell>
-                            <TableCell>{m.targetNominal}</TableCell>
-                            <TableCell>{m.maxLimit}</TableCell>
+                            <TableCell>{m.tanggalPKS.substring(0, 10)}</TableCell>
+                            <TableCell>{m.tanggalLimit.substring(0, 10)}</TableCell>
+                            <TableCell>{currency.format(m.targetUnit)}</TableCell>
+                            <TableCell>{currency.format(m.targetNominal)}</TableCell>
+                            <TableCell>{currency.format(m.maxLimit)}</TableCell>
                             <TableCell>
                               {m.approvalStatus === 3 
                                 ?  <Chip
@@ -289,11 +323,11 @@ export function MitraList(props) {
                                   <Typography variant="body1">{m.nama}</Typography>
                               </div>
                             </TableCell>
-                            <TableCell>{m.tanggalPKS}</TableCell>
-                            <TableCell>{m.tanggalLimit}</TableCell>
-                            <TableCell>{m.targetUnit}</TableCell>
-                            <TableCell>{m.targetNominal}</TableCell>
-                            <TableCell>{m.maxLimit}</TableCell>
+                            <TableCell>{m.tanggalPKS.substring(0, 10)}</TableCell>
+                            <TableCell>{m.tanggalLimit.substring(0, 10)}</TableCell>
+                            <TableCell>{currency.format(m.targetUnit)}</TableCell>
+                            <TableCell>{currency.format(m.targetNominal)}</TableCell>
+                            <TableCell>{currency.format(m.maxLimit)}</TableCell>
                             <TableCell>
                               {m.approvalStatus === 3 
                                 ?  <Chip
@@ -408,7 +442,7 @@ export function MitraList(props) {
                         margin="dense"
                         id="pksStartDate"
                         label="Dari"
-                        value={pksStartDate}
+                        value={values.pksStartDate}
                         onChange={handlePksStartDateChange}
                         KeyboardButtonProps={{
                           'aria-label': 'change date',
@@ -422,7 +456,7 @@ export function MitraList(props) {
                         margin="dense"
                         id="pksEndDate"
                         label="Sampai"
-                        value={pksEndDate}
+                        value={values.pksEndDate}
                         onChange={handlePksEndDateChange}
                         KeyboardButtonProps={{
                           'aria-label': 'change date',
@@ -440,7 +474,7 @@ export function MitraList(props) {
                         margin="dense"
                         id="limitStartDate"
                         label="Dari"
-                        value={limitStartDate}
+                        value={values.limitStartDate}
                         onChange={handleLimitStartDateChange}
                         KeyboardButtonProps={{
                           'aria-label': 'change date',
@@ -454,7 +488,7 @@ export function MitraList(props) {
                         margin="dense"
                         id="limitEndDate"
                         label="Sampai"
-                        value={limitEndDate}
+                        value={values.limitEndDate}
                         onChange={handleLimitEndDateChange}
                         KeyboardButtonProps={{
                           'aria-label': 'change date',
@@ -508,7 +542,7 @@ export function MitraList(props) {
               color="secondary"
               variant="contained"
               startIcon={<SaveRoundedIcon />}
-              onClick={() => {}}
+              onClick={updateData}
           >
               Update Data
           </Button>

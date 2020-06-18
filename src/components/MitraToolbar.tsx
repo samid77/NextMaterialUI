@@ -163,7 +163,11 @@ export function MitraToolbar(props) {
   const [values, setValues] = useState({
     nama: '',
     tanggalPKS: '',
+    pksStartDate: '',
+    pksEndDate: '',
     tanggalLimit: '',
+    limitStartDate: '',
+    limitEndDate: '',
     targetUnit: 0,
     targetNominal: 0,
     maxLimit: 123456,
@@ -181,7 +185,11 @@ export function MitraToolbar(props) {
   const addMitra = async () => {
     values.nama = namamitra.nama;
     values.tanggalPKS = pksStartDate;
+    values.pksStartDate = pksStartDate;
+    values.pksEndDate = pksEndDate;
     values.tanggalLimit = limitStartDate;
+    values.limitStartDate = limitStartDate;
+    values.limitEndDate = pksEndDate;
     try {
         const res = await fetch('http://localhost:3001/datamitra', {
             method: 'POST',
