@@ -2,7 +2,11 @@ export interface MitraData{
     id: number;
     nama: string;
     tanggalPKS: string;
+    pksStartDate: string;
+    pksEndDate: string;
     tanggalLimit: string;
+    limitStartDate: string;
+    limitEndDate: string;
     targetUnit: number;
     maxLimit: number;
     targetNominal: number;
@@ -13,7 +17,14 @@ export interface MitraData{
 export interface MitraDataListState{
     fetch: boolean;
     error: object | object[] | string | null;
-    response: MitraData[];
+    response: MitraData[] | object;
+    action: string | null;
+}
+
+export interface MitraDataAddState{
+    fetch: boolean;
+    error: object | object[] | string | null;
+    response: undefined;
     action: string | null;
 }
 

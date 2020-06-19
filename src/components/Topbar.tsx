@@ -35,11 +35,9 @@ export function Topbar(props) {
 
   useEffect(() => {
     if(window.location.href === 'http://localhost:3000/' || window.location.href === 'http://localhost:3000/#') {
-      console.log(`this block called 1`)
       setIndexPage(true);
     } else {
       setIndexPage(false);
-      console.log(`this block called`)
     }
   }, [])
 

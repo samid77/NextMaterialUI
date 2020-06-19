@@ -96,6 +96,7 @@ export function MitraList(props) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
   const [successAlert, setSuccessAlert] = useState(false);
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [mitraId, setMitraId] = useState(0);
   const [data, setData] = useState([]);
   const [openForm, setOpenForm] = React.useState(false);
@@ -200,13 +201,13 @@ export function MitraList(props) {
     } catch (err) {
         console.error(err.message);
     }
+    setDeleteSuccess(true);
     getMitraData();
     setOpenDeleteConfirm(false);
   }
 
   const updateData = async () => {
     values.nama = namamitra.nama;
-    console.log(`Updated data: ${JSON.stringify(values)}`);
     try {
         const res = await fetch(`http://localhost:3001/datamitra/${mitraId}`, {
             method: 'PUT',
@@ -247,6 +248,22 @@ export function MitraList(props) {
         show={successAlert} onConfirm={() => setSuccessAlert(false)}>
         Data is successfully updated!
       </SweetAlert>
+      <SweetAlert success title="Data Deleted!" 
+          customButtons={
+            <React.Fragment>
+              <Button
+                  color="primary"
+                  variant="contained"
+                  className={classes.buttons}
+                  onClick={() => setDeleteSuccess(false)}
+              >
+                <a style={{color: "white", textDecoration: "none"}}>OK</a>
+              </Button>
+            </React.Fragment>
+          } 
+        show={deleteSuccess} onConfirm={() => setSuccessAlert(false)}>
+        Data is successfully updated!
+      </SweetAlert>
       <Card
         {...rest}
         className={clsx(classes.root, className)}
@@ -280,8 +297,8 @@ export function MitraList(props) {
                                   <Typography variant="body1">{m.nama}</Typography>
                               </div>
                             </TableCell>
-                            <TableCell>{m.tanggalPKS.substring(0, 10)}</TableCell>
-                            <TableCell>{m.tanggalLimit.substring(0, 10)}</TableCell>
+                            <TableCell>{m.tanggalPKS}</TableCell>
+                            <TableCell>{m.tanggalLimit}</TableCell>
                             <TableCell>{currency.format(m.targetUnit)}</TableCell>
                             <TableCell>{currency.format(m.targetNominal)}</TableCell>
                             <TableCell>{currency.format(m.maxLimit)}</TableCell>
@@ -333,8 +350,8 @@ export function MitraList(props) {
                                   <Typography variant="body1">{m.nama}</Typography>
                               </div>
                             </TableCell>
-                            <TableCell>{m.tanggalPKS.substring(0, 10)}</TableCell>
-                            <TableCell>{m.tanggalLimit.substring(0, 10)}</TableCell>
+                            <TableCell>{m.tanggalPKS}</TableCell>
+                            <TableCell>{m.tanggalLimit}</TableCell>
                             <TableCell>{currency.format(m.targetUnit)}</TableCell>
                             <TableCell>{currency.format(m.targetNominal)}</TableCell>
                             <TableCell>{currency.format(m.maxLimit)}</TableCell>

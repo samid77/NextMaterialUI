@@ -30,7 +30,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../redux/reducers';
 import { MitraDataListState } from '../interfaces/MitraData';
-import { getMitraData } from '../redux/actions/MitraDataAction';
+import { addMitraData, getMitraData } from '../redux/actions/MitraDataAction';
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -190,7 +190,7 @@ export function MitraToolbar(props) {
     });
   };
 
-  const addMitra = async () => {
+  const addMitra = () => {
     values.nama = namamitra.nama;
     values.tanggalPKS = pksStartDate;
     values.pksStartDate = pksStartDate;
@@ -199,24 +199,13 @@ export function MitraToolbar(props) {
     values.limitStartDate = limitStartDate;
     values.limitEndDate = pksEndDate;
     try {
-        const res = await fetch('http://localhost:3001/datamitra', {
-            method: 'POST',
-            body: JSON.stringify(values),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        const data = await res.json();
-        setOpenForm(false);
-        setSuccessAlert(true);
-        window.location.reload();
-
+      dispatch(addMitraData(values));
+      setOpenForm(false);
+      setSuccessAlert(true);
+      
     } catch (err) {
-        console.error(err.message);
+      console.error(err.message);
     }
-
-    console.log(`Values: ${JSON.stringify(values)}`);
-    
   }
 
   return (
@@ -224,23 +213,23 @@ export function MitraToolbar(props) {
       {...rest}
       className={clsx(classes.root, className)}
     >
-      {/* <div className={classes.row}>
-        
-      </div> */}
-      <SweetAlert success title="Data Added!" 
-          customButtons={
-            <React.Fragment>
-              <Button
-                  color="primary"
-                  variant="contained"
-                  className={classes.buttons}
-                  onClick={() => setSuccessAlert(false)}
-              >
-                <a style={{color: "white", textDecoration: "none"}}>OK</a>
-              </Button>
-            </React.Fragment>
-          } 
-        show={successAlert} onConfirm={() => setSuccessAlert(false)}>
+      <SweetAlert 
+        success 
+        title="Data Added!" 
+        customButtons={
+          <React.Fragment>
+            <Button
+                color="primary"
+                variant="contained"
+                className={classes.buttons}
+                onClick={() => setSuccessAlert(false)}
+            >
+              <a style={{color: "white", textDecoration: "none"}}>OK</a>
+            </Button>
+          </React.Fragment>
+        } 
+        show={successAlert} 
+        onConfirm={() => setSuccessAlert(false)}>
         Data is successfully added!
       </SweetAlert>
       <div className={classes.row}>

@@ -23,8 +23,8 @@ export default function Mitra() {
     const dispatch = useDispatch();
  
     useEffect(() => {
-      console.log(mitraDataState);
       dispatch(getMitraData(''));
+      // eslint-disable-next-line
     }, []);
 
     return (

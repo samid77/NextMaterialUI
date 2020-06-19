@@ -1,42 +1,42 @@
 import axios, { AxiosRequestConfig, Method } from 'axios';
 // import 'dotenv/config';
-// import { Store } from '../app/App.store';
+import { Store } from '../redux/core/store';
 
 const resTimeout = `Looks like the server is taking too long to respond, 
 this can be caused by either poor connectivity or an error with our server. Please try again in a while`;
 
-// const getRequestOptions = (method: Method, data?: any, headers?: object, reqOptions?: AxiosRequestConfig) => {
-//   const getReduxState: any = Store.getState();
+const getRequestOptions = (method: Method, data?: any, headers?: object, reqOptions?: AxiosRequestConfig) => {
+  const getReduxState: any = Store.getState();
 
-//   let Authorization;
-//   let parseHeaders: any = {
-//     'Content-Type': 'application/json',
-//   };
+  let Authorization;
+  let parseHeaders: any = {
+    'Content-Type': 'application/json',
+  };
 
-//   if (getReduxState && getReduxState.auth && getReduxState.auth.token) {
-//     const token = getReduxState.auth.token;
-//     Authorization = `Bearer ${token}`;
-//     parseHeaders.Authorization = Authorization;
-//   }
+  if (getReduxState && getReduxState.auth && getReduxState.auth.token) {
+    const token = getReduxState.auth.token;
+    Authorization = `Bearer ${token}`;
+    parseHeaders.Authorization = Authorization;
+  }
 
-//   try {
-//     if (headers) parseHeaders = { ...parseHeaders, ...headers };
+  try {
+    if (headers) parseHeaders = { ...parseHeaders, ...headers };
 
-//     let requestOptions: AxiosRequestConfig = {
-//       method,
-//       headers: parseHeaders,
-//       data,
-//       timeout: 60000,
-//     };
+    let requestOptions: AxiosRequestConfig = {
+      method,
+      headers: parseHeaders,
+      data,
+      timeout: 60000,
+    };
 
-//     if (reqOptions) requestOptions = { ...requestOptions, ...reqOptions };
+    if (reqOptions) requestOptions = { ...requestOptions, ...reqOptions };
 
-//     return requestOptions;
-//   } catch (error) {
-//     const errorMessage = `Something went wrong when preparing request options to fetch data: ${error.message}`;
-//     return errorMessage;
-//   }
-// };
+    return requestOptions;
+  } catch (error) {
+    const errorMessage = `Something went wrong when preparing request options to fetch data: ${error.message}`;
+    return errorMessage;
+  }
+};
 
 const doFetch = (requestOptions: AxiosRequestConfig, url: string) => {
   try {
@@ -82,9 +82,10 @@ export const HttpService = {
     }
   },
   post(url: string, data: any, headers?: object, reqOptions?: object) {
+    console.log(`post called`);
     try {
-      // const requestOptions: any = getRequestOptions('POST', data, headers, reqOptions);
-      return doFetch({}, url);
+      const requestOptions: any = getRequestOptions('POST', data, headers, reqOptions);
+      return doFetch(requestOptions, url);
     } catch (error) {
       const errorMessage = `error at post request method with error: ${error.message}`;
       console.log(errorMessage);
@@ -93,7 +94,7 @@ export const HttpService = {
   },
   put(url: string, data: any, headers?: object, reqOptions?: object) {
     try {
-      // const requestOptions: any = getRequestOptions('PUT', data, headers, reqOptions);
+      const requestOptions: any = getRequestOptions('PUT', data, headers, reqOptions);
       return doFetch({}, url);
     } catch (error) {
       const errorMessage = `error at put request method with error: ${error.message}`;
