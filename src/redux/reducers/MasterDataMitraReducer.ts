@@ -64,6 +64,49 @@ const MitraDataReducers = (state: MitraDataListState = initialState, action: Mit
             action: action.type,
             error: action.data
         };
+    case UPDATE_MITRA:
+        return {
+            ...state,
+            fetch: true,
+            action: action.type,
+            error: action.data
+        };
+    case UPDATE_MITRA_SUCCESS:
+        return {
+            ...state,
+            fetch: false,
+            action: action.type,
+            error: action.data
+        };
+    case UPDATE_MITRA_ERROR:
+        return {
+            ...state,
+            fetch: false,
+            action: action.type,
+            error: action.data
+        };
+    case DELETE_MITRA:
+        return {
+            ...state,
+            fetch: true,
+            action: action.type,
+            error: action.data
+        };
+    case DELETE_MITRA_SUCCESS:
+        console.log(`Delete Mitra Success Reducer called`)
+        return {
+            ...state,
+            fetch: false,
+            action: action.type,
+            error: action.data
+        };
+    case DELETE_MITRA_ERROR:
+        return {
+            ...state,
+            fetch: false,
+            action: action.type,
+            error: action.data
+        };
     default:
       return state;
   }

@@ -82,7 +82,6 @@ export const HttpService = {
     }
   },
   post(url: string, data: any, headers?: object, reqOptions?: object) {
-    console.log(`post called`);
     try {
       const requestOptions: any = getRequestOptions('POST', data, headers, reqOptions);
       return doFetch(requestOptions, url);
@@ -95,7 +94,7 @@ export const HttpService = {
   put(url: string, data: any, headers?: object, reqOptions?: object) {
     try {
       const requestOptions: any = getRequestOptions('PUT', data, headers, reqOptions);
-      return doFetch({}, url);
+      return doFetch(requestOptions, url);
     } catch (error) {
       const errorMessage = `error at put request method with error: ${error.message}`;
       console.log(errorMessage);
@@ -104,8 +103,8 @@ export const HttpService = {
   },
   delete(url: string, headers?: object, reqOptions?: object) {
     try {
-      // const requestOptions: any = getRequestOptions('DELETE', null, headers, reqOptions);
-      return doFetch({}, url);
+      const requestOptions: any = getRequestOptions('DELETE', null, headers, reqOptions);
+      return doFetch(requestOptions, url);
     } catch (error) {
       const errorMessage = `error at delete request method with error: ${error.message}`;
       console.log(errorMessage);

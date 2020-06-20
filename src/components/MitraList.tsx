@@ -59,6 +59,10 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from '../redux/reducers';
+import { MitraDataListState } from '../interfaces/MitraData';
+import { updateMitraData, getMitraData, deleteMitraData } from '../redux/actions/MitraDataAction';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -90,7 +94,8 @@ const useStyles = makeStyles(theme => ({
 
 export function MitraList(props) {
   const { className, mitra, ...rest } = props;
-
+  const mitraDataState: MitraDataListState = useSelector((state: AppState) => state.mitraData);
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [deleteConfirm, setOpenDeleteConfirm] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -104,6 +109,7 @@ export function MitraList(props) {
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [namamitra, setNamaMitra] = React.useState<string | null>(daftarMitra[0]);
   const [values, setValues] = useState({
+    id: 0,
     nama: '',
     tanggalPKS: '',
     pksStartDate: '',
@@ -149,6 +155,7 @@ export function MitraList(props) {
   };
 
   const openFormModal = (data) => {
+    values.id = data.id;
     setMitraId(data.id);
     const indexMitra = daftarMitra.findIndex(d => d.nama === data.nama);
     setNamaMitra(daftarMitra[indexMitra]);
@@ -193,35 +200,24 @@ export function MitraList(props) {
     setData(result.data);
   }
 
-  const deleteDataMitra = async () => {
+  const deleteDataMitra = () => {
     try {
-        const res = await fetch(`http://localhost:3001/datamitra/${mitraId}`, {
-            method: 'DELETE',
-        });
-    } catch (err) {
-        console.error(err.message);
+      dispatch(deleteMitraData(mitraId));
+      setDeleteSuccess(true);
+      setOpenDeleteConfirm(false);
+    } catch (error) {
+      console.error(error.message);
     }
-    setDeleteSuccess(true);
-    getMitraData();
-    setOpenDeleteConfirm(false);
   }
 
-  const updateData = async () => {
+  const updateData = () => {
     values.nama = namamitra.nama;
     try {
-        const res = await fetch(`http://localhost:3001/datamitra/${mitraId}`, {
-            method: 'PUT',
-            body: JSON.stringify(values),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        const data = await res.json();
-        setSuccessAlert(true);
-        setOpenForm(false);
-        getMitraData();
-    } catch (err) {
-        console.error(err.message);
+      dispatch(updateMitraData(values));
+      setSuccessAlert(true);
+      setOpenForm(false);
+    } catch (error) {
+      console.error(error.message);
     }
   }
 

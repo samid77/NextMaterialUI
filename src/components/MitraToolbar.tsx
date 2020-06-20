@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 import clsx from 'clsx';
+
+import { SearchInputCustom } from './SearchInputCustom';
+
 import { makeStyles } from '@material-ui/styles';
 import { useTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import Link from 'next/link';
 import { green, purple, red } from '@material-ui/core/colors';
-import { SearchInputCustom } from './SearchInputCustom';
+
 import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
 import PublishRoundedIcon from '@material-ui/icons/PublishRounded';
 import PageviewRoundedIcon from '@material-ui/icons/PageviewRounded';
@@ -107,6 +110,14 @@ const useStyles = makeStyles(theme => ({
 interface NamaMitraType {
   nama: string;
 }
+
+const daftarMitra = [
+  { nama: 'Bank Negara Indonesia - BNI'},
+  { nama: 'Bank Central Asia - BCA'},
+  { nama: 'Bank DKI'},
+  { nama: 'Bank OCBC NISP'},
+  { nama: 'Bank Tabungan Negara - BTN'}
+];
 
 export function MitraToolbar(props) {
   const mitraDataState: MitraDataListState = useSelector((state: AppState) => state.mitraData);
@@ -576,14 +587,6 @@ export function MitraToolbar(props) {
     </div>
   );
 };
-
-const daftarMitra = [
-  { nama: 'Bank Negara Indonesia - BNI'},
-  { nama: 'Bank Central Asia - BCA'},
-  { nama: 'Bank DKI'},
-  { nama: 'Bank OCBC NISP'},
-  { nama: 'Bank Tabungan Negara - BTN'}
-];
 
 MitraToolbar.propTypes = {
   className: PropTypes.string

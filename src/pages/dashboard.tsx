@@ -2,7 +2,6 @@ import React, { Fragment, useEffect } from 'react';
 import router from 'next/router';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
-import { Budget } from '../components/Budget';
 import { TotalUsers } from '../components/TotalUsers';
 import { TasksProgress } from '../components/TasksProgress';
 import { TotalProfit } from '../components/TotalProfit';
@@ -40,7 +39,7 @@ export default function Dashboard() {
               xl={3}
               xs={12}
             >
-              <Budget />
+              <TotalUsers />
             </Grid>
             <Grid
               item

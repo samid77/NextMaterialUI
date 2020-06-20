@@ -10,7 +10,7 @@ export const data = {
     },
     {
       label: 'Last year',
-      backgroundColor: palette.neutral,
+      backgroundColor: palette.primary.light,
       data: [11, 20, 12, 29, 30, 25, 13]
     }
   ]
