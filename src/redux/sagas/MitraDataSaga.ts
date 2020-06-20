@@ -18,8 +18,11 @@ import {
 import { 
     GET_MITRA, 
     ADD_MITRA, 
+    ADD_MITRA_SUCCESS, 
     UPDATE_MITRA, 
-    DELETE_MITRA 
+    UPDATE_MITRA_SUCCESS, 
+    DELETE_MITRA,
+    DELETE_MITRA_SUCCESS
 } from '../constants/MitraConstants';
 import Axios from 'axios';
 import { HttpService } from '../../helpers/HttpService';
@@ -64,8 +67,7 @@ function* workerSagaAddMitraData(action: MitraDataAction) {
         const response = yield call(HttpService.post, 'http://localhost:3001/datamitra', data, headers);
 
         if (response.status === 201) {
-            console.log(`response: ${JSON.stringify(response)}`);
-            yield put(getMitraData(''));
+            yield put(addMitraDataSuccess(response.data))
         } else {
             yield put(addMitraDataError(response.statusText));
         }
@@ -98,11 +100,7 @@ function* workerSagaUpdateMitraData(action: MitraDataAction) {
         const response = yield call(HttpService.put, `http://localhost:3001/datamitra/${data.id}`, data, headers);
 
         if (response.status === 200) {
-            console.log(response.data);
-            yield [
-                put(getMitraData('')),
-                put(updateMitraDataSuccess(response.data))
-            ]
+            yield put(updateMitraDataSuccess(response.data))
         } else {
             yield put(updateMitraDataError(response.statusText));
         }
@@ -119,8 +117,7 @@ function* workerSagaDeleteMitraData(action: any) {
         const response = yield call(HttpService.delete, `http://localhost:3001/datamitra/${action.data}`, null, headers);
 
         if (response.status === 200) {
-            console.log(response.data);
-            yield put(getMitraData(''));
+            yield put(deleteMitraDataSuccess(response.data))
         } else {
             yield put(deleteMitraDataError(response.statusText));
         }
@@ -134,7 +131,10 @@ function* workerSagaDeleteMitraData(action: any) {
 export const watcherMitraData = [
     takeLatest(GET_MITRA, workerSagaMitraData),
     takeLatest(ADD_MITRA, workerSagaAddMitraData),
+    takeLatest(ADD_MITRA_SUCCESS, workerSagaMitraData),
     takeLatest(UPDATE_MITRA, workerSagaUpdateMitraData),
+    takeLatest(UPDATE_MITRA_SUCCESS, workerSagaMitraData),
     takeLatest(DELETE_MITRA, workerSagaDeleteMitraData),
+    takeLatest(DELETE_MITRA_SUCCESS, workerSagaMitraData),
 ];
   

@@ -93,7 +93,6 @@ const MitraDataReducers = (state: MitraDataListState = initialState, action: Mit
             error: action.data
         };
     case DELETE_MITRA_SUCCESS:
-        console.log(`Delete Mitra Success Reducer called`)
         return {
             ...state,
             fetch: false,

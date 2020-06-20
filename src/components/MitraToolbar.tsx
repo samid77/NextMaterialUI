@@ -34,6 +34,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../redux/reducers';
 import { MitraDataListState } from '../interfaces/MitraData';
 import { addMitraData, getMitraData } from '../redux/actions/MitraDataAction';
+import InputMask from 'react-input-mask';
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -187,9 +188,9 @@ export function MitraToolbar(props) {
     tanggalLimit: '',
     limitStartDate: '',
     limitEndDate: '',
-    targetUnit: 0,
-    targetNominal: 0,
-    maxLimit: 0,
+    targetUnit: '',
+    targetNominal: '',
+    maxLimit: '',
     approvalStatus: 1,
     createdAt: new Date()
   });
@@ -209,7 +210,12 @@ export function MitraToolbar(props) {
     values.tanggalLimit = limitStartDate;
     values.limitStartDate = limitStartDate;
     values.limitEndDate = pksEndDate;
+    values.targetUnit = values.targetUnit.split(' '). join('');
+    values.targetNominal = values.targetNominal.split(' '). join('');
+    values.maxLimit = values.maxLimit.split(' '). join('');
     try {
+      console.log(typeof(values.pksStartDate));
+      console.log(values.pksStartDate);
       dispatch(addMitraData(values));
       setOpenForm(false);
       setSuccessAlert(true);
@@ -374,40 +380,47 @@ export function MitraToolbar(props) {
                       />
                       </Grid>
                       <Grid item md={12} xs={12}>
-                      <TextField
-                          fullWidth
-                          label="Target Unit"
-                          margin="dense"
-                          name="targetUnit"
-                          onChange={handleChange}
-                          type="number"
+                        <InputMask
+                          mask="999 999 999 999"
                           value={values.targetUnit}
-                          variant="outlined"
-                      />
+                          onChange={handleChange}>
+                          {() => <TextField
+                            fullWidth
+                            label="Target Unit"
+                            margin="dense"
+                            name="targetUnit"
+                            type="text"
+                            variant="outlined"/>}
+                        </InputMask>
                       </Grid>
                       <Grid item md={12} xs={12}>
-                      <TextField
-                          fullWidth
-                          label="Target Nominal"
-                          margin="dense"
-                          name="targetNominal"
-                          onChange={handleChange}
-                          type="number"
+                        <InputMask
+                          mask="999 999 999 999"
                           value={values.targetNominal}
-                          variant="outlined"
-                      />
+                          onChange={handleChange}>
+                          {() => <TextField
+                              fullWidth
+                              label="Target Nominal"
+                              margin="dense"
+                              name="targetNominal"
+                              type="text"
+                              variant="outlined"/>}
+                        </InputMask>
                       </Grid>
                       <Grid item md={12} xs={12}>
-                      <TextField
-                          fullWidth
-                          label="Maksimal Limit"
-                          margin="dense"
-                          name="maxLimit"
-                          onChange={handleChange}
-                          type="number"
+                        <InputMask
+                          mask="999 999 999 999"
                           value={values.maxLimit}
-                          variant="outlined"
-                      />
+                          onChange={handleChange}>
+                          {() => <TextField
+                              fullWidth
+                              label="Maksimal Limit"
+                              margin="dense"
+                              name="maxLimit"
+                              type="text"
+                              variant="outlined"
+                          />}
+                        </InputMask>
                       </Grid>
                   </Grid>
               </MuiPickersUtilsProvider>
@@ -420,8 +433,7 @@ export function MitraToolbar(props) {
               color="secondary"
               variant="contained"
               startIcon={<SaveRoundedIcon />}
-              onClick={addMitra}
-          >
+              onClick={addMitra}>
               Simpan Data
           </Button>
         </DialogActions>
@@ -557,23 +569,23 @@ export function MitraToolbar(props) {
                         />
                 </Grid>
                 <Grid item xs={6}>
-                        <FormControl variant="outlined" className={classes.formControlSearch}>
-                          <InputLabel id="demo-simple-select-outlined-label">Approval Status</InputLabel>
-                          <Select
-                            labelId="demo-simple-select-outlined-label"
-                            id="demo-simple-select-outlined"
-                            value={values.approvalStatus}
-                            label="Approval Status"
-                          >
-                            <MenuItem value="">
-                              <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={1}>Menunggu Persetujuan</MenuItem>
-                            <MenuItem value={2}>Disetujui</MenuItem>
-                            <MenuItem value={3}>Ditolak</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
+                  <FormControl variant="outlined" className={classes.formControlSearch}>
+                    <InputLabel id="demo-simple-select-outlined-label">Approval Status</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value={values.approvalStatus}
+                      label="Approval Status"
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={1}>Menunggu Persetujuan</MenuItem>
+                      <MenuItem value={2}>Disetujui</MenuItem>
+                      <MenuItem value={3}>Ditolak</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
               </Grid>
             </MuiPickersUtilsProvider>
           </form>

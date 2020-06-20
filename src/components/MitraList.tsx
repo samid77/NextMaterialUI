@@ -63,6 +63,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../redux/reducers';
 import { MitraDataListState } from '../interfaces/MitraData';
 import { updateMitraData, getMitraData, deleteMitraData } from '../redux/actions/MitraDataAction';
+import InputMask from 'react-input-mask';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -117,11 +118,11 @@ export function MitraList(props) {
     tanggalLimit: '',
     limitStartDate: '',
     limitEndDate: '',
-    targetUnit: 0,
-    targetNominal: 0,
-    maxLimit: 0,
+    targetUnit: '',
+    targetNominal: '',
+    maxLimit: '',
     approvalStatus: 1,
-    createdAt: 1555016400000
+    createdAt: new Date()
   });
 
   const handleChange = event => {
@@ -193,13 +194,6 @@ export function MitraList(props) {
     setOpenDeleteConfirm(false);
   };
 
-  const getMitraData = async () => {
-    const result = await axios(
-      'http://localhost:3001/datamitra',
-    );
-    setData(result.data);
-  }
-
   const deleteDataMitra = () => {
     try {
       dispatch(deleteMitraData(mitraId));
@@ -212,6 +206,9 @@ export function MitraList(props) {
 
   const updateData = () => {
     values.nama = namamitra.nama;
+    values.targetUnit = values.targetUnit.split(' '). join('');
+    values.targetNominal = values.targetNominal.split(' '). join('');
+    values.maxLimit = values.maxLimit.split(' '). join('');
     try {
       dispatch(updateMitraData(values));
       setSuccessAlert(true);
@@ -293,8 +290,8 @@ export function MitraList(props) {
                                   <Typography variant="body1">{m.nama}</Typography>
                               </div>
                             </TableCell>
-                            <TableCell>{m.tanggalPKS}</TableCell>
-                            <TableCell>{m.tanggalLimit}</TableCell>
+                            <TableCell>{m.tanggalPKS.substring(0,10)}</TableCell>
+                            <TableCell>{m.tanggalLimit.substring(0,10)}</TableCell>
                             <TableCell>{currency.format(m.targetUnit)}</TableCell>
                             <TableCell>{currency.format(m.targetNominal)}</TableCell>
                             <TableCell>{currency.format(m.maxLimit)}</TableCell>
@@ -346,8 +343,8 @@ export function MitraList(props) {
                                   <Typography variant="body1">{m.nama}</Typography>
                               </div>
                             </TableCell>
-                            <TableCell>{m.tanggalPKS}</TableCell>
-                            <TableCell>{m.tanggalLimit}</TableCell>
+                            <TableCell>{m.tanggalPKS.substring(0,10)}</TableCell>
+                            <TableCell>{m.tanggalLimit.substring(0,10)}</TableCell>
                             <TableCell>{currency.format(m.targetUnit)}</TableCell>
                             <TableCell>{currency.format(m.targetNominal)}</TableCell>
                             <TableCell>{currency.format(m.maxLimit)}</TableCell>
@@ -519,40 +516,47 @@ export function MitraList(props) {
                       />
                       </Grid>
                       <Grid item md={12} xs={12}>
-                      <TextField
-                          fullWidth
-                          label="Target Unit"
-                          margin="dense"
-                          name="targetUnit"
-                          onChange={handleChange}
-                          type="number"
+                        <InputMask
+                          mask="999 999 999 999"
                           value={values.targetUnit}
-                          variant="outlined"
-                      />
+                          onChange={handleChange}>
+                          {() => <TextField
+                            fullWidth
+                            label="Target Unit"
+                            margin="dense"
+                            name="targetUnit"
+                            type="text"
+                            variant="outlined"/>}
+                        </InputMask>
                       </Grid>
                       <Grid item md={12} xs={12}>
-                      <TextField
-                          fullWidth
-                          label="Target Nominal"
-                          margin="dense"
-                          name="targetNominal"
-                          onChange={handleChange}
-                          type="number"
+                        <InputMask
+                          mask="999 999 999 999"
                           value={values.targetNominal}
-                          variant="outlined"
-                      />
+                          onChange={handleChange}>
+                          {() => <TextField
+                              fullWidth
+                              label="Target Nominal"
+                              margin="dense"
+                              name="targetNominal"
+                              type="text"
+                              variant="outlined"/>}
+                        </InputMask>
                       </Grid>
                       <Grid item md={12} xs={12}>
-                      <TextField
-                          fullWidth
-                          label="Maksimal Limit"
-                          margin="dense"
-                          name="maxLimit"
-                          onChange={handleChange}
-                          type="number"
+                        <InputMask
+                          mask="999 999 999 999"
                           value={values.maxLimit}
-                          variant="outlined"
-                      />
+                          onChange={handleChange}>
+                          {() => <TextField
+                              fullWidth
+                              label="Maksimal Limit"
+                              margin="dense"
+                              name="maxLimit"
+                              type="text"
+                              variant="outlined"
+                          />}
+                        </InputMask>
                       </Grid>
                   </Grid>
               </MuiPickersUtilsProvider>
