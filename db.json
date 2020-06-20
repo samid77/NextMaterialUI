@@ -26,7 +26,7 @@
       "targetUnit": "122929229",
       "targetNominal": "229292292",
       "maxLimit": "929229229229",
-      "approvalStatus": 1,
+      "approvalStatus": 2,
       "createdAt": "2020-06-18",
       "id": 2
     },
@@ -42,7 +42,7 @@
       "targetUnit": "415000000",
       "maxLimit": "4567700000",
       "targetNominal": "321000000",
-      "approvalStatus": 1,
+      "approvalStatus": 3,
       "createdAt": 1555016400000
     }
   ]

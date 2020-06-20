@@ -63,6 +63,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../redux/reducers';
 import { MitraDataListState } from '../interfaces/MitraData';
 import { updateMitraData, getMitraData, deleteMitraData } from '../redux/actions/MitraDataAction';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import InputMask from 'react-input-mask';
 
 const useStyles = makeStyles(theme => ({
@@ -100,6 +101,7 @@ export function MitraList(props) {
   const classes = useStyles();
   const [deleteConfirm, setOpenDeleteConfirm] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [showProgress, setShowProgress] = useState(true);
   const [page, setPage] = useState(0);
   const [successAlert, setSuccessAlert] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
@@ -124,6 +126,13 @@ export function MitraList(props) {
     approvalStatus: 1,
     createdAt: new Date()
   });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowProgress(false)
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [])
 
   const handleChange = event => {
     setValues({
@@ -259,8 +268,7 @@ export function MitraList(props) {
       </SweetAlert>
       <Card
         {...rest}
-        className={clsx(classes.root, className)}
-      >
+        className={clsx(classes.root, className)}>
         <CardContent className={classes.content}>
           <PerfectScrollbar>
             <div className={classes.inner}>
@@ -279,109 +287,59 @@ export function MitraList(props) {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                        { data.length > 0 ? data.slice(0, rowsPerPage).map(m => (
-                          <TableRow
-                              className={classes.tableRow}
-                              hover
-                              key={m.id}
-                          >
-                            <TableCell>
-                              <div className={classes.nameContainer}>
-                                  <Typography variant="body1">{m.nama}</Typography>
+                      {showProgress 
+                        ? <TableRow>
+                            <TableCell align="center" colSpan={8} rowSpan={5}>
+                              <CircularProgress />
+                            </TableCell>
+                          </TableRow> 
+                        : mitra.slice(0, rowsPerPage).map(m => (
+                        <TableRow
+                            className={classes.tableRow}
+                            hover
+                            key={m.id}
+                        >
+                          <TableCell>
+                            <div className={classes.nameContainer}>
+                                <Typography variant="body1">{m.nama}</Typography>
+                            </div>
+                          </TableCell>
+                          <TableCell>{m.tanggalPKS.substring(0,10)}</TableCell>
+                          <TableCell>{m.tanggalLimit.substring(0,10)}</TableCell>
+                          <TableCell>{currency.format(m.targetUnit)}</TableCell>
+                          <TableCell>{currency.format(m.targetNominal)}</TableCell>
+                          <TableCell>{currency.format(m.maxLimit)}</TableCell>
+                          <TableCell>
+                            {m.approvalStatus === 3 
+                              ?  <Chip
+                                    icon={<CheckCircleRoundedIcon />}
+                                    label='Disetujui'
+                                    color="primary"
+                                  /> 
+                              : m.approvalStatus === 2 ? <Chip
+                                  icon={<CancelRoundedIcon className={classes.ditolakChip}/>}
+                                  label='Ditolak'
+                                  className={classes.ditolakChip}
+                                />
+                              : <Chip
+                                  icon={<TimerRoundedIcon className={classes.menungguChip}/>}
+                                  label='Menunggu Persetujuan'
+                                  className={classes.menungguChip}
+                                />
+                            }
+                          </TableCell>
+                          <TableCell>
+                              <div>
+                                  <IconButton onClick={() => openDeleteConfirm(m.id)} aria-label="delete">
+                                      <DeleteIcon />
+                                  </IconButton>
+                                  <IconButton onClick={() => openFormModal(m)} aria-label="edit">
+                                      <EditRoundedIcon />
+                                  </IconButton>
                               </div>
-                            </TableCell>
-                            <TableCell>{m.tanggalPKS.substring(0,10)}</TableCell>
-                            <TableCell>{m.tanggalLimit.substring(0,10)}</TableCell>
-                            <TableCell>{currency.format(m.targetUnit)}</TableCell>
-                            <TableCell>{currency.format(m.targetNominal)}</TableCell>
-                            <TableCell>{currency.format(m.maxLimit)}</TableCell>
-                            <TableCell>
-                              {m.approvalStatus === 3 
-                                ?  <Chip
-                                      icon={<CheckCircleRoundedIcon />}
-                                      label='Disetujui'
-                                      color="primary"
-                                    /> 
-                                : m.approvalStatus === 2 ? <Chip
-                                    icon={<CancelRoundedIcon className={classes.ditolakChip}/>}
-                                    label='Ditolak'
-                                    className={classes.ditolakChip}
-                                  />
-                                : <Chip
-                                    icon={<TimerRoundedIcon className={classes.menungguChip}/>}
-                                    label='Menunggu Persetujuan'
-                                    className={classes.menungguChip}
-                                  />
-                              }
-                            </TableCell>
-                            <TableCell>
-                                <div>
-                                    <IconButton 
-                                      onClick={() => openDeleteConfirm(m.id)} 
-                                      aria-label="delete">
-                                        <DeleteIcon />
-                                    </IconButton>
-                                    <IconButton 
-                                      onClick={() => openFormModal(m)}
-                                      aria-label="edit">
-                                        <EditRoundedIcon />
-                                    </IconButton>
-                                    <IconButton aria-label="view" color="primary">
-                                        <VisibilityRoundedIcon />
-                                    </IconButton>
-                                </div>
-                            </TableCell>
-                          </TableRow>
-                        )) : mitra.slice(0, rowsPerPage).map(m => (
-                          <TableRow
-                              className={classes.tableRow}
-                              hover
-                              key={m.id}
-                          >
-                            <TableCell>
-                              <div className={classes.nameContainer}>
-                                  <Typography variant="body1">{m.nama}</Typography>
-                              </div>
-                            </TableCell>
-                            <TableCell>{m.tanggalPKS.substring(0,10)}</TableCell>
-                            <TableCell>{m.tanggalLimit.substring(0,10)}</TableCell>
-                            <TableCell>{currency.format(m.targetUnit)}</TableCell>
-                            <TableCell>{currency.format(m.targetNominal)}</TableCell>
-                            <TableCell>{currency.format(m.maxLimit)}</TableCell>
-                            <TableCell>
-                              {m.approvalStatus === 3 
-                                ?  <Chip
-                                      icon={<CheckCircleRoundedIcon />}
-                                      label='Disetujui'
-                                      color="primary"
-                                    /> 
-                                : m.approvalStatus === 2 ? <Chip
-                                    icon={<CancelRoundedIcon className={classes.ditolakChip}/>}
-                                    label='Ditolak'
-                                    className={classes.ditolakChip}
-                                  />
-                                : <Chip
-                                    icon={<TimerRoundedIcon className={classes.menungguChip}/>}
-                                    label='Menunggu Persetujuan'
-                                    className={classes.menungguChip}
-                                  />
-                              }
-                            </TableCell>
-                            <TableCell>
-                                <div>
-                                    <IconButton onClick={() => openDeleteConfirm(m.id)} aria-label="delete">
-                                        <DeleteIcon />
-                                    </IconButton>
-                                    <IconButton onClick={() => openFormModal(m)} aria-label="edit">
-                                        <EditRoundedIcon />
-                                    </IconButton>
-                                    <IconButton aria-label="view" color="primary">
-                                        <VisibilityRoundedIcon />
-                                    </IconButton>
-                                </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
+                          </TableCell>
+                        </TableRow>
+                      ))}
                     </TableBody>
                   </Table>
               </TableContainer>
@@ -401,17 +359,25 @@ export function MitraList(props) {
         </CardActions>
       </Card>
       <Dialog
+        fullWidth
         open={deleteConfirm}
         onClose={closeDeleteConfirm}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Hapus data mitra ini?"}</DialogTitle>
-        <DialogActions>
-          <Button onClick={closeDeleteConfirm} color="primary">
+        <DialogTitle id="alert-dialog-title"><h2>Hapus data mitra ini?</h2></DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Data akan sepenuhnya terhapus dari sistem.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions justify="center" align="center">
+          <Button variant="contained"
+                  className={classes.buttons} onClick={closeDeleteConfirm} color="secondary">
             Batal
           </Button>
-          <Button onClick={deleteDataMitra} color="primary" autoFocus>
+          <Button variant="contained"
+                  className={classes.buttons} onClick={deleteDataMitra} color="primary" autoFocus>
             Hapus
           </Button>
         </DialogActions>

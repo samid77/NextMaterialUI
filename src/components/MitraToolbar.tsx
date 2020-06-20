@@ -221,7 +221,6 @@ export function MitraToolbar(props) {
       dispatch(addMitraData(values));
       setOpenForm(false);
       setSuccessAlert(true);
-      
     } catch (err) {
       console.error(err.message);
     }
