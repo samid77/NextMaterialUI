@@ -14,6 +14,10 @@ import {
     updateMitraDataError,
     deleteMitraDataSuccess, 
     deleteMitraDataError,
+    searchMitraData,
+    searchMitraDataSuccess, 
+    searchMitraDataError,
+    resetSearchMitraData
 } from '../actions/MitraDataAction';
 import { 
     GET_MITRA, 
@@ -22,7 +26,10 @@ import {
     UPDATE_MITRA, 
     UPDATE_MITRA_SUCCESS, 
     DELETE_MITRA,
-    DELETE_MITRA_SUCCESS
+    DELETE_MITRA_SUCCESS,
+    SEARCH_MITRA,
+    SEARCH_MITRA_SUCCESS,
+    RESET_SEARCH_MITRA
 } from '../constants/MitraConstants';
 import Axios from 'axios';
 import { HttpService } from '../../helpers/HttpService';
@@ -126,6 +133,24 @@ function* workerSagaDeleteMitraData(action: any) {
     
 }
 
+function* workerSagaSearchMitraData(action: MitraDataAction) {
+    try {
+        const keywords = action.data
+        console.log(`keywords in saga: ${keywords}`)
+
+        const response = yield call(HttpService.get, `http://localhost:3001/datamitra?q=${keywords}`, {});
+        
+        if (response.status === 200) {
+            console.log(`results: ${response.data}`)
+            yield put(mitraDataSuccess(response.data));
+        } else {
+            yield put(mitraDataError(response.statusText));
+        }
+    } catch (error) {
+        yield put(mitraDataError(error.message));
+    }
+}
+
 
 export const watcherMitraData = [
     takeLatest(GET_MITRA, workerSagaMitraData),
@@ -135,5 +160,7 @@ export const watcherMitraData = [
     takeLatest(UPDATE_MITRA_SUCCESS, workerSagaMitraData),
     takeLatest(DELETE_MITRA, workerSagaDeleteMitraData),
     takeLatest(DELETE_MITRA_SUCCESS, workerSagaMitraData),
+    takeLatest(SEARCH_MITRA, workerSagaSearchMitraData),
+    takeLatest(RESET_SEARCH_MITRA, workerSagaMitraData),
 ];
   

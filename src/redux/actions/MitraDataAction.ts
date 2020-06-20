@@ -10,11 +10,12 @@ import {
     UPDATE_MITRA_ERROR,
     DELETE_MITRA,
     DELETE_MITRA_SUCCESS, 
-    DELETE_MITRA_ERROR } from '../constants/MitraConstants';
-import { 
-    MitraDataAction, 
-    MitraData, 
-     } from '../../interfaces/MitraData';
+    DELETE_MITRA_ERROR,
+    SEARCH_MITRA,
+    SEARCH_MITRA_SUCCESS, 
+    SEARCH_MITRA_ERROR,
+    RESET_SEARCH_MITRA } from '../constants/MitraConstants';
+import { MitraDataAction, MitraData } from '../../interfaces/MitraData';
 
 export const getMitraData = (params: any): MitraDataAction => ({type: GET_MITRA, data: params});
 export const mitraDataSuccess = (data: MitraData[]): MitraDataAction => ({type: MITRA_SUCCESS, data: data});
@@ -31,3 +32,9 @@ export const updateMitraDataError = (error: any): MitraDataAction => ({type: UPD
 export const deleteMitraData = (mitraId: any): MitraDataAction => ({type: DELETE_MITRA, data: mitraId});
 export const deleteMitraDataSuccess = (response: any): MitraDataAction => ({type: DELETE_MITRA_SUCCESS, data: response});
 export const deleteMitraDataError = (error: any): MitraDataAction => ({type: DELETE_MITRA_ERROR, data: error});
+
+export const searchMitraData = (keywords: any): MitraDataAction => ({type: SEARCH_MITRA, data: keywords});
+export const searchMitraDataSuccess = (data: MitraData[]): MitraDataAction => ({type: SEARCH_MITRA_SUCCESS, data: data});
+export const searchMitraDataError = (error: any): MitraDataAction => ({type: SEARCH_MITRA_ERROR, data: error});
+
+export const resetSearchMitraData = (params: any): MitraDataAction => ({type: RESET_SEARCH_MITRA, data: params});

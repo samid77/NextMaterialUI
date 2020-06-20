@@ -33,7 +33,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../redux/reducers';
 import { MitraDataListState } from '../interfaces/MitraData';
-import { addMitraData, getMitraData } from '../redux/actions/MitraDataAction';
+import { addMitraData, getMitraData, searchMitraData } from '../redux/actions/MitraDataAction';
 import InputMask from 'react-input-mask';
 import {
   MuiPickersUtilsProvider,
@@ -202,6 +202,10 @@ export function MitraToolbar(props) {
     });
   };
 
+  const handleSearch = event => {
+    dispatch(searchMitraData(event.target.value))
+  }
+
   const addMitra = () => {
     values.nama = namamitra.nama;
     values.tanggalPKS = pksStartDate;
@@ -250,6 +254,7 @@ export function MitraToolbar(props) {
       <div className={classes.row}>
         <SearchInputCustom
           className={classes.searchInput}
+          onKeyUp={handleSearch}
           placeholder="Cari Mitra"/>
         <span className={classes.spacer} />
         <Button

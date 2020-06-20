@@ -44,36 +44,6 @@
       "targetNominal": "321000000",
       "approvalStatus": 1,
       "createdAt": 1555016400000
-    },
-    {
-      "nama": "Bank Negara Indonesia - BNI",
-      "tanggalPKS": "2020-06-20T05:38:18.551Z",
-      "pksStartDate": "2020-06-20T05:38:18.551Z",
-      "pksEndDate": "2020-06-20T05:38:18.551Z",
-      "tanggalLimit": "2020-06-20T05:38:18.551Z",
-      "limitStartDate": "2020-06-20T05:38:18.551Z",
-      "limitEndDate": "2020-06-20T05:38:18.551Z",
-      "targetUnit": "123000000000",
-      "maxLimit": "678000000000",
-      "targetNominal": "345000000000",
-      "approvalStatus": 1,
-      "createdAt": "2020-06-20T05:38:18.551Z",
-      "id": 4
-    },
-    {
-      "id": 5,
-      "nama": "Bank Negara Indonesia - BNI",
-      "tanggalPKS": "2020-06-20T05:41:37.217Z",
-      "pksStartDate": "2020-06-20T05:41:37.217Z",
-      "pksEndDate": "2020-06-20T05:41:37.217Z",
-      "tanggalLimit": "2020-06-20T05:41:37.217Z",
-      "limitStartDate": "2020-06-20T05:41:37.217Z",
-      "limitEndDate": "2020-06-20T05:41:37.217Z",
-      "targetUnit": "123000000111",
-      "maxLimit": "789000000333",
-      "targetNominal": "456000000222",
-      "approvalStatus": 1,
-      "createdAt": "2020-06-20T05:56:18.975Z"
     }
   ]
 }

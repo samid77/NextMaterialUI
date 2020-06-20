@@ -10,15 +10,20 @@ import {
     UPDATE_MITRA_ERROR,
     DELETE_MITRA, 
     DELETE_MITRA_SUCCESS, 
-    DELETE_MITRA_ERROR
+    DELETE_MITRA_ERROR,
+    SEARCH_MITRA, 
+    SEARCH_MITRA_SUCCESS, 
+    SEARCH_MITRA_ERROR,
+    RESET_SEARCH_MITRA
 } from '../constants/MitraConstants';
 import { MitraDataListState, MitraDataAction } from '../../interfaces/MitraData';
 
 const initialState: MitraDataListState = {
     fetch: false,
     error: null,
-    response: [],
-    action: ''
+    response: undefined,
+    action: '',
+    data: []
 }
 
 const MitraDataReducers = (state: MitraDataListState = initialState, action: MitraDataAction): MitraDataListState => {
@@ -34,7 +39,7 @@ const MitraDataReducers = (state: MitraDataListState = initialState, action: Mit
             ...state,
             fetch: false,
             action: action.type,
-            response: action.data
+            data: action.data
         };
     case MITRA_ERROR:
         return {
@@ -105,6 +110,32 @@ const MitraDataReducers = (state: MitraDataListState = initialState, action: Mit
             fetch: false,
             action: action.type,
             error: action.data
+        };
+    case SEARCH_MITRA:
+        return {
+            ...state,
+            fetch: true,
+            action: action.type,
+        };
+    case SEARCH_MITRA_SUCCESS:
+        return {
+            ...state,
+            fetch: false,
+            action: action.type,
+            data: action.data
+        };
+    case SEARCH_MITRA_ERROR:
+        return {
+            ...state,
+            fetch: false,
+            action: action.type,
+            error: action.data
+        };
+    case RESET_SEARCH_MITRA:
+        return {
+            ...state,
+            fetch: true,
+            action: action.type,
         };
     default:
       return state;

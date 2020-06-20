@@ -31,7 +31,7 @@ export default function Mitra() {
         <div className={classes.root}>
           <MitraToolbar />
           <div className={classes.content}>
-            <MitraList mitra={mitraDataState.response} />
+            <MitraList mitra={mitraDataState.data} />
           </div>
         </div>
     );

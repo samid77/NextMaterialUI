@@ -17,15 +17,9 @@ export interface MitraData{
 export interface MitraDataListState{
     fetch: boolean;
     error: object | object[] | string | null;
-    response: MitraData[] | object;
+    response: any;
     action: string | null;
-}
-
-export interface MitraDataAddState{
-    fetch: boolean;
-    error: object | object[] | string | null;
-    response: undefined;
-    action: string | null;
+    data: MitarData[];
 }
 
 export interface MitraDataAction{
