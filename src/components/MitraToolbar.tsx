@@ -98,7 +98,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(-2)
   },
   dateLabel: {
-     marginBottom: theme.spacing(-6)
+    marginBottom: theme.spacing(-6)
   },
   paper: {
     padding: theme.spacing(2),
@@ -214,8 +214,6 @@ export function MitraToolbar(props) {
     values.targetNominal = values.targetNominal.split(' '). join('');
     values.maxLimit = values.maxLimit.split(' '). join('');
     try {
-      console.log(typeof(values.pksStartDate));
-      console.log(values.pksStartDate);
       dispatch(addMitraData(values));
       setOpenForm(false);
       setSuccessAlert(true);
@@ -252,32 +250,28 @@ export function MitraToolbar(props) {
       <div className={classes.row}>
         <SearchInputCustom
           className={classes.searchInput}
-          placeholder="Cari Mitra"
-        />
+          placeholder="Cari Mitra"/>
         <span className={classes.spacer} />
         <Button
-            variant="contained"
-            className={classes.advanceSearch}
-            startIcon={<PageviewRoundedIcon />}
-            onClick={openSearchModal}
-        >
+          variant="contained"
+          className={classes.advanceSearch}
+          startIcon={<PageviewRoundedIcon />}
+          onClick={openSearchModal}>
           <a style={{color: "white", textDecoration: "none"}}>Advanced Search</a>
         </Button>
         <Button
-            color="primary"
-            variant="contained"
-            className={classes.buttons}
-            startIcon={<PublishRoundedIcon />}
-        >
+          color="primary"
+          variant="contained"
+          className={classes.buttons}
+          startIcon={<PublishRoundedIcon />}>
           <a style={{color: "white", textDecoration: "none"}}>Export to CSV</a>
         </Button>
         <Button
-            color="secondary"
-            variant="contained"
-            className={classes.buttons}
-            startIcon={<AddCircleOutlineRoundedIcon />}
-            onClick={openFormModal}
-        >
+          color="secondary"
+          variant="contained"
+          className={classes.buttons}
+          startIcon={<AddCircleOutlineRoundedIcon />}
+          onClick={openFormModal}>
           <a style={{color: "white", textDecoration: "none"}}>Tambah Mitra</a>
         </Button>
       </div>
@@ -341,6 +335,8 @@ export function MitraToolbar(props) {
                         id="pksEndDate"
                         label="Sampai"
                         value={pksEndDate}
+                        minDate={pksStartDate}
+                        minDateMessage={'Tanggal harus setelah tanggal mulai PKS'}
                         onChange={handlePksEndDateChange}
                         KeyboardButtonProps={{
                           'aria-label': 'change date',
@@ -373,6 +369,8 @@ export function MitraToolbar(props) {
                         id="limitEndDate"
                         label="Sampai"
                         value={limitEndDate}
+                        minDate={limitStartDate}
+                        minDateMessage={'Tanggal harus setelah tanggal mulai Limit'}
                         onChange={handleLimitEndDateChange}
                         KeyboardButtonProps={{
                           'aria-label': 'change date',
@@ -389,6 +387,7 @@ export function MitraToolbar(props) {
                             label="Target Unit"
                             margin="dense"
                             name="targetUnit"
+                            required={true}
                             type="text"
                             variant="outlined"/>}
                         </InputMask>

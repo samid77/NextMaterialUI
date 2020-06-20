@@ -446,6 +446,7 @@ export function MitraList(props) {
                             label="Nama Mitra"
                             margin="dense"
                             variant="outlined"
+                            required={true}
                             InputProps={{ ...params.InputProps, type: 'search' }}
                           />
                         )}
@@ -475,6 +476,8 @@ export function MitraList(props) {
                         format="dd/MM/yyyy"
                         margin="dense"
                         id="pksEndDate"
+                        minDate={pksStartDate}
+                        minDateMessage={'Tanggal harus setelah tanggal mulai PKS'}
                         label="Sampai"
                         value={values.pksEndDate}
                         onChange={handlePksEndDateChange}
@@ -507,6 +510,8 @@ export function MitraList(props) {
                         format="dd/MM/yyyy"
                         margin="dense"
                         id="limitEndDate"
+                        minDate={limitStartDate}
+                        minDateMessage={'Tanggal harus setelah tanggal mulai Limit'}
                         label="Sampai"
                         value={values.limitEndDate}
                         onChange={handleLimitEndDateChange}

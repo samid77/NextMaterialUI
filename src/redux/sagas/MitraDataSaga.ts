@@ -77,7 +77,6 @@ function* workerSagaAddMitraData(action: MitraDataAction) {
 }
 
 function* workerSagaUpdateMitraData(action: MitraDataAction) {
-    console.log(`Update mitra saga called`);
     try {
         const data: object = {
             id: action.data.id,
