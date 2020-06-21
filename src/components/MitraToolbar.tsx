@@ -48,7 +48,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../redux/reducers';
 import { MitraDataListState } from '../interfaces/MitraData';
-import { addMitraData, getMitraData, searchMitraData } from '../redux/actions/MitraDataAction';
+import { addMitraData, getMitraData, searchMitraData, resetSearchMitraData } from '../redux/actions/MitraDataAction';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -254,6 +254,7 @@ export function MitraToolbar(props) {
         <SearchInputCustom
           className={classes.searchInput}
           onKeyUp={handleSearch}
+          dispatchFunc={resetSearchMitraData('')}
           placeholder="Cari Mitra"/>
         <span className={classes.spacer} />
         <Button

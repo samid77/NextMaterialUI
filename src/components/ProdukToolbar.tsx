@@ -48,7 +48,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../redux/reducers';
 import { ProdukDataListState } from '../interfaces/ProdukData';
-import { addProdukData, getProdukData, searchProdukData } from '../redux/actions/ProdukDataAction';
+import { addProdukData, getProdukData, searchProdukData, resetSearchProdukData } from '../redux/actions/ProdukDataAction';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -98,7 +98,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(-2)
   },
   dateLabel: {
-    marginBottom: theme.spacing(-6)
+    marginBottom: theme.spacing(-4)
   },
   paper: {
     padding: theme.spacing(2),
@@ -107,6 +107,23 @@ const useStyles = makeStyles(theme => ({
   },
 
 }));
+
+interface NamaProdukType {
+  nama: string;
+}
+interface TipeProdukType {
+  tipe: string;
+}
+
+const daftarProduk = [
+  { nama: 'KPR'},
+  { nama: 'KRR'},
+  { nama: 'KBR'},
+];
+const tipeProduk = [
+  { tipe: 'Syariah'},
+  { tipe: 'Konvensional'},
+];
 
 export function ProdukToolbar(props) {
   const dispatch = useDispatch();
@@ -118,6 +135,8 @@ export function ProdukToolbar(props) {
   const classes = useStyles();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const [namaproduk, setNamaProduk] = React.useState<string | null>(daftarProduk[0]);
+  const [tipeproduk, setTipeProduk] = React.useState<string | null>(tipeProduk[0]);
 
   const openFormModal = () => {
     setOpenForm(true);
@@ -182,6 +201,7 @@ export function ProdukToolbar(props) {
         <SearchInputCustom
           className={classes.searchInput}
           onKeyUp={handleSearch}
+          dispatchFunc={resetSearchProdukData('')}
           placeholder="Cari Produk"/>
         <span className={classes.spacer} />
         <Button
@@ -216,7 +236,141 @@ export function ProdukToolbar(props) {
         <DialogTitle id="tambahdataProduk">Tambah Data Produk</DialogTitle>
         <DialogContent className={classes.dialogContent}>
            <form autoComplete="off" noValidate>
-            <CardContent></CardContent>
+            <CardContent>
+              <Grid container spacing={3}>
+                <Grid item md={12} xs={12}>
+                  <Autocomplete
+                    id="namaproduk"
+                    autoComplete
+                    disableClearable
+                    options={daftarProduk}
+                    getOptionLabel={(option: NamaProdukType) => option.nama}
+                    value={namaproduk}
+                    onChange={(event: any, newValue: string | null) => {
+                      setNamaProduk(newValue);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Nama produk"
+                        margin="dense"
+                        variant="outlined"
+                        InputProps={{ ...params.InputProps, type: 'search' }}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item md={12} xs={12}>
+                  <Autocomplete
+                    id="tipeproduk"
+                    autoComplete
+                    disableClearable
+                    options={tipeProduk}
+                    getOptionLabel={(option: TipeProdukType) => option.tipe}
+                    value={tipeproduk}
+                    onChange={(event: any, newValue: string | null) => {
+                      setTipeProduk(newValue);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Tipe Produk"
+                        margin="dense"
+                        variant="outlined"
+                        InputProps={{ ...params.InputProps, type: 'search' }}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item md={12} xs={12}>
+                  <InputMask
+                    onChange={handleChange}>
+                    {() => <TextField
+                      fullWidth
+                      label="Segment"
+                      margin="dense"
+                      name="segment"
+                      required={true}
+                      type="text"
+                      variant="outlined"/>}
+                  </InputMask>
+                </Grid>
+                <Grid item md={12} xs={12} className={classes.dateLabel}>
+                  <Divider />
+                  <h3>Penghasilan</h3>
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <InputMask
+                    mask="999 999 999 999"
+                    onChange={handleChange}>
+                    {() => <TextField
+                      fullWidth
+                      label="Dari"
+                      margin="dense"
+                      name="penghasilanDari"
+                      required={true}
+                      type="text"
+                      variant="outlined"/>}
+                  </InputMask>
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <InputMask
+                    mask="999 999 999 999"
+                    onChange={handleChange}>
+                    {() => <TextField
+                      fullWidth
+                      label="Sampai"
+                      margin="dense"
+                      name="penghasilanSampai"
+                      required={true}
+                      type="text"
+                      variant="outlined"/>}
+                  </InputMask>
+                </Grid>
+                <Grid item md={12} xs={12}>
+                  <InputMask
+                    mask="999 999 999 999"
+                    onChange={handleChange}>
+                    {() => <TextField
+                      fullWidth
+                      label="Plafon"
+                      margin="dense"
+                      name="plafon"
+                      required={true}
+                      type="text"
+                      variant="outlined"/>}
+                  </InputMask>
+                </Grid>
+                <Grid item md={12} xs={12}>
+                  <InputMask
+                    mask="999 999 999 999"
+                    onChange={handleChange}>
+                    {() => <TextField
+                      fullWidth
+                      label="Suku Bunga"
+                      margin="dense"
+                      name="sukubunga"
+                      required={true}
+                      type="text"
+                      variant="outlined"/>}
+                  </InputMask>
+                </Grid>
+                <Grid item md={12} xs={12}>
+                  <InputMask
+                    mask="999 999 999 999"
+                    onChange={handleChange}>
+                    {() => <TextField
+                      fullWidth
+                      label="Tenor"
+                      margin="dense"
+                      name="tenor"
+                      required={true}
+                      type="text"
+                      variant="outlined"/>}
+                  </InputMask>
+                </Grid>
+              </Grid>
+            </CardContent>
             <Divider />
           </form>
         </DialogContent>
@@ -241,6 +395,42 @@ export function ProdukToolbar(props) {
         <DialogTitle id="alert-dialog-title">{"Cari Data Produk"}</DialogTitle>
         <DialogContent>
           <form autoComplete="off" noValidate>
+            <Grid container spacing={3}>
+              <Grid item xs={6}>
+                <Autocomplete
+                  freeSolo
+                  id="free-solo-2-demo"
+                  disableClearable
+                  options={daftarProduk.map((p) => p.nama)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Nama Produk"
+                      margin="dense"
+                      variant="outlined"
+                      InputProps={{ ...params.InputProps, type: 'search' }}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item md={12} xs={12}>
+                <Autocomplete
+                  freeSolo
+                  id="free-solo-2-demo"
+                  disableClearable
+                  options={tipeProduk.map((t) => t.tipe)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Nama Tipe"
+                      margin="dense"
+                      variant="outlined"
+                      InputProps={{ ...params.InputProps, type: 'search' }}
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
           </form>
         </DialogContent>
         <DialogActions>

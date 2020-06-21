@@ -35,12 +35,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function SearchInputCustom(props) {
-  const { className, onChange, style, ...rest } = props;
+  const { className, onChange, dispatchFunc, style, ...rest } = props;
   const classes = useStyles();
   const dispatch = useDispatch();
 
   const resetSearch = () => {
-    dispatch(resetSearchMitraData(''));
+    dispatch(dispatchFunc);
   }
 
   return (

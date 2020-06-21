@@ -105,7 +105,7 @@ export function ProdukList(props) {
   const [page, setPage] = useState(0);
   const [successAlert, setSuccessAlert] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
-  const [ProdukId, setProdukId] = useState(0);
+  const [produkId, setProdukId] = useState(0);
   const [data, setData] = useState([]);
   const [openForm, setOpenForm] = React.useState(false);
   const theme = useTheme();
@@ -151,7 +151,15 @@ export function ProdukList(props) {
     setOpenDeleteConfirm(false);
   };
 
-  const deleteDataProduk = () => {}
+  const deleteDataProduk = () => {
+    try {
+      dispatch(deleteProdukData(produkId));
+      setDeleteSuccess(true);
+      setOpenDeleteConfirm(false);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 
   const updateData = () => {}
 
@@ -241,7 +249,7 @@ export function ProdukList(props) {
                           <TableCell>{p.tenor}</TableCell>
                           <TableCell>
                               <div>
-                                  <IconButton onClick={() => openDeleteConfirm(m.id)} aria-label="delete">
+                                  <IconButton onClick={() => openDeleteConfirm(p.id)} aria-label="delete">
                                       <DeleteIcon />
                                   </IconButton>
                                   <IconButton onClick={() => openFormModal(m)} aria-label="edit">
@@ -258,6 +266,15 @@ export function ProdukList(props) {
           </PerfectScrollbar>
         </CardContent>
         <CardActions className={classes.actions}>
+          <TablePagination
+            component="div"
+            count={produk.length}
+            onChangePage={handlePageChange}
+            onChangeRowsPerPage={handleRowsPerPageChange}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[5, 10, 25]}
+          />
         </CardActions>
       </Card>
       <Dialog
@@ -267,7 +284,9 @@ export function ProdukList(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title"><h2>Hapus data Produk ini?</h2></DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          <Typography variant="h2">Hapus data produk ini?</Typography>
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Data akan sepenuhnya terhapus dari sistem.
@@ -314,7 +333,6 @@ export function ProdukList(props) {
 
 ProdukList.propTypes = {
   className: PropTypes.string,
-  Produk: PropTypes.array.isRequired
 };
 
 export default ProdukList;

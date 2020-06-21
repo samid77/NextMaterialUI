@@ -364,7 +364,9 @@ export function MitraList(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title"><h2>Hapus data mitra ini?</h2></DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          <Typography variant="h2">Hapus data mitra ini?</Typography>
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Data akan sepenuhnya terhapus dari sistem.

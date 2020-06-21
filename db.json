@@ -115,29 +115,6 @@
       "checked_by": "Admin Three",
       "approved_at": "Admin Four",
       "approved_by": "Admin Five"
-    },
-    {
-      "id": 4,
-      "idFiturProduk": "P004",
-      "namaFiturProduk": "KRR",
-      "idTipeProduk": "TP004",
-      "namaTipeproduk": "Konvensional",
-      "namaSegmen": "Segment Three",
-      "penghasilanDari": 6000000,
-      "penghasilanSampai": 15000000,
-      "plafon": 300000000,
-      "sukubunga": 0.5,
-      "tenor": 10,
-      "idStatusPersetujuan": 1,
-      "statusPersetujuan": "Approved",
-      "created_at": 1555016400000,
-      "created_by": "Admin One",
-      "updated_at": 1555016400000,
-      "updated_by": "Admin Two",
-      "checked_at": 1555016400000,
-      "checked_by": "Admin Three",
-      "approved_at": "Admin Four",
-      "approved_by": "Admin Five"
     }
   ]
 }
