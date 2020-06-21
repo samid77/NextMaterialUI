@@ -59,10 +59,12 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from '../redux/reducers';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputMask from 'react-input-mask';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from '../redux/reducers';
+import { ProdukDataListState } from '../interfaces/ProdukData';
+import { updateProdukData, getProdukData, deleteProdukData } from '../redux/actions/ProdukDataAction';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -93,7 +95,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function ProdukList(props) {
-  const { className, Produk, ...rest } = props;
+  const { className, produk, ...rest } = props;
+  const produkDataState: ProdukDataListState = useSelector((state: AppState) => state.produkData);
   const dispatch = useDispatch();
   const classes = useStyles();
   const [deleteConfirm, setOpenDeleteConfirm] = React.useState(false);
@@ -152,6 +155,11 @@ export function ProdukList(props) {
 
   const updateData = () => {}
 
+  const currency = new Intl.NumberFormat('in-IN', {
+    style: 'currency',
+    currency: 'IDR',
+  });
+
 
   return (
     <Fragment>
@@ -196,8 +204,53 @@ export function ProdukList(props) {
               <TableContainer>
                   <Table stickyHeader>
                     <TableHead>
+                      <TableRow>
+                        <TableCell>Nama Produk</TableCell>
+                        <TableCell>Tipe Produk</TableCell>
+                        <TableCell>Nama Segmen</TableCell>
+                        <TableCell>Penghasilan</TableCell>
+                        <TableCell>Plafon</TableCell>
+                        <TableCell>Suku Bunga</TableCell>
+                        <TableCell>Tenor</TableCell>
+                        <TableCell>Actions</TableCell>
+                      </TableRow>
                     </TableHead>
                     <TableBody>
+                      {showProgress 
+                        ? <TableRow>
+                            <TableCell align="center" colSpan={8} rowSpan={5}>
+                              <CircularProgress />
+                            </TableCell>
+                          </TableRow> 
+                        : produk.slice(0, rowsPerPage).map(p => (
+                        <TableRow
+                            className={classes.tableRow}
+                            hover
+                            key={p.id}
+                        >
+                          <TableCell>
+                            <div className={classes.nameContainer}>
+                                <Typography variant="body1">{p.namaFiturProduk}</Typography>
+                            </div>
+                          </TableCell>
+                          <TableCell>{p.namaTipeproduk}</TableCell>
+                          <TableCell>{p.namaSegmen}</TableCell>
+                          <TableCell>{currency.format(p.penghasilanDari) +' ' + ' s/d ' + ' '+ currency.format(p.penghasilanSampai)}</TableCell>
+                          <TableCell>{currency.format(p.plafon)}</TableCell>
+                          <TableCell>{p.sukubunga}</TableCell>
+                          <TableCell>{p.tenor}</TableCell>
+                          <TableCell>
+                              <div>
+                                  <IconButton onClick={() => openDeleteConfirm(m.id)} aria-label="delete">
+                                      <DeleteIcon />
+                                  </IconButton>
+                                  <IconButton onClick={() => openFormModal(m)} aria-label="edit">
+                                      <EditRoundedIcon />
+                                  </IconButton>
+                              </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
                     </TableBody>
                   </Table>
               </TableContainer>
@@ -221,12 +274,10 @@ export function ProdukList(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions justify="center" align="center">
-          <Button variant="contained"
-                  className={classes.buttons} onClick={closeDeleteConfirm} color="secondary">
+          <Button variant="contained"className={classes.buttons} onClick={closeDeleteConfirm} color="secondary">
             Batal
           </Button>
-          <Button variant="contained"
-                  className={classes.buttons} onClick={deleteDataProduk} color="primary" autoFocus>
+          <Button variant="contained"className={classes.buttons} onClick={deleteDataProduk} color="primary" autoFocus>
             Hapus
           </Button>
         </DialogActions>

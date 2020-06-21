@@ -5,6 +5,8 @@ import { ProdukList } from '../components/ProdukList';
 import { makeStyles } from '@material-ui/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../redux/reducers';
+import { ProdukDataListState } from '../interfaces/ProdukData';
+import { getProdukData } from '../redux/actions/ProdukDataAction';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,12 +20,18 @@ const useStyles = makeStyles(theme => ({
 export default function Produk() {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const produkDataState: ProdukDataListState = useSelector((state: AppState) => state.produkData);
+
+    useEffect(() => {
+      dispatch(getProdukData(''));
+      // eslint-disable-next-line
+    }, []);
 
     return (
         <div className={classes.root}>
           <ProdukToolbar />
           <div className={classes.content}>
-            <ProdukList />
+            <ProdukList produk={produkDataState.data }/>
           </div>
         </div>
     );

@@ -43,12 +43,12 @@ function* workerSagaProdukData(action: ProdukDataAction) {
         const response = yield call(HttpService.get, 'http://localhost:3001/dataproduk', {});
         
         if (response.status === 200) {
-            yield put(ProdukDataSuccess(response.data));
+            yield put(produkDataSuccess(response.data));
         } else {
-            yield put(ProdukDataError(response.statusText));
+            yield put(produkDataError(response.statusText));
         }
     } catch (error) {
-        yield put(ProdukDataError(error.message));
+        yield put(produkDataError(error.message));
     }
 }
 
@@ -115,12 +115,12 @@ function* workerSagaSearchProdukData(action: ProdukDataAction) {
         
         if (response.status === 200) {
             console.log(`results: ${response.data}`)
-            yield put(ProdukDataSuccess(response.data));
+            yield put(produkDataSuccess(response.data));
         } else {
-            yield put(ProdukDataError(response.statusText));
+            yield put(produkDataError(response.statusText));
         }
     } catch (error) {
-        yield put(ProdukDataError(error.message));
+        yield put(produkDataError(error.message));
     }
 }
 
