@@ -154,7 +154,7 @@ export function SidebarNav(props) {
               className={classes.nested}
               disableGutters
             >
-              <Link href='/konvensional'>
+              <Link href='/produk'>
                 <Button
                   activeclassname={classes.active}
                   className={classes.button}
