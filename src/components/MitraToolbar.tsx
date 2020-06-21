@@ -30,10 +30,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from '../redux/reducers';
-import { MitraDataListState } from '../interfaces/MitraData';
-import { addMitraData, getMitraData, searchMitraData } from '../redux/actions/MitraDataAction';
 import InputMask from 'react-input-mask';
 import {
   MuiPickersUtilsProvider,
@@ -49,6 +45,10 @@ import {
   Grid,
   TextField
 } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from '../redux/reducers';
+import { MitraDataListState } from '../interfaces/MitraData';
+import { addMitraData, getMitraData, searchMitraData } from '../redux/actions/MitraDataAction';
 
 const useStyles = makeStyles(theme => ({
   root: {},

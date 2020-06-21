@@ -30,8 +30,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from '../redux/reducers';
 import InputMask from 'react-input-mask';
 import {
   MuiPickersUtilsProvider,
@@ -47,6 +45,10 @@ import {
   Grid,
   TextField
 } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from '../redux/reducers';
+import { ProdukDataListState } from '../interfaces/ProdukData';
+import { addProdukData, getProdukData, searchProdukData } from '../redux/actions/ProdukDataAction';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -106,12 +108,9 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-interface NamaProdukType {
-  nama: string;
-}
-
 export function ProdukToolbar(props) {
   const dispatch = useDispatch();
+  const produkDataState: ProdukDataListState = useSelector((state: AppState) => state.produkData);
   const { className, ...rest } = props;
   const [openForm, setOpenForm] = React.useState(false);
   const [openAdvanceSearch, setOpenAdvanceSearch] = React.useState(false);
@@ -149,7 +148,9 @@ export function ProdukToolbar(props) {
     });
   };
 
-  const handleSearch = event => {}
+  const handleSearch = event => {
+    dispatch(searchProdukData(event.target.value))
+  }
 
   const addProduk = () => {}
 
