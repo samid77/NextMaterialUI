@@ -15,6 +15,9 @@ import AccountBalanceRoundedIcon from '@material-ui/icons/AccountBalanceRounded'
 import StarsRoundedIcon from '@material-ui/icons/StarsRounded';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Hidden from '@material-ui/core/Hidden';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from '../redux/reducers';
+import { LayoutState } from '../interfaces/Layout';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -70,15 +73,8 @@ export function SidebarNav(props) {
   const { pages, className, ...rest } = props;
   const [open, setOpen] = useState(false);
   const classes = useStyles();
-  const [indexPage, setIndexPage] = useState(false);
-
-  useEffect(() => {
-    if(window.location.href === 'http://localhost:3000/' || window.location.href === 'http://localhost:3000/#') {
-      setIndexPage(true);
-    } else {
-      setIndexPage(false);
-    }
-  }, [])
+  const layoutState: LayoutState = useSelector((state: AppState) => state.layout);
+  const dispatch = useDispatch();
 
   const handleClick = () => {
     setOpen(!open);
@@ -104,7 +100,7 @@ export function SidebarNav(props) {
                         activeclassname={classes.active}
                         className={classes.button}
                       >
-                      {indexPage 
+                      {layoutState.indexPage 
                         ? <Fragment>
                           <Skeleton animation="wave" variant="circle" width={40} height={40} /> <Skeleton animation="wave" style={{marginLeft: '1vw'}}variant="text" width={130} height={30}/>
                         </Fragment>
@@ -126,7 +122,7 @@ export function SidebarNav(props) {
                         activeclassname={classes.active}
                         className={classes.button}
                       >
-                        {indexPage 
+                        {layoutState.indexPage 
                           ? <Fragment>
                             <Skeleton animation="wave" variant="circle" width={40} height={40} /> <Skeleton animation="wave" style={{marginLeft: '1vw'}}variant="text" width={130} height={30}/>
                           </Fragment>

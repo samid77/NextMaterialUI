@@ -130,7 +130,7 @@ export function MitraList(props) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowProgress(false)
-    }, 2000);
+    }, 1000);
     return () => clearTimeout(timer);
   }, [])
 

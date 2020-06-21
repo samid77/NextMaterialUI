@@ -1,8 +1,10 @@
-import MitraDataReducers from "./MasterDataMitraReducer";
-import { combineReducers } from "redux";
+import MitraDataReducers from './MasterDataMitraReducer';
+import LayoutReducers from './LayoutReducer';
+import { combineReducers } from 'redux';
 
 const AppReducers = combineReducers({
-  mitraData: MitraDataReducers
+  mitraData: MitraDataReducers,
+  layout: LayoutReducers
 });
 
 export type AppState = ReturnType<typeof AppReducers>;

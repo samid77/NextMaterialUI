@@ -9,6 +9,10 @@ import { LatestSales } from '../components/LatestSales';
 import { UsersByDevice } from '../components/UsersByDevice';
 import { LatestProducts } from '../components/LatestProducts';
 import { LatestOrders } from '../components/LatestOrders';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from '../redux/reducers';
+import { LayoutState } from '../interfaces/Layout';
+import { isIndexPageSuccess, isAnotherPage } from '../redux/actions/LayoutActions';
 
 
 const useStyles = makeStyles(theme => ({
@@ -19,8 +23,11 @@ const useStyles = makeStyles(theme => ({
 
 export default function Dashboard() {
     const classes = useStyles();
+    const layoutState: LayoutState = useSelector((state: AppState) => state.layout);
+    const dispatch = useDispatch();
 
     useEffect(() => {
+      dispatch(isAnotherPage(true));
       if(localStorage.getItem('accesstoken') === null || '' || undefined) {
         router.push('/login');
       }

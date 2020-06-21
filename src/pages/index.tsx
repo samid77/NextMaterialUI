@@ -5,6 +5,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { Grid, Typography } from '@material-ui/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from '../redux/reducers';
+import { LayoutState } from '../interfaces/Layout';
+import { isIndexPage, isIndexPageSuccess, isAnotherPageSuccess } from '../redux/actions/LayoutActions';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -40,8 +44,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Search() {
   const classes = useStyles();
+  const layoutState: LayoutState = useSelector((state: AppState) => state.layout);
+  const dispatch = useDispatch();
   
   useEffect(() => {
+    dispatch(isIndexPage(true));
     setTimeout(() => {
       if(localStorage.getItem('accesstoken') === null || '' || undefined) {
         router.push('/login');

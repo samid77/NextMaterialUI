@@ -10,6 +10,9 @@ import InputIcon from '@material-ui/icons/Input';
 import { useMediaQuery } from '@material-ui/core';
 import router from 'next/router';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from '../redux/reducers';
+import { LayoutState } from '../interfaces/Layout';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,15 +34,8 @@ export function Topbar(props) {
   const { className, onSidebarOpen, component: Component, ...rest } = props;
   const classes = useStyles();
   const [notifications] = useState([]);
-  const [indexPage, setIndexPage] = useState(false);
-
-  useEffect(() => {
-    if(window.location.href === 'http://localhost:3000/' || window.location.href === 'http://localhost:3000/#') {
-      setIndexPage(true);
-    } else {
-      setIndexPage(false);
-    }
-  }, [])
+  const layoutState: LayoutState = useSelector((state: AppState) => state.layout);
+  const dispatch = useDispatch();
 
   const handleSignOut = () => {
     localStorage.removeItem('accesstoken');
@@ -56,7 +52,7 @@ export function Topbar(props) {
       >
         <Toolbar>
           <Link href="/">
-            {indexPage ? <Skeleton animation="wave" variant="circle" width={40} height={40} /> : <img
+            {layoutState.indexPage ? <Skeleton animation="wave" variant="circle" width={40} height={40} /> : <img
               alt="Logo"
               src="/images/logos/tapera-logo.svg"
               height={75}

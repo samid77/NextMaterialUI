@@ -19,7 +19,7 @@ export interface MitraDataListState{
     error: object | object[] | string | null;
     response: any;
     action: string | null;
-    data: MitarData[];
+    data: MitraData[];
 }
 
 export interface MitraDataAction{

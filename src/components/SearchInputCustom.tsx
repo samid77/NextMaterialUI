@@ -35,7 +35,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function SearchInputCustom(props) {
-  console.log(`props: ${JSON.stringify(props)}`);
   const { className, onChange, style, ...rest } = props;
   const classes = useStyles();
   const dispatch = useDispatch();
