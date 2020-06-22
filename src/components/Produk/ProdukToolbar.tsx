@@ -112,7 +112,7 @@ interface NamaProdukType {
   nama: string;
 }
 interface TipeProdukType {
-  tipe: string;
+  nama: string;
 }
 
 const daftarProduk = [
@@ -190,7 +190,7 @@ export function ProdukToolbar(props) {
     values.penghasilanSampai = values.penghasilanSampai.split(' ').join('');values.plafon = values.plafon.split(' ').join('');
     values.sukubunga = values.sukubunga.split(' ').join('');
     values.tenor = values.tenor.split(' ').join('');
-    console.log(`Add Produk: ${JSON.stringify(values)}`);
+
     try {
       dispatch(addProdukData(values));
       setOpenForm(false);

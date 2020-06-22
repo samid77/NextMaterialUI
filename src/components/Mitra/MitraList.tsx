@@ -93,6 +93,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+interface NamaMitraType {
+  nama: string;
+}
+
+const daftarMitra = [
+  { nama: 'Bank Negara Indonesia - BNI'},
+  { nama: 'Bank Central Asia - BCA'},
+  { nama: 'Bank DKI'},
+  { nama: 'Bank OCBC NISP'},
+  { nama: 'Bank Tabungan Negara - BTN'}
+];
+
 export function MitraList(props) {
   const { className, mitra, ...rest } = props;
   const mitraDataState: MitraDataListState = useSelector((state: AppState) => state.mitraData);
@@ -129,7 +141,7 @@ export function MitraList(props) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowProgress(false)
-    }, 1000);
+    }, 2000);
     return () => clearTimeout(timer);
   }, [])
 
@@ -550,14 +562,6 @@ export function MitraList(props) {
     </Fragment>
   );
 };
-
-const daftarMitra = [
-  { nama: 'Bank Negara Indonesia - BNI'},
-  { nama: 'Bank Central Asia - BCA'},
-  { nama: 'Bank DKI'},
-  { nama: 'Bank OCBC NISP'},
-  { nama: 'Bank Tabungan Negara - BTN'}
-];
 
 MitraList.propTypes = {
   className: PropTypes.string,

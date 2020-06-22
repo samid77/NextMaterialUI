@@ -93,6 +93,25 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+interface NamaProdukType {
+  idFiturProduk: string;
+  nama: string;
+}
+interface TipeProdukType {
+  idTipeProduk: string;
+  nama: string;
+}
+
+const daftarProduk = [
+  { idFiturProduk:'P0001', nama: 'KPR'},
+  { idFiturProduk:'P0002', nama: 'KRR'},
+  { idFiturProduk:'P0003', nama: 'KBR'},
+];
+const tipeProduk = [
+  { idTipeProduk:'TP0001', nama: 'Syariah'},
+  { idTipeProduk:'TP0002', nama: 'Konvensional'},
+];
+
 export function ProdukList(props) {
   const { className, produk, ...rest } = props;
   const produkDataState: ProdukDataListState = useSelector((state: AppState) => state.produkData);
@@ -109,12 +128,32 @@ export function ProdukList(props) {
   const [openForm, setOpenForm] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const [values, setValues] = useState({});
+  const [idInteger, setIdInteger] = useState(0);
+  const [idproduk, setIdProduk] = useState(daftarProduk[0].idFiturProduk);
+  const [namaproduk, setNamaProduk] = useState(daftarProduk[0].nama);
+  const [idtipeproduk, setIdTipeProduk] = useState(tipeProduk[0].idTipeProduk);
+  const [tipeproduk, setTipeProduk] = useState(tipeProduk[0].nama);
+  const [values, setValues] = useState({
+    id: 0,
+    idFiturProduk: '',
+    namaFiturProduk:'',
+    idTipeProduk: '',
+    namaTipeproduk:'',
+    namaSegmen:'',
+    penghasilanDari:'',
+    penghasilanSampai:'',
+    plafon:'',
+    sukubunga:'',
+    tenor:'',
+    idStatusPersetujuan: 1,
+    statusPersetujuan:'Approved',
+    created_at: new Date(),
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowProgress(false)
-    }, 1000);
+    }, 2000);
     return () => clearTimeout(timer);
   }, [])
 
@@ -126,6 +165,19 @@ export function ProdukList(props) {
   };
 
   const openFormModal = (data) => {
+    const indexProduk = daftarProduk.findIndex(d => d.nama === data.namaFiturProduk);
+    const indexTipe = tipeProduk.findIndex(t => t.nama === data.namaTipeproduk);
+    
+    values.id = data.id;
+    setNamaProduk(daftarProduk[indexProduk]);
+    setTipeProduk(tipeProduk[indexTipe]);
+
+    values.namaSegmen = data.namaSegmen;
+    values.penghasilanDari = data.penghasilanDari;
+    values.penghasilanSampai = data.penghasilanSampai;
+    values.plafon = data.plafon;
+    values.sukubunga = data.sukubunga;
+    values.tenor = data.tenor;
     setOpenForm(true);
   };
 
@@ -160,7 +212,23 @@ export function ProdukList(props) {
     }
   }
 
-  const updateData = () => {}
+  const updateData = () => {
+    values.namaFiturProduk = namaproduk.nama;
+    values.idFiturProduk = namaproduk.idFiturProduk;
+    values.idTipeProduk = tipeproduk.idTipeProduk;
+    values.namaTipeproduk = tipeproduk.nama;
+    values.penghasilanDari = values.penghasilanDari.split(' ').join('');
+    values.penghasilanSampai = values.penghasilanSampai.split(' ').join('');values.plafon = values.plafon.split(' ').join('');
+    values.sukubunga = values.sukubunga.split(' ').join('');
+    values.tenor = values.tenor.split(' ').join('');
+    try {
+      dispatch(updateProdukData(values));
+      setOpenForm(false);
+      setSuccessAlert(true);
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
 
   const currency = new Intl.NumberFormat('in-IN', {
     style: 'currency',
@@ -251,7 +319,7 @@ export function ProdukList(props) {
                                   <IconButton onClick={() => openDeleteConfirm(p.id)} aria-label="delete">
                                       <DeleteIcon />
                                   </IconButton>
-                                  <IconButton onClick={() => openFormModal(m)} aria-label="edit">
+                                  <IconButton onClick={() => openFormModal(p)} aria-label="edit">
                                       <EditRoundedIcon />
                                   </IconButton>
                               </div>
@@ -311,6 +379,143 @@ export function ProdukList(props) {
         <DialogContent className={classes.dialogContent}>
            <form autoComplete="off" noValidate>
             <CardContent>
+              <Grid container spacing={3}>
+                <Grid item md={12} xs={12}>
+                  <Autocomplete
+                    id="namaproduk"
+                    autoComplete
+                    disableClearable
+                    getOptionLabel={(option: NamaProdukType) => option.nama}
+                    options={daftarProduk}
+                    value={namaproduk}
+                    onChange={(event: any, newValue: string | null) => {
+                      setNamaProduk(newValue);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Nama produk"
+                        margin="dense"
+                        variant="outlined"
+                        InputProps={{ ...params.InputProps, type: 'search' }}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item md={12} xs={12}>
+                  <Autocomplete
+                    id="tipeproduk"
+                    autoComplete
+                    disableClearable
+                    options={tipeProduk}
+                    getOptionLabel={(option: TipeProdukType) => option.nama}
+                    value={tipeproduk}
+                    onChange={(event: any, newValue: string | null) => {
+                      setTipeProduk(newValue);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Tipe Produk"
+                        margin="dense"
+                        variant="outlined"
+                        InputProps={{ ...params.InputProps, type: 'search' }}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item md={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Segment"
+                    margin="dense"
+                    name="namaSegmen"
+                    required={true}
+                    type="text" 
+                    value={values.namaSegmen}
+                    onChange={handleChange}
+                    variant="outlined"/>
+                </Grid>
+                <Grid item md={12} xs={12} className={classes.dateLabel}>
+                  <Divider />
+                  <h3>Penghasilan</h3>
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <InputMask
+                    mask="9 999 999"
+                    value={values.penghasilanDari}
+                    onChange={handleChange}>
+                    {() => <TextField
+                      fullWidth
+                      label="Dari"
+                      margin="dense"
+                      name="penghasilanDari"
+                      required={true}
+                      type="text"
+                      variant="outlined"/>}
+                  </InputMask>
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <InputMask
+                    mask="9 999 999"
+                    value={values.penghasilanSampai}
+                    onChange={handleChange}>
+                    {() => <TextField
+                      fullWidth
+                      label="Sampai"
+                      margin="dense"
+                      name="penghasilanSampai"
+                      required={true}
+                      type="text"
+                      variant="outlined"/>}
+                  </InputMask>
+                </Grid>
+                <Grid item md={12} xs={12}>
+                  <InputMask
+                    mask="9 999 999 999"
+                    value={values.plafon}
+                    onChange={handleChange}>
+                    {() => <TextField
+                      fullWidth
+                      label="Plafon"
+                      margin="dense"
+                      name="plafon"
+                      required={true}
+                      type="text"
+                      variant="outlined"/>}
+                  </InputMask>
+                </Grid>
+                <Grid item md={12} xs={12}>
+                  <InputMask
+                    mask="99" 
+                    value={values.sukubunga}
+                    onChange={handleChange}>
+                    {() => <TextField
+                      fullWidth
+                      label="Suku Bunga"
+                      margin="dense"
+                      name="sukubunga"
+                      required={true}
+                      type="text"
+                      variant="outlined"/>}
+                  </InputMask>
+                </Grid>
+                <Grid item md={12} xs={12}>
+                  <InputMask
+                    mask="99"
+                    value={values.tenor}
+                    onChange={handleChange}>
+                    {() => <TextField
+                      fullWidth
+                      label="Tenor"
+                      margin="dense"
+                      name="tenor"
+                      required={true}
+                      type="text"
+                      variant="outlined"/>}
+                  </InputMask>
+                </Grid>
+              </Grid>
             </CardContent>
             <Divider />
           </form>
