@@ -115,6 +115,22 @@
       "checked_by": "Admin Three",
       "approved_at": "Admin Four",
       "approved_by": "Admin Five"
+    },
+    {
+      "idFiturProduk": "P003",
+      "namaFiturProduk": "KPR",
+      "idTipeProduk": "TP0002",
+      "namaTipeproduk": "Konvensional",
+      "namaSegmen": "Segment Four",
+      "penghasilanDari": "5000000",
+      "penghasilanSampai": "9000000",
+      "plafon": "3000000000",
+      "sukubunga": "10",
+      "tenor": "30",
+      "idStatusPersetujuan": 1,
+      "statusPersetujuan": "Approved",
+      "created_at": "2020-06-22T09:47:55.959Z",
+      "id": 4
     }
   ]
 }

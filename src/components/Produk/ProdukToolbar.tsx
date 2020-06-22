@@ -121,8 +121,8 @@ const daftarProduk = [
   { nama: 'KBR'},
 ];
 const tipeProduk = [
-  { tipe: 'Syariah'},
-  { tipe: 'Konvensional'},
+  { nama: 'Syariah'},
+  { nama: 'Konvensional'},
 ];
 
 export function ProdukToolbar(props) {
@@ -159,9 +159,7 @@ export function ProdukToolbar(props) {
   };
 
   const [values, setValues] = useState({
-    idFiturProduk:'P00',
     namaFiturProduk:'',
-    idTipeProduk:'TP00',
     namaTipeproduk:'',
     namaSegmen:'',
     penghasilanDari:'',
@@ -187,8 +185,19 @@ export function ProdukToolbar(props) {
 
   const addProduk = () => {
     values.namaFiturProduk = namaproduk.nama;
-    values.namaTipeProduk = tipeproduk.nama;
-    console.log(`Add Produk: ${values}`);
+    values.namaTipeproduk = tipeproduk.nama;
+    values.penghasilanDari = values.penghasilanDari.split(' ').join('');
+    values.penghasilanSampai = values.penghasilanSampai.split(' ').join('');values.plafon = values.plafon.split(' ').join('');
+    values.sukubunga = values.sukubunga.split(' ').join('');
+    values.tenor = values.tenor.split(' ').join('');
+    console.log(`Add Produk: ${JSON.stringify(values)}`);
+    try {
+      dispatch(addProdukData(values));
+      setOpenForm(false);
+      setSuccessAlert(true);
+    } catch (err) {
+      console.error(err.message);
+    }
   }
 
   return (
@@ -283,7 +292,7 @@ export function ProdukToolbar(props) {
                     autoComplete
                     disableClearable
                     options={tipeProduk}
-                    getOptionLabel={(option: TipeProdukType) => option.tipe}
+                    getOptionLabel={(option: TipeProdukType) => option.nama}
                     value={tipeproduk}
                     onChange={(event: any, newValue: string | null) => {
                       setTipeProduk(newValue);
@@ -300,18 +309,16 @@ export function ProdukToolbar(props) {
                   />
                 </Grid>
                 <Grid item md={12} xs={12}>
-                  <InputMask
+                  <TextField
+                    fullWidth
+                    label="Segment"
+                    margin="dense"
+                    name="namaSegmen"
+                    required={true}
+                    type="text" 
                     value={values.namaSegmen}
-                    onChange={handleChange}>
-                    {() => <TextField
-                      fullWidth
-                      label="Segment"
-                      margin="dense"
-                      name="segment"
-                      required={true}
-                      type="text"
-                      variant="outlined"/>}
-                  </InputMask>
+                    onChange={handleChange}
+                    variant="outlined"/>
                 </Grid>
                 <Grid item md={12} xs={12} className={classes.dateLabel}>
                   <Divider />
@@ -319,7 +326,7 @@ export function ProdukToolbar(props) {
                 </Grid>
                 <Grid item md={6} xs={12}>
                   <InputMask
-                    mask="999 999 999 999"
+                    mask="9 999 999"
                     value={values.penghasilanDari}
                     onChange={handleChange}>
                     {() => <TextField
@@ -334,7 +341,7 @@ export function ProdukToolbar(props) {
                 </Grid>
                 <Grid item md={6} xs={12}>
                   <InputMask
-                    mask="999 999 999 999"
+                    mask="9 999 999"
                     value={values.penghasilanSampai}
                     onChange={handleChange}>
                     {() => <TextField
@@ -349,7 +356,8 @@ export function ProdukToolbar(props) {
                 </Grid>
                 <Grid item md={12} xs={12}>
                   <InputMask
-                    mask="999 999 999 999"
+                    mask="9 999 999 999"
+                    value={values.plafon}
                     onChange={handleChange}>
                     {() => <TextField
                       fullWidth
@@ -363,7 +371,7 @@ export function ProdukToolbar(props) {
                 </Grid>
                 <Grid item md={12} xs={12}>
                   <InputMask
-                    mask="999 999 999 999" 
+                    mask="99" 
                     value={values.sukubunga}
                     onChange={handleChange}>
                     {() => <TextField
@@ -378,7 +386,7 @@ export function ProdukToolbar(props) {
                 </Grid>
                 <Grid item md={12} xs={12}>
                   <InputMask
-                    mask="999 999 999 999"
+                    mask="99"
                     value={values.tenor}
                     onChange={handleChange}>
                     {() => <TextField

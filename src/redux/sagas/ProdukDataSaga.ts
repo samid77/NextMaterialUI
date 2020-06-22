@@ -54,7 +54,21 @@ function* workerSagaProdukData(action: ProdukDataAction) {
 
 function* workerSagaAddProdukData(action: ProdukDataAction) {
     try {
-        const data: object = {}
+        const data: object = {
+            idFiturProduk:'P003',
+            namaFiturProduk: action.data.namaFiturProduk,
+            idTipeProduk:'TP0002',
+            namaTipeproduk: action.data.namaTipeproduk,
+            namaSegmen: action.data.namaSegmen,
+            penghasilanDari: action.data.penghasilanDari,
+            penghasilanSampai: action.data.penghasilanSampai,
+            plafon: action.data.plafon,
+            sukubunga: action.data.sukubunga,
+            tenor: action.data.tenor,
+            idStatusPersetujuan: 1,
+            statusPersetujuan: action.data.statusPersetujuan,
+            created_at: new Date(),
+        }
         const headers = {
             'Content-Type': 'application/json'
         }
