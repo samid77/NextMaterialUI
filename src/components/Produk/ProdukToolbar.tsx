@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import clsx from 'clsx';
 
-import { SearchInputCustom } from './SearchInputCustom';
+import { SearchInputCustom } from '../General';
 
 import { makeStyles } from '@material-ui/styles';
 import { useTheme } from '@material-ui/core/styles';
@@ -46,9 +46,9 @@ import {
   TextField
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from '../redux/reducers';
-import { ProdukDataListState } from '../interfaces/ProdukData';
-import { addProdukData, getProdukData, searchProdukData, resetSearchProdukData } from '../redux/actions/ProdukDataAction';
+import { AppState } from '../../redux/reducers';
+import { ProdukDataListState } from '../../interfaces/ProdukData';
+import { addProdukData, getProdukData, searchProdukData, resetSearchProdukData } from '../../redux/actions/ProdukDataAction';
 
 const useStyles = makeStyles(theme => ({
   root: {},

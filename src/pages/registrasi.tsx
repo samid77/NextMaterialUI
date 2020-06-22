@@ -1,7 +1,6 @@
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
-import SignIn from '../components/SignIn';
-import SignUp from '../components/SignUp';
+import SignUp from '../components/Auth';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -68,13 +67,6 @@ const Registrasi = props => {
         >
           <SignUp useStyles = {classes}/>
         </Grid>
-        {/* <Grid
-          className={classes.content}
-          lg={6}
-          item
-        >
-          <SignIn useStyles = {classes} />
-        </Grid> */}
       </Grid>
     </div>
   );

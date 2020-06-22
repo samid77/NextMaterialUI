@@ -1,5 +1,5 @@
 import React from 'react';
-import { Doughnut } from 'react-chartjs-2';
+import { Doughnut, Pie } from 'react-chartjs-2';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles, useTheme } from '@material-ui/styles';
@@ -11,10 +11,9 @@ import {
   Divider,
   Typography
 } from '@material-ui/core';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
+import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
+import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import TabletMacIcon from '@material-ui/icons/TabletMac';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export function UsersByDevice(props) {
+export function ChartEligible(props) {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -47,18 +46,17 @@ export function UsersByDevice(props) {
   const data = {
     datasets: [
       {
-        data: [63, 15, 22],
+        data: [1000, 3000],
         backgroundColor: [
           theme.palette.primary.main,
           theme.palette.error.main,
-          theme.palette.warning.main
         ],
         borderWidth: 8,
         borderColor: theme.palette.white,
         hoverBorderColor: theme.palette.white
       }
     ],
-    labels: ['Desktop', 'Tablet', 'Mobile']
+    labels: ['Eligible', 'Tidak Eligible']
   };
 
   const options = {
@@ -68,7 +66,7 @@ export function UsersByDevice(props) {
     responsive: true,
     maintainAspectRatio: false,
     animation: false,
-    cutoutPercentage: 80,
+    cutoutPercentage: 40,
     layout: { padding: 0 },
     tooltips: {
       enabled: true,
@@ -85,23 +83,17 @@ export function UsersByDevice(props) {
 
   const devices = [
     {
-      title: 'Desktop',
-      value: '63',
-      icon: <LaptopMacIcon />,
+      title: 'Eligible',
+      value: '1000',
+      icon: <CheckCircleRoundedIcon />,
       color: theme.palette.primary.main
     },
     {
-      title: 'Tablet',
-      value: '15',
-      icon: <TabletMacIcon />,
+      title: 'Tidak Eligible',
+      value: '3000',
+      icon: <CancelRoundedIcon />,
       color: theme.palette.error.main
     },
-    {
-      title: 'Mobile',
-      value: '23',
-      icon: <PhoneIphoneIcon />,
-      color: theme.palette.warning.main
-    }
   ];
 
   return (
@@ -115,12 +107,12 @@ export function UsersByDevice(props) {
             <RefreshIcon />
           </IconButton>
         }
-        title="Users By Device"
+        title="Chart Eligible"
       />
       <Divider />
       <CardContent>
         <div className={classes.chartContainer}>
-          <Doughnut
+          <Pie
             data={data}
             options={options}
           />
@@ -137,7 +129,7 @@ export function UsersByDevice(props) {
                 style={{ color: device.color }}
                 variant="h2"
               >
-                {device.value}%
+                {device.value}
               </Typography>
             </div>
           ))}
@@ -147,6 +139,8 @@ export function UsersByDevice(props) {
   );
 };
 
-UsersByDevice.propTypes = {
+ChartEligible.propTypes = {
   className: PropTypes.string
 };
+
+export default ChartEligible;

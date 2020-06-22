@@ -50,7 +50,7 @@ const getInitials = (name = '') => {
     .join('');
 }
 
-export function UsersTable(props) {
+export function TableGeneric(props) {
   const { className, users, ...rest } = props;
 
   const classes = useStyles();
@@ -188,9 +188,9 @@ export function UsersTable(props) {
   );
 };
 
-UsersTable.propTypes = {
+TableGeneric.propTypes = {
   className: PropTypes.string,
   users: PropTypes.array.isRequired
 };
 
-export default UsersTable;
+export default TableGeneric;

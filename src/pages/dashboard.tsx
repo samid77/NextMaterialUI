@@ -2,13 +2,14 @@ import React, { Fragment, useEffect } from 'react';
 import router from 'next/router';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
-import { TotalUsers } from '../components/TotalUsers';
-import { TasksProgress } from '../components/TasksProgress';
-import { TotalProfit } from '../components/TotalProfit';
-import { LatestSales } from '../components/LatestSales';
-import { UsersByDevice } from '../components/UsersByDevice';
-import { LatestProducts } from '../components/LatestProducts';
-import { LatestOrders } from '../components/LatestOrders';
+import { 
+  TotalUsers, 
+  TasksProgress, 
+  TotalProfit, 
+  LatestSales, 
+  UsersByDevice, 
+  LatestProducts, 
+  LatestOrders } from '../components/Dashboard';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../redux/reducers';
 import { LayoutState } from '../interfaces/Layout';

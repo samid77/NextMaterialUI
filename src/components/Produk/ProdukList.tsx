@@ -43,7 +43,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { getProduk } from '../redux/actions/TestActions';
 import DateFnsUtils from '@date-io/date-fns';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -62,9 +61,9 @@ import {
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputMask from 'react-input-mask';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from '../redux/reducers';
-import { ProdukDataListState } from '../interfaces/ProdukData';
-import { updateProdukData, getProdukData, deleteProdukData } from '../redux/actions/ProdukDataAction';
+import { AppState } from '../../redux/reducers';
+import { ProdukDataListState } from '../../interfaces/ProdukData';
+import { updateProdukData, getProdukData, deleteProdukData } from '../../redux/actions/ProdukDataAction';
 
 const useStyles = makeStyles(theme => ({
   root: {},

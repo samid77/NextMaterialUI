@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export function UsersToolbar(props) {
+export function Toolbar(props) {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -62,8 +62,8 @@ export function UsersToolbar(props) {
   );
 };
 
-UsersToolbar.propTypes = {
+Toolbar.propTypes = {
   className: PropTypes.string
 };
 
-export default UsersToolbar;
+export default Toolbar;

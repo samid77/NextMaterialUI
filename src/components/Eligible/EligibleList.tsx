@@ -22,7 +22,7 @@ import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 
-import { data, options } from './chart';
+import { data, options } from '../General/Chart';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -102,3 +102,5 @@ export function EligibleList(props) {
 EligibleList.propTypes = {
   className: PropTypes.string
 };
+
+export default EligibleList;

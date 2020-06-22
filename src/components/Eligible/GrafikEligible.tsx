@@ -14,7 +14,7 @@ import {
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
-import { data, options } from './chart';
+import { data, options } from '../General/Chart';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export function LatestSales(props) {
+export function GrafikEligible(props) {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -46,7 +46,7 @@ export function LatestSales(props) {
             Last 7 days <ArrowDropDownIcon />
           </Button>
         }
-        title="Latest Sales"
+        title="Grafik Eligible"
       />
       <Divider />
       <CardContent>
@@ -71,6 +71,8 @@ export function LatestSales(props) {
   );
 };
 
-LatestSales.propTypes = {
+GrafikEligible.propTypes = {
   className: PropTypes.string
 };
+
+export default GrafikEligible;

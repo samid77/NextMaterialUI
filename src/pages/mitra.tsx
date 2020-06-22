@@ -1,8 +1,7 @@
 import React, { Fragment, useStyle, useState, useEffect } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/styles';
-import { MitraToolbar } from '../components/MitraToolbar';
-import { MitraList } from '../components/MitraList';
+import { MitraToolbar, MitraList } from '../components/Mitra';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../redux/reducers';
 import { MitraDataListState } from '../interfaces/MitraData';

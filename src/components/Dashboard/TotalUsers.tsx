@@ -96,3 +96,5 @@ TotalUsers.propTypes = {
   className: PropTypes.string
 };
 
+export default TotalUsers;
+

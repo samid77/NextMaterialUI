@@ -99,3 +99,5 @@ LatestProducts.propTypes = {
   className: PropTypes.string
 };
 
+export default LatestProducts
+

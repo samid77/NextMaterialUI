@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import clsx from 'clsx';
 
-import { SearchInputCustom } from './SearchInputCustom';
+import { SearchInputCustom } from '../General';
 
 import { makeStyles } from '@material-ui/styles';
 import { useTheme } from '@material-ui/core/styles';
@@ -46,9 +46,9 @@ import {
   TextField
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from '../redux/reducers';
-import { MitraDataListState } from '../interfaces/MitraData';
-import { addMitraData, getMitraData, searchMitraData, resetSearchMitraData } from '../redux/actions/MitraDataAction';
+import { AppState } from '../../redux/reducers';
+import { MitraDataListState } from '../../interfaces/MitraData';
+import { addMitraData, getMitraData, searchMitraData, resetSearchMitraData } from '../../redux/actions/MitraDataAction';
 
 const useStyles = makeStyles(theme => ({
   root: {},

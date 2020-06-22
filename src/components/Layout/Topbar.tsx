@@ -63,7 +63,11 @@ export function Topbar(props) {
               height={75}
               width={75}
             />}
-          </Link><Typography variant="h4" className={classes.logoTitle}>BP TAPERA</Typography>
+          </Link>
+          {layoutState.indexPage 
+            ? <Skeleton animation="wave" style={{marginLeft: '1vw'}}variant="text" width={130} height={30}/> 
+            : <Typography variant="h4" className={classes.logoTitle}>BP TAPERA</Typography>
+          }
           <div className={classes.flexGrow} />
           {Component.name !== 'Login' 
             ? <Fragment>
@@ -107,4 +111,6 @@ Topbar.propTypes = {
   className: PropTypes.string,
   onSidebarOpen: PropTypes.func
 };
+
+export default Topbar;
 

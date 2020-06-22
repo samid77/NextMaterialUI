@@ -59,9 +59,9 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from '../redux/reducers';
-import { MitraDataListState } from '../interfaces/MitraData';
-import { updateMitraData, getMitraData, deleteMitraData } from '../redux/actions/MitraDataAction';
+import { AppState } from '../../redux/reducers';
+import { MitraDataListState } from '../../interfaces/MitraData';
+import { updateMitraData, getMitraData, deleteMitraData } from '../../redux/actions/MitraDataAction';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputMask from 'react-input-mask';
 

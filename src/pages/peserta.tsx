@@ -1,8 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { UsersToolbar } from '../components/UsersToolbar';
-import { UsersTable } from '../components/UsersTable';
 import mockData from '../components/usersdata';
+import {Typography} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,9 +18,8 @@ export default function Peserta() {
 
     return(
         <div className={classes.root}>
-        <UsersToolbar />
             <div className={classes.content}>
-                <UsersTable users={users} />
+                <Typography variant="h3">Peserta Route</Typography>
             </div>
         </div>
     )

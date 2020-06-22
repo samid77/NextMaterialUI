@@ -8,9 +8,9 @@ import { SWRConfig } from 'swr';
 import clsx from 'clsx';
 import App from 'next/app';
 import Head from 'next/head';
-import { Topbar } from '../components/Topbar';
-import { Sidebar } from '../components/Sidebar';
-import {Layout} from '../components/Layout';
+// import { Topbar } from '../components/Topbar';
+// import { Sidebar } from '../components/Sidebar';
+import { Topbar, Sidebar } from '../components/Layout';
 import palette from '../theme/palette';
 import typography from '../theme/typography';
 import overrides from '../theme/overrides';
@@ -68,55 +68,52 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <Provider store={Store}>
-      <PersistGate
-          loading={null}
-          persistor={Persistore}
-        >
-    <Fragment>
-      <Head>
-        <title>PMF|BP TAPERA</title>
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width"
-        />
-      </Head>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-          {Component.name !== 'Login' 
-          ? <div className={clsx({
-              [classes.root]: true,
-              [classes.shiftContent]: isDesktop
-            })}>
-              <Topbar 
-                onSidebarOpen={handleSidebarOpen}
-                component={Component}
-              />
-              {Component.name !== 'Login' ? <Sidebar
-                  onClose={handleSidebarClose}
-                  open={shouldOpenSidebar}
-                  variant={isDesktop ? 'persistent' : 'temporary'}
-              />: null}
-              <Container maxWidth={false}>
-                <Box marginTop={2}>
-                  <Component {...pageProps} />
-                </Box>
-              </Container>
-            </div> 
-          : <div className={classes.root}>
-              <Topbar 
-                component={Component}
-              />
-              <main className={classes.content}>
-                <Container maxWidth={false}>
-                  <Box marginTop={2}>
-                    <Component {...pageProps} />
-                  </Box>
-                </Container>
-              </main>
-            </div>}
-      </ThemeProvider>
-    </Fragment>
-    </PersistGate>
+      <PersistGate loading={null} persistor={Persistore}>
+        <Fragment>
+          <Head>
+            <title>PMF|BP TAPERA</title>
+            <meta
+              name="viewport"
+              content="minimum-scale=1, initial-scale=1, width=device-width"
+            />
+          </Head>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+              {Component.name !== 'Login' 
+              ? <div className={clsx({
+                  [classes.root]: true,
+                  [classes.shiftContent]: isDesktop
+                })}>
+                  <Topbar 
+                    onSidebarOpen={handleSidebarOpen}
+                    component={Component}
+                  />
+                  {Component.name !== 'Login' ? <Sidebar
+                      onClose={handleSidebarClose}
+                      open={shouldOpenSidebar}
+                      variant={isDesktop ? 'persistent' : 'temporary'}
+                  />: null}
+                  <Container maxWidth={false}>
+                    <Box marginTop={2}>
+                      <Component {...pageProps} />
+                    </Box>
+                  </Container>
+                </div> 
+              : <div className={classes.root}>
+                  <Topbar 
+                    component={Component}
+                  />
+                  <main className={classes.content}>
+                    <Container maxWidth={false}>
+                      <Box marginTop={2}>
+                        <Component {...pageProps} />
+                      </Box>
+                    </Container>
+                  </main>
+                </div>}
+          </ThemeProvider>
+        </Fragment>
+      </PersistGate>
     </Provider>
   );
 }

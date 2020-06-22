@@ -144,3 +144,5 @@ export function LatestOrders(props) {
 LatestOrders.propTypes = {
   className: PropTypes.string
 };
+
+export default LatestOrders;
