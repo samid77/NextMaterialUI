@@ -384,7 +384,7 @@ export function MitraToolbar(props) {
                       </Grid>
                       <Grid item md={12} xs={12}>
                         <InputMask
-                          mask="999 999 999 999"
+                          mask="999 999"
                           value={values.targetUnit}
                           onChange={handleChange}>
                           {() => <TextField

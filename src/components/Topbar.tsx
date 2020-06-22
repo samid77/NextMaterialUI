@@ -13,6 +13,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../redux/reducers';
 import { LayoutState } from '../interfaces/Layout';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,6 +29,10 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar,
     marginBottom: '2em'
   },
+  logoTitle: {
+    marginLeft: theme.spacing(1),
+    fontSize: '22px'
+  }
 }));
 
 export function Topbar(props) {
@@ -58,7 +63,7 @@ export function Topbar(props) {
               height={75}
               width={75}
             />}
-          </Link>
+          </Link><Typography variant="h4" className={classes.logoTitle}>BP TAPERA</Typography>
           <div className={classes.flexGrow} />
           {Component.name !== 'Login' 
             ? <Fragment>

@@ -274,12 +274,6 @@ const Login = props => {
         >
           <div className={classes.quote}>
             <div className={classes.quoteInner}>
-              <Typography
-                className={classes.quoteText}
-                variant="h3"
-              >
-                Rumah sebagai kebutuhan dasar manusia, disamping sandang dan pangan, merupakan harapan setiap manusia untuk dapat memenuhinya.
-              </Typography>
             </div>
           </div>
         </Grid>

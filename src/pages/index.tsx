@@ -55,7 +55,7 @@ export default function Search() {
       } else {
         router.push('/dashboard');
       }
-    }, 3000);
+    }, 5000);
   }, [])
 
   return(

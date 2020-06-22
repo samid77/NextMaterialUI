@@ -65,32 +65,19 @@ export function Sidebar(props) {
       icon: <AssignmentIndRoundedIcon />
     },
     {
-      title: 'Dummy Menu Two',
-      href: '/konvensional',
-      icon: <StarsRoundedIcon />
-    },
-    {
       title: 'Dummy Menu Three',
       href: '/syariah',
       icon: <Brightness5RoundedIcon />
     },
     {
-      title: 'Master Data',
-      nested: true,
-      href:'#',
-      icon: <StorageRoundedIcon />,
-      items: [
-        {
-          title: 'Mitra Penyalur',
-          href: '/mitra',
-          icon: <AccountBalanceRoundedIcon />
-        },
-        {
-          title: 'Produk',
-          href: '/produk',
-          icon: <StarsRoundedIcon />
-        },
-      ]
+      title: 'Master Data Mitra',
+      href: '/mitra',
+      icon: <AccountBalanceRoundedIcon />
+    },
+    {
+      title: 'Master Data Produk',
+      href: '/produk',
+      icon: <StarsRoundedIcon />
     },
     
   ];
