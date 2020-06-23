@@ -61,16 +61,6 @@ export function Sidebar(props) {
       icon: <PlaylistAddCheckRoundedIcon />
     },
     {
-      title: 'Dummy Menu One',
-      href: '/peserta',
-      icon: <AssignmentIndRoundedIcon />
-    },
-    {
-      title: 'Dummy Menu Three',
-      href: '/syariah',
-      icon: <Brightness5RoundedIcon />
-    },
-    {
       title: 'Master Data Mitra',
       href: '/mitra',
       icon: <AccountBalanceRoundedIcon />
