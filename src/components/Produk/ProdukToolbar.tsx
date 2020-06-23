@@ -278,7 +278,7 @@ export function ProdukToolbar(props) {
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Nama produk"
+                        label="Nama produk" 
                         margin="dense"
                         variant="outlined"
                         InputProps={{ ...params.InputProps, type: 'search' }}
@@ -315,6 +315,8 @@ export function ProdukToolbar(props) {
                     margin="dense"
                     name="namaSegmen"
                     required={true}
+                    helperText={'Segmen tidak boleh kosong'}
+                    error={values.namaSegmen === ''}
                     type="text" 
                     value={values.namaSegmen}
                     onChange={handleChange}
