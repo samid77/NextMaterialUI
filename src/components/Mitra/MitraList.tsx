@@ -65,7 +65,7 @@ import { updateMitraData, getMitraData, deleteMitraData } from '../../redux/acti
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputMask from 'react-input-mask';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {},
   content: {
     padding: 0

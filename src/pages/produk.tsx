@@ -7,7 +7,7 @@ import { AppState } from '../redux/reducers';
 import { ProdukDataListState } from '../interfaces/ProdukData';
 import { getProdukData } from '../redux/actions/ProdukDataAction';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {
     padding: theme.spacing(3),
   },

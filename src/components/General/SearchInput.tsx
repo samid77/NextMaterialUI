@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Paper, Input } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {
     borderRadius: '4px',
     alignItems: 'center',

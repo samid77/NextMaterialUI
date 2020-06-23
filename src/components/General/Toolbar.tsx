@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 import { SearchInput } from './SearchInput';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {},
   row: {
     height: '42px',

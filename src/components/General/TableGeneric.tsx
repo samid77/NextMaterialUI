@@ -21,7 +21,7 @@ import {
 
 // import { getInitials } from '../helpers/getInitials';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {},
   content: {
     padding: 0

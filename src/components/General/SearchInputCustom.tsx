@@ -14,7 +14,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import CachedRoundedIcon from '@material-ui/icons/CachedRounded';
 import { getMitraData, resetSearchMitraData } from '../../redux/actions/MitraDataAction';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {
     padding: '2px 4px',
     display: 'flex',

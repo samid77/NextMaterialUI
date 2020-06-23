@@ -6,7 +6,7 @@ import { Button } from '@material-ui/core';
 
 import { SearchInput } from './SearchInput';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {},
   row: {
     height: '42px',

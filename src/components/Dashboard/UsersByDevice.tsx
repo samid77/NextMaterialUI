@@ -15,8 +15,9 @@ import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import TabletMacIcon from '@material-ui/icons/TabletMac';
+import { colors } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {
     height: '100%'
   },

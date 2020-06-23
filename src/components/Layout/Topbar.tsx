@@ -15,7 +15,7 @@ import { AppState } from '../redux/reducers';
 import { LayoutState } from '../interfaces/Layout';
 import Typography from '@material-ui/core/Typography';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {
     boxShadow: 'none'
   },

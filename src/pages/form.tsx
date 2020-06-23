@@ -13,7 +13,7 @@ import {
   TextField
 } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {
     padding: theme.spacing(4)
   }

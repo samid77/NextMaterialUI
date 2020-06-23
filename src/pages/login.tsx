@@ -32,7 +32,7 @@ const schema = {
   }
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {
     backgroundColor: theme.palette.background.default,
     height: '100%',

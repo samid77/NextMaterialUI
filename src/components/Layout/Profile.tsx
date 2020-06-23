@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../redux/reducers';
 import { LayoutState } from '../interfaces/Layout';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',

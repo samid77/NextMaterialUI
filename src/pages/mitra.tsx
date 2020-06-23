@@ -7,7 +7,7 @@ import { AppState } from '../redux/reducers';
 import { MitraDataListState } from '../interfaces/MitraData';
 import { getMitraData } from '../redux/actions/MitraDataAction';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {
     padding: theme.spacing(3),
   },

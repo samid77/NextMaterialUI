@@ -20,7 +20,7 @@ import { Profile } from './Profile';
 import { SidebarNav } from './SidebarNav';
 
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   drawer: {
     width: 240,
     [theme.breakpoints.up('lg')]: {

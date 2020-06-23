@@ -50,7 +50,7 @@ import { AppState } from '../../redux/reducers';
 import { MitraDataListState } from '../../interfaces/MitraData';
 import { addMitraData, getMitraData, searchMitraData, resetSearchMitraData } from '../../redux/actions/MitraDataAction';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {},
   row: {
     height: '42px',

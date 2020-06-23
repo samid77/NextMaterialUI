@@ -16,7 +16,7 @@ import { LayoutState } from '../interfaces/Layout';
 import { isIndexPageSuccess, isAnotherPage } from '../redux/actions/LayoutActions';
 
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {
     padding: theme.spacing(4)
   }

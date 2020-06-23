@@ -4,7 +4,7 @@ import { Grid } from '@material-ui/core';
 import { EligibleList, ChartEligible } from '../components/Eligible';
 
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {
     padding: theme.spacing(4)
   }

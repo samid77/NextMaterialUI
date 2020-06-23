@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
+import { createMuiTheme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import {
   Card,
@@ -24,7 +25,7 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import mockData from './latestordersdata';
 import { StatusBullet } from './StatusBullet';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: any) => ({
   root: {},
   content: {
     padding: 0

@@ -6,7 +6,7 @@ import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import PeopleIcon from '@material-ui/icons/PeopleOutlined';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {
     height: '100%'
   },
@@ -81,7 +81,6 @@ export function TotalUsers(props) {
             16%
           </Typography>
           <Typography
-            className={classes.caption}
             variant="caption"
           >
             Since last month

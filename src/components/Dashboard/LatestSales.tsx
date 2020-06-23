@@ -14,7 +14,7 @@ import {
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
-import { data, options } from '../General/Chart';
+import { data, options } from '../General/chart';
 
 const useStyles = makeStyles(() => ({
   root: {},

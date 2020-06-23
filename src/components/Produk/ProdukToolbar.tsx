@@ -50,7 +50,7 @@ import { AppState } from '../../redux/reducers';
 import { ProdukDataListState } from '../../interfaces/ProdukData';
 import { addProdukData, getProdukData, searchProdukData, resetSearchProdukData } from '../../redux/actions/ProdukDataAction';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {},
   row: {
     height: '42px',

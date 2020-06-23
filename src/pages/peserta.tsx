@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import {Typography} from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {
     padding: theme.spacing(3),
   },
