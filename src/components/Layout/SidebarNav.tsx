@@ -16,8 +16,8 @@ import StarsRoundedIcon from '@material-ui/icons/StarsRounded';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Hidden from '@material-ui/core/Hidden';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from '../redux/reducers';
-import { LayoutState } from '../interfaces/Layout';
+import { AppState } from '../../redux/reducers';
+import { LayoutState } from '../../interfaces/Layout';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {},
@@ -44,10 +44,10 @@ const useStyles = makeStyles((theme:any) => ({
     marginRight: theme.spacing(1)
   },
   active: {
-    color: theme.palette.primary.main,
+    color: colors.green[500],
     fontWeight: theme.typography.fontWeightMedium,
     '& $icon': {
-      color: theme.palette.primary.main
+      color: colors.green[500]
     }
   },
   nested: {
@@ -60,11 +60,8 @@ const useStyles = makeStyles((theme:any) => ({
   }
 }));
 
-const CustomRouterLink = forwardRef((props, ref) => (
-  <div
-    ref={ref}
-    style={{ flexGrow: 1 }}
-  >
+const CustomRouterLink = forwardRef((props, ref: any) => (
+  <div ref={ref} style={{ flexGrow: 1 }}>
     <Link {...props} />
   </div>
 ));

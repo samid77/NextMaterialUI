@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
-
+import { colors } from '@material-ui/core';
 import { SearchInput } from './SearchInput';
+
 
 const useStyles = makeStyles((theme:any) => ({
   root: {},
@@ -52,7 +53,6 @@ export function ProductsToolbar(props) {
       <div className={classes.row}>
         <SearchInput
           className={classes.searchInput}
-          placeholder="Search product"
         />
       </div>
     </div>

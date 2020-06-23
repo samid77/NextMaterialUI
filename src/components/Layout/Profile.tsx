@@ -6,8 +6,8 @@ import { makeStyles } from '@material-ui/styles';
 import { Avatar, Typography } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from '../redux/reducers';
-import { LayoutState } from '../interfaces/Layout';
+import { AppState } from '../../redux/reducers';
+import { LayoutState } from '../../interfaces/Layout';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {

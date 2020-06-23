@@ -49,6 +49,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import { MitraDataListState } from '../../interfaces/MitraData';
 import { addMitraData, getMitraData, searchMitraData, resetSearchMitraData } from '../../redux/actions/MitraDataAction';
+import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {},
@@ -103,7 +104,7 @@ const useStyles = makeStyles((theme:any) => ({
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
-    color: theme.palette.text.secondary,
+    color: colors.blueGrey[600],
   },
 
 }));

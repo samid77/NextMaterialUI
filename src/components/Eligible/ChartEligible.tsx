@@ -14,6 +14,7 @@ import {
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import RefreshIcon from '@material-ui/icons/Refresh';
+import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {
@@ -48,12 +49,12 @@ export function ChartEligible(props) {
       {
         data: [1000, 3000],
         backgroundColor: [
-          theme.palette.primary.main,
-          theme.palette.error.main,
+          colors.green[500],
+          colors.red[600],
         ],
         borderWidth: 8,
-        borderColor: theme.palette.white,
-        hoverBorderColor: theme.palette.white
+        borderColor: '#FFFFFF',
+        hoverBorderColor: '#FFFFFF'
       }
     ],
     labels: ['Eligible', 'Tidak Eligible']
@@ -73,11 +74,11 @@ export function ChartEligible(props) {
       mode: 'index',
       intersect: false,
       borderWidth: 1,
-      borderColor: theme.palette.divider,
-      backgroundColor: theme.palette.white,
-      titleFontColor: theme.palette.text.primary,
-      bodyFontColor: theme.palette.text.secondary,
-      footerFontColor: theme.palette.text.secondary
+      borderColor: colors.grey[200],
+      backgroundColor: '#FFFFFF',
+      titleFontColor: colors.blueGrey[900],
+      bodyFontColor: colors.blueGrey[600],
+      footerFontColor: colors.blueGrey[600]
     }
   };
 
@@ -86,13 +87,13 @@ export function ChartEligible(props) {
       title: 'Eligible',
       value: '1000',
       icon: <CheckCircleRoundedIcon />,
-      color: theme.palette.primary.main
+      color: colors.green[500]
     },
     {
       title: 'Tidak Eligible',
       value: '3000',
       icon: <CancelRoundedIcon />,
-      color: theme.palette.error.main
+      color: colors.red[600]
     },
   ];
 

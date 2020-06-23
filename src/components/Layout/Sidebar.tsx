@@ -18,6 +18,7 @@ import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
 import StarsRoundedIcon from '@material-ui/icons/StarsRounded';
 import { Profile } from './Profile';
 import { SidebarNav } from './SidebarNav';
+import { colors } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme:any) => ({
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme:any) => ({
     }
   },
   root: {
-    backgroundColor: theme.palette.white,
+    backgroundColor: '#FFFFFF',
     display: 'flex',
     flexDirection: 'column',
     height: '100%',

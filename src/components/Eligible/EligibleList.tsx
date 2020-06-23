@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Bar } from 'react-chartjs-2';
-import { makeStyles, Theme } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 import {
   Card,
@@ -22,9 +22,9 @@ import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 
-import { data, options } from '../General/Chart';
+import { data, options } from '../General/chart';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme: any) => ({
   root: {
       backgroundColor: '#dcf2e3'
   },

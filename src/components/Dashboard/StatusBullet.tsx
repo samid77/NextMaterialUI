@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
+import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {
@@ -26,16 +27,16 @@ const useStyles = makeStyles((theme:any) => ({
     backgroundColor: theme.palette.neutral
   },
   primary: {
-    backgroundColor: theme.palette.primary.main
+    backgroundColor: colors.green[500]
   },
   info: {
     backgroundColor: theme.palette.info.main
   },
   warning: {
-    backgroundColor: theme.palette.warning.main
+    backgroundColor: colors.orange[600]
   },
   danger: {
-    backgroundColor: theme.palette.error.main
+    backgroundColor: colors.red[600]
   },
   success: {
     backgroundColor: theme.palette.success.main

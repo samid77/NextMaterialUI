@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Paper, Input } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
+import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles((theme:any) => ({
   },
   icon: {
     marginRight: theme.spacing(1),
-    color: theme.palette.text.secondary
+    color: colors.blueGrey[600]
   },
   input: {
     flexGrow: 1,

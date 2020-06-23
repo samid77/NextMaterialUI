@@ -50,13 +50,13 @@ export function UsersByDevice(props) {
       {
         data: [63, 15, 22],
         backgroundColor: [
-          theme.palette.primary.main,
-          theme.palette.error.main,
-          theme.palette.warning.main
+          colors.green[500],
+          colors.red[600],
+          colors.orange[600]
         ],
         borderWidth: 8,
-        borderColor: theme.palette.white,
-        hoverBorderColor: theme.palette.white
+        borderColor: '#FFFFFF',
+        hoverBorderColor: '#FFFFFF'
       }
     ],
     labels: ['Desktop', 'Tablet', 'Mobile']
@@ -76,11 +76,11 @@ export function UsersByDevice(props) {
       mode: 'index',
       intersect: false,
       borderWidth: 1,
-      borderColor: theme.palette.divider,
-      backgroundColor: theme.palette.white,
-      titleFontColor: theme.palette.text.primary,
-      bodyFontColor: theme.palette.text.secondary,
-      footerFontColor: theme.palette.text.secondary
+      borderColor: colors.grey[200],
+      backgroundColor: '#FFFFFF',
+      titleFontColor: colors.blueGrey[900],
+      bodyFontColor: colors.blueGrey[600],
+      footerFontColor: colors.blueGrey[600]
     }
   };
 
@@ -89,19 +89,19 @@ export function UsersByDevice(props) {
       title: 'Desktop',
       value: '63',
       icon: <LaptopMacIcon />,
-      color: theme.palette.primary.main
+      color: colors.green[500]
     },
     {
       title: 'Tablet',
       value: '15',
       icon: <TabletMacIcon />,
-      color: theme.palette.error.main
+      color: colors.red[600]
     },
     {
       title: 'Mobile',
       value: '23',
       icon: <PhoneIphoneIcon />,
-      color: theme.palette.warning.main
+      color: colors.orange[600]
     }
   ];
 

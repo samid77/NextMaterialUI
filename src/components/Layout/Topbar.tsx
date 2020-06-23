@@ -11,9 +11,10 @@ import { useMediaQuery } from '@material-ui/core';
 import router from 'next/router';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from '../redux/reducers';
-import { LayoutState } from '../interfaces/Layout';
+import { AppState } from '../../redux/reducers';
+import { LayoutState } from '../../interfaces/Layout';
 import Typography from '@material-ui/core/Typography';
+import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {

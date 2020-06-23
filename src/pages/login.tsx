@@ -64,15 +64,15 @@ const useStyles = makeStyles((theme:any) => ({
     flexBasis: '600px'
   },
   quoteText: {
-    color: theme.palette.white,
+    color: '#FFFFFF',
     fontWeight: 400,
   },
   name: {
     marginTop: theme.spacing(3),
-    color: theme.palette.white
+    color: '#FFFFFF'
   },
   bio: {
-    color: theme.palette.white
+    color: '#FFFFFF'
   },
   contentContainer: {},
   content: {

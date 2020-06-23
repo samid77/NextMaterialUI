@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {},
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme:any) => ({
     height: 64,
     width: 64,
     margin: '0 auto',
-    border: `1px solid ${theme.palette.divider}`,
+    border: `1px solid ${colors.grey[200]}`,
     borderRadius: '5px',
     overflow: 'hidden',
     display: 'flex',

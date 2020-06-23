@@ -11,6 +11,7 @@ import {
   LinearProgress
 } from '@material-ui/core';
 import InsertChartIcon from '@material-ui/icons/InsertChartOutlined';
+import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme:any) => ({
     fontWeight: 700
   },
   avatar: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: colors.green[500],
     color: theme.palette.primary.contrastText,
     height: 56,
     width: 56

@@ -1,10 +1,11 @@
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 import SignUp from '../components/Auth/SignUp';
+import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: '#F4F6F8',
     height: '100%'
   },
   grid: {
@@ -12,10 +13,10 @@ const useStyles = makeStyles((theme:any) => ({
   },
   name: {
     marginTop: theme.spacing(3),
-    color: theme.palette.white
+    color: '#FFFFFF'
   },
   bio: {
-    color: theme.palette.white
+    color: '#FFFFFF'
   },
   logoImage: {
     marginLeft: theme.spacing(4)

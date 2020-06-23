@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {
     height: '100%',
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: colors.green[500],
     color: theme.palette.primary.contrastText
   },
   content: {
@@ -19,8 +20,8 @@ const useStyles = makeStyles((theme:any) => ({
     fontWeight: 700
   },
   avatar: {
-    backgroundColor: theme.palette.white,
-    color: theme.palette.primary.main,
+    backgroundColor: '#FFFFFF',
+    color: colors.green[500],
     height: 56,
     width: 56
   },

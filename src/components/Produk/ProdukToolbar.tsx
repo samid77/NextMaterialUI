@@ -49,6 +49,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import { ProdukDataListState } from '../../interfaces/ProdukData';
 import { addProdukData, getProdukData, searchProdukData, resetSearchProdukData } from '../../redux/actions/ProdukDataAction';
+import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {},
@@ -103,7 +104,7 @@ const useStyles = makeStyles((theme:any) => ({
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
-    color: theme.palette.text.secondary,
+    color: colors.blueGrey[600],
   },
 
 }));
