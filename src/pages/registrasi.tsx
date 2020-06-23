@@ -44,7 +44,8 @@ const useStyles = makeStyles((theme:any) => ({
   },
   signUpButton: {
     margin: theme.spacing(2, 0)
-  }
+  },
+  content: {}
 }));
 const handleSignUp = event => {
 };

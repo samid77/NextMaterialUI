@@ -62,7 +62,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import InputMask from 'react-input-mask';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../redux/reducers';
-import { ProdukDataListState } from '../../interfaces/ProdukData';
+import { ProdukDataListState, ProdukData } from '../../interfaces/ProdukData';
 import { updateProdukData, getProdukData, deleteProdukData } from '../../redux/actions/ProdukDataAction';
 import { colors } from '@material-ui/core';
 
@@ -92,6 +92,11 @@ const useStyles = makeStyles((theme:any) => ({
     color: theme.palette.getContrastText(yellow[500]),
     backgroundColor: yellow[500],
   },
+  buttons: {},
+  tableRow: {},
+  dialogContent: {},
+  dateLabel: {},
+  dialogAction: {}
 }));
 
 interface NamaProdukType {
@@ -114,6 +119,30 @@ const tipeProduk = [
 ];
 
 export function ProdukList(props) {
+  const defaultVal: ProdukData = {
+    id: '',
+    idFiturProduk: '',
+    namaFiturProduk:'',
+    idTipeProduk: '',
+    namaTipeproduk:'',
+    namaSegmen:'',
+    penghasilanDari: 0,
+    penghasilanSampai: 0,
+    plafon:0,
+    sukubunga:0,
+    tenor:0,
+    idStatusPersetujuan: '',
+    statusPersetujuan:'Approved',
+    created_at: '',
+    created_by: '',
+    updated_at: '',
+    updated_by: '',
+    checked_at: '',
+    checked_by: '',
+    approved_at: '',
+    approved_by: ''
+  };
+
   const { className, produk, ...rest } = props;
   const produkDataState: ProdukDataListState = useSelector((state: AppState) => state.produkData);
   const dispatch = useDispatch();
@@ -134,22 +163,7 @@ export function ProdukList(props) {
   const [namaproduk, setNamaProduk] = useState(daftarProduk[0].nama);
   const [idtipeproduk, setIdTipeProduk] = useState(tipeProduk[0].idTipeProduk);
   const [tipeproduk, setTipeProduk] = useState(tipeProduk[0].nama);
-  const [values, setValues] = useState({
-    id: 0,
-    idFiturProduk: '',
-    namaFiturProduk:'',
-    idTipeProduk: '',
-    namaTipeproduk:'',
-    namaSegmen:'',
-    penghasilanDari:'',
-    penghasilanSampai:'',
-    plafon:'',
-    sukubunga:'',
-    tenor:'',
-    idStatusPersetujuan: 1,
-    statusPersetujuan:'Approved',
-    created_at: new Date(),
-  });
+  const [values, setValues] = useState<ProdukData>(defaultVal);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -170,8 +184,8 @@ export function ProdukList(props) {
     const indexTipe = tipeProduk.findIndex(t => t.nama === data.namaTipeproduk);
     
     values.id = data.id;
-    setNamaProduk(daftarProduk[indexProduk]);
-    setTipeProduk(tipeProduk[indexTipe]);
+    setNamaProduk(daftarProduk[indexProduk].nama);
+    setTipeProduk(tipeProduk[indexTipe].idTipeProduk);
 
     values.namaSegmen = data.namaSegmen;
     values.penghasilanDari = data.penghasilanDari;
@@ -214,14 +228,15 @@ export function ProdukList(props) {
   }
 
   const updateData = () => {
-    values.namaFiturProduk = namaproduk.nama;
-    values.idFiturProduk = namaproduk.idFiturProduk;
-    values.idTipeProduk = tipeproduk.idTipeProduk;
-    values.namaTipeproduk = tipeproduk.nama;
-    values.penghasilanDari = values.penghasilanDari.split(' ').join('');
-    values.penghasilanSampai = values.penghasilanSampai.split(' ').join('');values.plafon = values.plafon.split(' ').join('');
-    values.sukubunga = values.sukubunga.split(' ').join('');
-    values.tenor = values.tenor.split(' ').join('');
+    values.namaFiturProduk = namaproduk;
+    values.idFiturProduk = namaproduk;
+    values.idTipeProduk = tipeproduk;
+    values.namaTipeproduk = tipeproduk;
+    values.penghasilanDari = parseInt(values.penghasilanDari.toString().split(' ').join(''));
+    values.penghasilanSampai = parseInt(values.penghasilanSampai.toString().split(' ').join(''));
+    values.plafon = parseInt(values.plafon.toString().split(' ').join(''));
+    values.sukubunga = parseInt(values.sukubunga.toString().split(' ').join(''));
+    values.tenor = parseInt(values.tenor.toString().split(' ').join(''));
     try {
       dispatch(updateProdukData(values));
       setOpenForm(false);
@@ -360,7 +375,7 @@ export function ProdukList(props) {
             Data akan sepenuhnya terhapus dari sistem.
           </DialogContentText>
         </DialogContent>
-        <DialogActions justify="center" align="center">
+        <DialogActions>
           <Button variant="contained"className={classes.buttons} onClick={closeDeleteConfirm} color="secondary">
             Batal
           </Button>
@@ -538,6 +553,7 @@ export function ProdukList(props) {
 
 ProdukList.propTypes = {
   className: PropTypes.string,
+  produk: PropTypes.any
 };
 
 export default ProdukList;

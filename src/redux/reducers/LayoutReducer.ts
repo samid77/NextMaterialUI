@@ -6,7 +6,7 @@ import {
     ANOTHER_PAGE_SUCCESS,
     ANOTHER_PAGE_ERROR,
 } from '../constants/LayoutConstants';
-import { LayoutAction } from '../../interfaces/Layout';
+import { LayoutAction, LayoutState } from '../../interfaces/Layout';
 
 const initialState: LayoutState = {
     fetch: false,

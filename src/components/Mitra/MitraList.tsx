@@ -60,7 +60,7 @@ import {
 } from '@material-ui/pickers';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../redux/reducers';
-import { MitraDataListState } from '../../interfaces/MitraData';
+import { MitraDataListState, MitraData } from '../../interfaces/MitraData';
 import { updateMitraData, getMitraData, deleteMitraData } from '../../redux/actions/MitraDataAction';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputMask from 'react-input-mask';
@@ -92,6 +92,11 @@ const useStyles = makeStyles((theme:any) => ({
     color: theme.palette.getContrastText(yellow[500]),
     backgroundColor: yellow[500],
   },
+  buttons: {},
+  tableRow: {},
+  dialogContent: {},
+  dialogAction: {},
+  dateLabel: {},
 }));
 
 interface NamaMitraType {
@@ -107,6 +112,22 @@ const daftarMitra = [
 ];
 
 export function MitraList(props) {
+  const defaultValues: MitraData = {
+    id: 0,
+    nama: '',
+    tanggalPKS: '',
+    pksStartDate: '',
+    pksEndDate: '',
+    tanggalLimit: '',
+    limitStartDate: '',
+    limitEndDate: '',
+    targetUnit: 0,
+    targetNominal: 0,
+    maxLimit: 0,
+    approvalStatus: 1,
+    createdAt: ''
+  };
+
   const { className, mitra, ...rest } = props;
   const mitraDataState: MitraDataListState = useSelector((state: AppState) => state.mitraData);
   const dispatch = useDispatch();
@@ -122,22 +143,8 @@ export function MitraList(props) {
   const [openForm, setOpenForm] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const [namamitra, setNamaMitra] = React.useState<string | null>(daftarMitra[0]);
-  const [values, setValues] = useState({
-    id: 0,
-    nama: '',
-    tanggalPKS: '',
-    pksStartDate: '',
-    pksEndDate: '',
-    tanggalLimit: '',
-    limitStartDate: '',
-    limitEndDate: '',
-    targetUnit: '',
-    targetNominal: '',
-    maxLimit: '',
-    approvalStatus: 1,
-    createdAt: new Date()
-  });
+  const [namamitra, setNamaMitra] = React.useState<any | null>(daftarMitra[0]);
+  const [values, setValues] = useState(defaultValues);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -153,27 +160,27 @@ export function MitraList(props) {
     });
   };
 
-  const [pksStartDate, setPksStartDate] = React.useState('');
+  const [pksStartDate, setPksStartDate] = React.useState(new Date());
   const handlePksStartDateChange = (date: Date | null) => {
     setPksStartDate(date);
-    values.pksStartDate = date;
-    values.tanggalPKS = date;
+    values.pksStartDate = date.toString();
+    values.tanggalPKS = date.toString();
   };
-  const [pksEndDate, setPksEndDate] = React.useState('');
+  const [pksEndDate, setPksEndDate] = React.useState(new Date());
   const handlePksEndDateChange = (date: Date | null) => {
     setPksEndDate(date);
-    values.pksEndDate = date;
+    values.pksEndDate = date.toString();
   };
-  const [limitStartDate, setLimitStartDate] = React.useState('');
+  const [limitStartDate, setLimitStartDate] = React.useState(new Date());
   const handleLimitStartDateChange = (date: Date | null) => {
     setLimitStartDate(date);
-    values.limitStartDate = date;
-    values.tanggalLimit = date;
+    values.limitStartDate = date.toString();
+    values.tanggalLimit = date.toString();
   };
-  const [limitEndDate, setLimitEndDate] = React.useState('');
+  const [limitEndDate, setLimitEndDate] = React.useState(new Date());
   const handleLimitEndDateChange = (date: Date | null) => {
     setLimitEndDate(date);
-    values.limitEndDate = date;
+    values.limitEndDate = date.toString();
   };
 
   const openFormModal = (data) => {
@@ -227,9 +234,9 @@ export function MitraList(props) {
 
   const updateData = () => {
     values.nama = namamitra.nama;
-    values.targetUnit = values.targetUnit.split(' '). join('');
-    values.targetNominal = values.targetNominal.split(' '). join('');
-    values.maxLimit = values.maxLimit.split(' '). join('');
+    values.targetUnit = parseInt(values.targetUnit.toString().split(' '). join(''));
+    values.targetNominal = parseInt(values.targetNominal.toString().split(' '). join(''));
+    values.maxLimit = parseInt(values.maxLimit.toString().split(' '). join(''));
     try {
       dispatch(updateMitraData(values));
       setSuccessAlert(true);
@@ -385,7 +392,7 @@ export function MitraList(props) {
             Data akan sepenuhnya terhapus dari sistem.
           </DialogContentText>
         </DialogContent>
-        <DialogActions justify="center" align="center">
+        <DialogActions>
           <Button variant="contained"
                   className={classes.buttons} onClick={closeDeleteConfirm} color="secondary">
             Batal

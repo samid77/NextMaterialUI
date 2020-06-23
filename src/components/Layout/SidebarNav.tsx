@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme:any) => ({
   }
 }));
 
-const CustomRouterLink = forwardRef((props, ref: any) => (
+const CustomRouterLink = forwardRef((props: any, ref: any) => (
   <div ref={ref} style={{ flexGrow: 1 }}>
     <Link {...props} />
   </div>
@@ -94,7 +94,6 @@ export function SidebarNav(props) {
                   >
                     <Link href={page.href}>
                       <Button
-                        activeclassname={classes.active}
                         className={classes.button}
                       >
                       {layoutState.indexPage 
@@ -116,7 +115,6 @@ export function SidebarNav(props) {
                   >
                     <Link href={page.href}>
                       <Button
-                        activeclassname={classes.active}
                         className={classes.button}
                       >
                         {layoutState.indexPage 
@@ -137,7 +135,6 @@ export function SidebarNav(props) {
             >
               <Link href='/mitra'>
                 <Button
-                  activeclassname={classes.active}
                   className={classes.button}
                 >
                   <div className={classes.icon}>
@@ -153,7 +150,6 @@ export function SidebarNav(props) {
             >
               <Link href='/produk'>
                 <Button
-                  activeclassname={classes.active}
                   className={classes.button}
                 >
                   <div className={classes.icon}>

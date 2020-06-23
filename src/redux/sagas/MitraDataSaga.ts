@@ -85,7 +85,7 @@ function* workerSagaAddMitraData(action: MitraDataAction) {
 
 function* workerSagaUpdateMitraData(action: MitraDataAction) {
     try {
-        const data: object = {
+        const data: any = {
             id: action.data.id,
             nama: action.data.nama,
             tanggalPKS: action.data.pksStartDate,

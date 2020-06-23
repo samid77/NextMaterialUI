@@ -14,6 +14,7 @@ import { Alert, AlertTitle } from '@material-ui/lab';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
+import { any } from 'prop-types';
 
 
 const schema = {
@@ -150,12 +151,14 @@ const Login = props => {
   const { history } = props;
 
   const classes = useStyles();
+  const defaultErrors: any = {};
+  const defaultValues: any = {};
 
   const [formState, setFormState] = useState({
     isValid: false,
-    values: {},
+    values: defaultValues,
     touched: {},
-    errors: {}
+    errors: defaultErrors
   });
 
   const [email, setEmail] = useState('');

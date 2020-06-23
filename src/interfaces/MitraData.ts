@@ -11,7 +11,7 @@ export interface MitraData{
     maxLimit: number;
     targetNominal: number;
     approvalStatus: number;
-    createdAt: number;
+    createdAt: string;
 }
 
 export interface MitraDataListState{

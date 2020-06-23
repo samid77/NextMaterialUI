@@ -1,6 +1,7 @@
 import palette from './palette';
+import { TypographyOptions } from '@material-ui/core/styles/createTypography';
 
-export default {
+const typography: TypographyOptions = {
   h1: {
     color: palette.text.primary,
     fontWeight: 500,
@@ -86,4 +87,6 @@ export default {
     lineHeight: '13px',
     textTransform: 'uppercase'
   }
-};
+}
+
+export default typography;

@@ -2,7 +2,7 @@ import React, { useState, Fragment, useEffect } from 'react';
 import Link from 'next/link';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles, useTheme, Theme } from '@material-ui/styles';
+import { makeStyles, useTheme } from '@material-ui/styles';
 import { AppBar, Toolbar, Badge, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
@@ -110,7 +110,8 @@ export function Topbar(props) {
 
 Topbar.propTypes = {
   className: PropTypes.string,
-  onSidebarOpen: PropTypes.func
+  onSidebarOpen: PropTypes.func,
+  component: PropTypes.any
 };
 
 export default Topbar;

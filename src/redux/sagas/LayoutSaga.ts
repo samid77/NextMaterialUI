@@ -3,7 +3,6 @@ import {
     takeLatest,
     call,
 } from 'redux-saga/effects';
-import { AppAction } from '../../interfaces/MitraData';
 import { 
     isIndexPage,
     isIndexPageSuccess,
@@ -22,11 +21,11 @@ import {
     ANOTHER_PAGE_ERROR, 
 } from '../constants/LayoutConstants';
 
-function* workerSagaIndexPage(action: AppAction) {
+function* workerSagaIndexPage(action: any) {
     yield put(isIndexPageSuccess(true))
 }
 
-function* workerSagaAnotherPage(action: AppAction) {
+function* workerSagaAnotherPage(action: any) {
     yield put(isAnotherPageSuccess(true))
 }
 

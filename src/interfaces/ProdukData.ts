@@ -5,7 +5,7 @@ export interface ProdukData{
     idTipeProduk: string;
     namaTipeproduk: string;
     namaSegmen: string;
-    penghasildanDari: number;
+    penghasilanDari: number;
     penghasilanSampai: number;
     plafon: number;
     sukubunga: number;

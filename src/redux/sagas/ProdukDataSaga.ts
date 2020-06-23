@@ -86,7 +86,7 @@ function* workerSagaAddProdukData(action: ProdukDataAction) {
 
 function* workerSagaUpdateProdukData(action: ProdukDataAction) {
     try {
-        const data: object = {
+        const data: any = {
             id: action.data.id,
             idFiturProduk:action.data.idFiturProduk,
             namaFiturProduk: action.data.namaFiturProduk,

@@ -47,7 +47,7 @@ import {
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../redux/reducers';
-import { ProdukDataListState } from '../../interfaces/ProdukData';
+import { ProdukDataListState, ProdukData } from '../../interfaces/ProdukData';
 import { addProdukData, getProdukData, searchProdukData, resetSearchProdukData } from '../../redux/actions/ProdukDataAction';
 import { colors } from '@material-ui/core';
 
@@ -122,11 +122,35 @@ const daftarProduk = [
   { nama: 'KBR'},
 ];
 const tipeProduk = [
-  { nama: 'Syariah'},
-  { nama: 'Konvensional'},
+  { nama: 'Syariah', tipe: ''},
+  { nama: 'Konvensional', tipe: ''},
 ];
 
 export function ProdukToolbar(props) {
+  const defaultVal: ProdukData = {
+    id: '',
+    idFiturProduk: '',
+    namaFiturProduk:'',
+    idTipeProduk: '',
+    namaTipeproduk:'',
+    namaSegmen:'',
+    penghasilanDari: 0,
+    penghasilanSampai: 0,
+    plafon:0,
+    sukubunga:0,
+    tenor:0,
+    idStatusPersetujuan: '',
+    statusPersetujuan:'Approved',
+    created_at: '',
+    created_by: '',
+    updated_at: '',
+    updated_by: '',
+    checked_at: '',
+    checked_by: '',
+    approved_at: '',
+    approved_by: ''
+  };
+
   const dispatch = useDispatch();
   const produkDataState: ProdukDataListState = useSelector((state: AppState) => state.produkData);
   const { className, ...rest } = props;
@@ -136,8 +160,8 @@ export function ProdukToolbar(props) {
   const classes = useStyles();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const [namaproduk, setNamaProduk] = React.useState<string | null>(daftarProduk[0]);
-  const [tipeproduk, setTipeProduk] = React.useState<string | null>(tipeProduk[0]);
+  const [namaproduk, setNamaProduk] = React.useState<any | null>(daftarProduk[0]);
+  const [tipeproduk, setTipeProduk] = React.useState<any | null>(tipeProduk[0]);
 
   const openFormModal = () => {
     setOpenForm(true);
@@ -159,19 +183,11 @@ export function ProdukToolbar(props) {
     setApprovalStatus(event.target.value as string);
   };
 
-  const [values, setValues] = useState({
-    namaFiturProduk:'',
-    namaTipeproduk:'',
-    namaSegmen:'',
-    penghasilanDari:'',
-    penghasilanSampai:'',
-    plafon:'',
-    sukubunga:'',
-    tenor:'',
-    idStatusPersetujuan: 1,
-    statusPersetujuan:'Approved',
-    created_at: new Date(),
-  });
+  const setApprovalStatus = (approval: string) => {
+
+  };
+
+  const [values, setValues] = useState(defaultVal);
 
   const handleChange = event => {
     setValues({
@@ -187,10 +203,11 @@ export function ProdukToolbar(props) {
   const addProduk = () => {
     values.namaFiturProduk = namaproduk.nama;
     values.namaTipeproduk = tipeproduk.nama;
-    values.penghasilanDari = values.penghasilanDari.split(' ').join('');
-    values.penghasilanSampai = values.penghasilanSampai.split(' ').join('');values.plafon = values.plafon.split(' ').join('');
-    values.sukubunga = values.sukubunga.split(' ').join('');
-    values.tenor = values.tenor.split(' ').join('');
+    values.penghasilanDari = parseInt(values.penghasilanDari.toString().split(' ').join(''));
+    values.penghasilanSampai = parseInt(values.penghasilanSampai.toString().split(' ').join(''));
+    values.plafon = parseInt(values.plafon.toString().split(' ').join(''));
+    values.sukubunga = parseInt(values.sukubunga.toString().split(' ').join(''));
+    values.tenor = parseInt(values.tenor.toString().split(' ').join(''));
 
     try {
       dispatch(addProdukData(values));

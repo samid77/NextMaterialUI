@@ -47,7 +47,7 @@ import {
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../redux/reducers';
-import { MitraDataListState } from '../../interfaces/MitraData';
+import { MitraDataListState, MitraData } from '../../interfaces/MitraData';
 import { addMitraData, getMitraData, searchMitraData, resetSearchMitraData } from '../../redux/actions/MitraDataAction';
 import { colors } from '@material-ui/core';
 
@@ -122,6 +122,22 @@ const daftarMitra = [
 ];
 
 export function MitraToolbar(props) {
+  const defaultValues: MitraData = {
+    id: 0,
+    nama: '',
+    tanggalPKS: '',
+    pksStartDate: '',
+    pksEndDate: '',
+    tanggalLimit: '',
+    limitStartDate: '',
+    limitEndDate: '',
+    targetUnit: 0,
+    targetNominal: 0,
+    maxLimit: 0,
+    approvalStatus: 1,
+    createdAt: ''
+  };
+
   const mitraDataState: MitraDataListState = useSelector((state: AppState) => state.mitraData);
   const dispatch = useDispatch();
   const { className, ...rest } = props;
@@ -179,22 +195,9 @@ export function MitraToolbar(props) {
     setApprovalStatus(event.target.value as string);
   };
 
-  const [namamitra, setNamaMitra] = React.useState<string | null>(daftarMitra[0]);
+  const [namamitra, setNamaMitra] = React.useState<any | null>(daftarMitra[0]);
 
-  const [values, setValues] = useState({
-    nama: '',
-    tanggalPKS: '',
-    pksStartDate: '',
-    pksEndDate: '',
-    tanggalLimit: '',
-    limitStartDate: '',
-    limitEndDate: '',
-    targetUnit: '',
-    targetNominal: '',
-    maxLimit: '',
-    approvalStatus: 1,
-    createdAt: new Date()
-  });
+  const [values, setValues] = useState(defaultValues);
 
   const handleChange = event => {
     setValues({
@@ -209,15 +212,15 @@ export function MitraToolbar(props) {
 
   const addMitra = () => {
     values.nama = namamitra.nama;
-    values.tanggalPKS = pksStartDate;
-    values.pksStartDate = pksStartDate;
-    values.pksEndDate = pksEndDate;
-    values.tanggalLimit = limitStartDate;
-    values.limitStartDate = limitStartDate;
-    values.limitEndDate = pksEndDate;
-    values.targetUnit = values.targetUnit.split(' '). join('');
-    values.targetNominal = values.targetNominal.split(' '). join('');
-    values.maxLimit = values.maxLimit.split(' '). join('');
+    values.tanggalPKS = pksStartDate.toString();
+    values.pksStartDate = pksStartDate.toString();
+    values.pksEndDate = pksEndDate.toString();
+    values.tanggalLimit = limitStartDate.toString();
+    values.limitStartDate = limitStartDate.toString();
+    values.limitEndDate = pksEndDate.toString();
+    values.targetUnit = parseInt(values.targetUnit.toString().split(' '). join(''));
+    values.targetNominal = parseInt(values.targetNominal.toString().split(' '). join(''));
+    values.maxLimit = parseInt(values.maxLimit.toString().split(' '). join(''));
     try {
       dispatch(addMitraData(values));
       setOpenForm(false);

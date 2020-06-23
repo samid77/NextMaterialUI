@@ -19,7 +19,7 @@ const reduxStore = createStore(
 
 sagaMiddleware.run(reduxSaga);
 
-const Persistore = persistStore(reduxStore);
+const Persistore: any = persistStore(reduxStore);
 const Store = reduxStore;
 
 export {

@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme:any) => ({
 }));
 
 export function SearchInputCustom(props) {
-  const { className, onChange, dispatchFunc, style, ...rest } = props;
+  const { className, onChange, dispatchFunc, style, onKeyUp, ...rest } = props;
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -69,6 +69,9 @@ export function SearchInputCustom(props) {
 SearchInputCustom.propTypes = {
   className: PropTypes.string,
   onChange: PropTypes.func,
+  onKeyUp: PropTypes.func,
+  dispatchFunc: PropTypes.any,
+  placeholder: PropTypes.string,
   style: PropTypes.object
 };
 
