@@ -39,9 +39,7 @@ const useStyles = makeStyles((theme:any) => ({
 export function Topbar(props) {
   const { className, onSidebarOpen, component: Component, ...rest } = props;
   const classes = useStyles();
-  const [notifications] = useState([]);
   const layoutState: LayoutState = useSelector((state: AppState) => state.layout);
-  const dispatch = useDispatch();
 
   const handleSignOut = () => {
     localStorage.removeItem('accesstoken');

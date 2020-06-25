@@ -136,12 +136,9 @@ function* workerSagaDeleteMitraData(action: any) {
 function* workerSagaSearchMitraData(action: MitraDataAction) {
     try {
         const keywords = action.data
-        console.log(`keywords in saga: ${keywords}`)
-
         const response = yield call(HttpService.get, `http://localhost:3001/datamitra?q=${keywords}`, {});
         
         if (response.status === 200) {
-            console.log(`results: ${response.data}`)
             yield put(mitraDataSuccess(response.data));
         } else {
             yield put(mitraDataError(response.statusText));

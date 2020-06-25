@@ -29,94 +29,14 @@ const initialState: MitraDataListState = {
 const MitraDataReducers = (state: MitraDataListState = initialState, action: MitraDataAction): MitraDataListState => {
   switch (action.type) {
     case GET_MITRA:
+    case SEARCH_MITRA:
+    case RESET_SEARCH_MITRA:
         return {
             ...state,
             fetch: true,
             action: action.type,
         };
     case MITRA_SUCCESS:
-        return {
-            ...state,
-            fetch: false,
-            action: action.type,
-            data: action.data
-        };
-    case MITRA_ERROR:
-        return {
-            ...state,
-            fetch: false,
-            action: action.type,
-            error: action.data
-        };
-    case ADD_MITRA:
-        return {
-            ...state,
-            fetch: true,
-            action: action.type,
-            error: action.data
-        };
-    case ADD_MITRA_SUCCESS:
-        return {
-            ...state,
-            fetch: false,
-            action: action.type,
-            error: action.data
-        };
-    case ADD_MITRA_ERROR:
-        return {
-            ...state,
-            fetch: false,
-            action: action.type,
-            error: action.data
-        };
-    case UPDATE_MITRA:
-        return {
-            ...state,
-            fetch: true,
-            action: action.type,
-            error: action.data
-        };
-    case UPDATE_MITRA_SUCCESS:
-        return {
-            ...state,
-            fetch: false,
-            action: action.type,
-            error: action.data
-        };
-    case UPDATE_MITRA_ERROR:
-        return {
-            ...state,
-            fetch: false,
-            action: action.type,
-            error: action.data
-        };
-    case DELETE_MITRA:
-        return {
-            ...state,
-            fetch: true,
-            action: action.type,
-            error: action.data
-        };
-    case DELETE_MITRA_SUCCESS:
-        return {
-            ...state,
-            fetch: false,
-            action: action.type,
-            error: action.data
-        };
-    case DELETE_MITRA_ERROR:
-        return {
-            ...state,
-            fetch: false,
-            action: action.type,
-            error: action.data
-        };
-    case SEARCH_MITRA:
-        return {
-            ...state,
-            fetch: true,
-            action: action.type,
-        };
     case SEARCH_MITRA_SUCCESS:
         return {
             ...state,
@@ -124,6 +44,10 @@ const MitraDataReducers = (state: MitraDataListState = initialState, action: Mit
             action: action.type,
             data: action.data
         };
+    case MITRA_ERROR:
+    case ADD_MITRA_ERROR:
+    case UPDATE_MITRA_ERROR:
+    case DELETE_MITRA_ERROR:
     case SEARCH_MITRA_ERROR:
         return {
             ...state,
@@ -131,10 +55,21 @@ const MitraDataReducers = (state: MitraDataListState = initialState, action: Mit
             action: action.type,
             error: action.data
         };
-    case RESET_SEARCH_MITRA:
+    case ADD_MITRA:
+    case UPDATE_MITRA:
+    case DELETE_MITRA:
         return {
             ...state,
             fetch: true,
+            action: action.type,
+            error: action.data
+        };
+    case ADD_MITRA_SUCCESS:
+    case UPDATE_MITRA_SUCCESS:
+    case DELETE_MITRA_SUCCESS:
+        return {
+            ...state,
+            fetch: false,
             action: action.type,
         };
     default:

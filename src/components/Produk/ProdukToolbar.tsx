@@ -152,7 +152,6 @@ export function ProdukToolbar(props) {
   };
 
   const dispatch = useDispatch();
-  const produkDataState: ProdukDataListState = useSelector((state: AppState) => state.produkData);
   const { className, ...rest } = props;
   const [openForm, setOpenForm] = React.useState(false);
   const [openAdvanceSearch, setOpenAdvanceSearch] = React.useState(false);
@@ -177,14 +176,6 @@ export function ProdukToolbar(props) {
 
   const closeSearchModal = () => {
     setOpenAdvanceSearch(false);
-  };
-
-  const handleChangeApprovalStatus = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setApprovalStatus(event.target.value as string);
-  };
-
-  const setApprovalStatus = (approval: string) => {
-
   };
 
   const [values, setValues] = useState(defaultVal);

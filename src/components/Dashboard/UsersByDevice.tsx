@@ -43,7 +43,6 @@ export function UsersByDevice(props) {
   const { className, ...rest } = props;
 
   const classes = useStyles();
-  const theme = useTheme();
 
   const data = {
     datasets: [

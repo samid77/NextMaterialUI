@@ -71,7 +71,6 @@ export function SidebarNav(props) {
   const [open, setOpen] = useState(false);
   const classes = useStyles();
   const layoutState: LayoutState = useSelector((state: AppState) => state.layout);
-  const dispatch = useDispatch();
 
   const handleClick = () => {
     setOpen(!open);

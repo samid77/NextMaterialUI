@@ -15,6 +15,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
 import { any } from 'prop-types';
+import Paper from '@material-ui/core/Paper';
 
 
 const schema = {
@@ -35,41 +36,14 @@ const schema = {
 
 const useStyles = makeStyles((theme:any) => ({
   root: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: '#F4F6F8',
     height: '100%',
     maxWidth: '100%'
   },
   grid: {
     height: '100%'
   },
-  quoteContainer: {
-    [theme.breakpoints.down('md')]: {
-      display: 'none'
-    }
-  },
-  quote: {
-    height: '170%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundImage: 'url(/images/houses.jpg)',
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    marginTop: '-1vw',
-    marginLeft: '-2vw',
-    opacity: 0.8
-  },
-  quoteInner: {
-    textAlign: 'center',
-    flexBasis: '600px'
-  },
-  quoteText: {
-    color: '#FFFFFF',
-    fontWeight: 400,
-  },
   name: {
-    marginTop: theme.spacing(3),
     color: '#FFFFFF'
   },
   bio: {
@@ -80,7 +54,7 @@ const useStyles = makeStyles((theme:any) => ({
     height: '170%',
     display: 'flex',
     flexDirection: 'column',
-    marginTop: '2vw'
+    marginTop: theme.spacing(14)
   },
   contentHeader: {
     display: 'flex',
@@ -143,13 +117,15 @@ const useStyles = makeStyles((theme:any) => ({
   },
   alert: {
     position: 'absolute',
-  }
+  },
+  paper: {
+    height: 600,
+    width: 600,
+  },
 }));
 
 
 const Login = props => {
-  const { history } = props;
-
   const classes = useStyles();
   const defaultErrors: any = {};
   const defaultValues: any = {};
@@ -163,7 +139,6 @@ const Login = props => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(true);
   const timer = useRef<number>();
@@ -171,8 +146,8 @@ const Login = props => {
   useEffect(() => {
     const errors = validate(formState.values, schema);
 
-    setFormState(formState => ({
-      ...formState,
+    setFormState(formStates => ({
+      ...formStates,
       isValid: errors ? false : true,
       errors: errors || {}
     }));
@@ -210,17 +185,17 @@ const Login = props => {
       console.log(errorMessage);
     }
 
-    setFormState(formState => ({
-      ...formState,
+    setFormState(formstate => ({
+      ...formstate,
       values: {
-        ...formState.values,
+        ...formstate.values,
         [event.target.name]:
           event.target.type === 'checkbox'
             ? event.target.checked
             : event.target.value
       },
       touched: {
-        ...formState.touched,
+        ...formstate.touched,
         [event.target.name]: true
       }
     }));
@@ -231,7 +206,6 @@ const Login = props => {
     const config = {
       headers:{
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
       },
     }
     
@@ -252,7 +226,6 @@ const Login = props => {
     } catch (error) {
       setSuccess(false);
       setLoading(false);
-      const errorMessage = `error onSubmit: ${error.message}`;
       timer.current = setTimeout(() => {
         setSuccess(true)
       }, 5000);
@@ -265,28 +238,10 @@ const Login = props => {
 
   return (
     <div className={classes.root}>
-      <Grid
-        className={classes.grid}
-        container
-      > 
-        <Grid
-          className={classes.quoteContainer}
-          item
-          lg={5}
-        >
-          <div className={classes.quote}>
-            <div className={classes.quoteInner}>
-            </div>
-          </div>
-        </Grid>
-        <Grid
-          className={classes.content}
-          item
-          lg={7}
-          xs={12}
-        >
+      <Grid className={classes.grid} container justify="center"> 
+        <Paper className={classes.paper}>
           <div className={classes.content}>
-            <div className={classes.contentBody}>
+            <div>
               <form
                 className={classes.form}
                 onSubmit={handleSignIn}
@@ -352,7 +307,7 @@ const Login = props => {
               </form>
             </div>
           </div>
-        </Grid>
+        </Paper>
       </Grid>
     </div>
   );

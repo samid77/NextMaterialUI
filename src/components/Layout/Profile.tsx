@@ -30,7 +30,6 @@ export function Profile(props) {
   const { className, ...rest } = props;
   const classes = useStyles();
   const layoutState: LayoutState = useSelector((state: AppState) => state.layout);
-  const dispatch = useDispatch();
 
   const user = {
     name: 'John Doe',

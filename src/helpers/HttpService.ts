@@ -39,35 +39,30 @@ const getRequestOptions = (method: Method, data?: any, headers?: object, reqOpti
 };
 
 const doFetch = (requestOptions: AxiosRequestConfig, url: string) => {
-  try {
-    if (typeof requestOptions !== 'object') {
-      const errorMessage: string = requestOptions;
-      return errorMessage;
-    }
-
-    // const APIHOST = process.env.REACT_APP_APIHOST;
-    // const APIPORT = process.env.REACT_APP_APIPORT;
-    // const APIPROTOCOL = process.env.REACT_APP_APIPROTOCOL;
-
-    // const path = url.includes('https://') || url.includes('http://') ? url : `${APIPROTOCOL}://${APIHOST}:${APIPORT}/${url}`;
-    const path = url;
-
-    return axios(path, requestOptions)
-      .then((result: any) => {
-        return result;
-      })
-      .catch(err => {
-        let error = err.response || JSON.parse(JSON.stringify(err));
-        if (error.code === 'ECONNABORTED') {
-          error = { message: resTimeout };
-          throw error;
-        }
-        throw error;
-      });
-  } catch (error) {
-    const errorMessage = `Something went wrong when doFetch: ${error.message}`;
+  if (typeof requestOptions !== 'object') {
+    const errorMessage: string = requestOptions;
     return errorMessage;
   }
+
+  // const APIHOST = process.env.REACT_APP_APIHOST;
+  // const APIPORT = process.env.REACT_APP_APIPORT;
+  // const APIPROTOCOL = process.env.REACT_APP_APIPROTOCOL;
+
+  // const path = url.includes('https://') || url.includes('http://') ? url : `${APIPROTOCOL}://${APIHOST}:${APIPORT}/${url}`;
+  const path = url;
+
+  return axios(path, requestOptions)
+    .then((result: any) => {
+      return result;
+    })
+    .catch(err => {
+      let error = err.response || JSON.parse(JSON.stringify(err));
+      if (error.code === 'ECONNABORTED') {
+        error = { message: resTimeout };
+        throw error;
+      }
+      throw error;
+    });
 };
 
 export const HttpService = {

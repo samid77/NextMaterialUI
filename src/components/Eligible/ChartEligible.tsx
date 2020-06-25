@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme:any) => ({
     padding: theme.spacing(1)
   },
   deviceIcon: {
-    color: theme.palette.icon
+    color: colors.blueGrey[600]
   }
 }));
 
@@ -42,7 +42,6 @@ export function ChartEligible(props) {
   const { className, ...rest } = props;
 
   const classes = useStyles();
-  const theme = useTheme();
 
   const data = {
     datasets: [

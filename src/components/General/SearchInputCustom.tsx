@@ -54,6 +54,7 @@ export function SearchInputCustom(props) {
         className={classes.input}
         disableunderline="true"
         onChange={onChange}
+        onKeyUp={onKeyUp}
       />
       <IconButton type="submit" className={classes.iconButton} aria-label="search">
         <SearchIcon />

@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
       color: '#fff',
     },
     root: {
-      backgroundColor: theme.palette.background.default,
+      backgroundColor: '#F4F6F8',
       height: '100%',
       maxWidth: '100%'
     },
@@ -44,7 +44,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Search() {
   const classes = useStyles();
-  const layoutState: LayoutState = useSelector((state: AppState) => state.layout);
   const dispatch = useDispatch();
   
   useEffect(() => {

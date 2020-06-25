@@ -30,7 +30,7 @@ export const theme = createMuiTheme({
   }
 });
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((basetheme:any) => ({
   root: {
     height: '100%',
     ['(min-width:600px)']: {

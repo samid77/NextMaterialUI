@@ -129,7 +129,6 @@ export function MitraList(props) {
   };
 
   const { className, mitra, ...rest } = props;
-  const mitraDataState: MitraDataListState = useSelector((state: AppState) => state.mitraData);
   const dispatch = useDispatch();
   const classes = useStyles();
   const [deleteConfirm, setOpenDeleteConfirm] = React.useState(false);
@@ -139,7 +138,6 @@ export function MitraList(props) {
   const [successAlert, setSuccessAlert] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [mitraId, setMitraId] = useState(0);
-  const [data, setData] = useState([]);
   const [openForm, setOpenForm] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -183,21 +181,21 @@ export function MitraList(props) {
     values.limitEndDate = date.toString();
   };
 
-  const openFormModal = (data) => {
-    values.id = data.id;
-    setMitraId(data.id);
-    const indexMitra = daftarMitra.findIndex(d => d.nama === data.nama);
+  const openFormModal = (currentMitra) => {
+    values.id = currentMitra.id;
+    setMitraId(currentMitra.id);
+    const indexMitra = daftarMitra.findIndex(d => d.nama === currentMitra.nama);
     setNamaMitra(daftarMitra[indexMitra]);
     values.nama = daftarMitra[indexMitra].nama;
-    values.targetNominal = data.targetNominal;
-    values.targetUnit = data.targetUnit;
-    values.maxLimit = data.maxLimit;
-    values.tanggalPKS = data.pksStartDate;
-    values.pksStartDate = data.pksStartDate;
-    values.pksEndDate = data.pksEndDate;
-    values.tanggalLimit = data.limitStartDate;
-    values.limitStartDate = data.limitStartDate;
-    values.limitEndDate = data.limitEndDate;
+    values.targetNominal = currentMitra.targetNominal;
+    values.targetUnit = currentMitra.targetUnit;
+    values.maxLimit = currentMitra.maxLimit;
+    values.tanggalPKS = currentMitra.pksStartDate;
+    values.pksStartDate = currentMitra.pksStartDate;
+    values.pksEndDate = currentMitra.pksEndDate;
+    values.tanggalLimit = currentMitra.limitStartDate;
+    values.limitStartDate = currentMitra.limitStartDate;
+    values.limitEndDate = currentMitra.limitEndDate;
     setOpenForm(true);
   };
 
@@ -205,8 +203,8 @@ export function MitraList(props) {
     setOpenForm(false);
   };
 
-  const handlePageChange = (event, page) => {
-    setPage(page);
+  const handlePageChange = (event, chosenPage) => {
+    setPage(chosenPage);
   };
 
   const handleRowsPerPageChange = event => {
@@ -325,7 +323,7 @@ export function MitraList(props) {
                           </TableCell>
                           <TableCell>{m.tanggalPKS.substring(0,10)}</TableCell>
                           <TableCell>{m.tanggalLimit.substring(0,10)}</TableCell>
-                          <TableCell>{currency.format(m.targetUnit)}</TableCell>
+                          <TableCell>{m.targetUnit}</TableCell>
                           <TableCell>{currency.format(m.targetNominal)}</TableCell>
                           <TableCell>{currency.format(m.maxLimit)}</TableCell>
                           <TableCell>

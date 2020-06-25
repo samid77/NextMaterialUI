@@ -98,7 +98,7 @@ function draw() {
   ctx.moveTo(corner[0], corner[1]);
 
   for (let i = 1; i < 4; i += 1) {
-    corner = cornerAt(i);
+    // corner = cornerAt(i);
     let nextCornerId = i + 1;
     if (nextCornerId === 4) {
       nextCornerId = 0;

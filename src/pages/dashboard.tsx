@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme:any) => ({
 
 export default function Dashboard() {
     const classes = useStyles();
-    const layoutState: LayoutState = useSelector((state: AppState) => state.layout);
     const dispatch = useDispatch();
 
     useEffect(() => {

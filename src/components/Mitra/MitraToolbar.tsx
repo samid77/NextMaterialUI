@@ -138,7 +138,6 @@ export function MitraToolbar(props) {
     createdAt: ''
   };
 
-  const mitraDataState: MitraDataListState = useSelector((state: AppState) => state.mitraData);
   const dispatch = useDispatch();
   const { className, ...rest } = props;
   const [openForm, setOpenForm] = React.useState(false);
@@ -187,12 +186,6 @@ export function MitraToolbar(props) {
 
   const closeSearchModal = () => {
     setOpenAdvanceSearch(false);
-  };
-
-  const [approvalStatus, setApprovalStatus] = React.useState('');
-
-  const handleChangeApprovalStatus = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setApprovalStatus(event.target.value as string);
   };
 
   const [namamitra, setNamaMitra] = React.useState<any | null>(daftarMitra[0]);

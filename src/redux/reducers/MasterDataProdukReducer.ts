@@ -29,94 +29,14 @@ const initialState: ProdukDataListState = {
 const ProdukDataReducers = (state: ProdukDataListState = initialState, action: ProdukDataAction): ProdukDataListState => {
   switch (action.type) {
     case GET_PRODUK:
+    case SEARCH_PRODUK:
+    case RESET_SEARCH_PRODUK:
         return {
             ...state,
             fetch: true,
             action: action.type,
         };
     case PRODUK_SUCCESS:
-        return {
-            ...state,
-            fetch: false,
-            action: action.type,
-            data: action.data
-        };
-    case PRODUK_ERROR:
-        return {
-            ...state,
-            fetch: false,
-            action: action.type,
-            error: action.data
-        };
-    case ADD_PRODUK:
-        return {
-            ...state,
-            fetch: true,
-            action: action.type,
-            error: action.data
-        };
-    case ADD_PRODUK_SUCCESS:
-        return {
-            ...state,
-            fetch: false,
-            action: action.type,
-            error: action.data
-        };
-    case ADD_PRODUK_ERROR:
-        return {
-            ...state,
-            fetch: false,
-            action: action.type,
-            error: action.data
-        };
-    case UPDATE_PRODUK:
-        return {
-            ...state,
-            fetch: true,
-            action: action.type,
-            error: action.data
-        };
-    case UPDATE_PRODUK_SUCCESS:
-        return {
-            ...state,
-            fetch: false,
-            action: action.type,
-            error: action.data
-        };
-    case UPDATE_PRODUK_ERROR:
-        return {
-            ...state,
-            fetch: false,
-            action: action.type,
-            error: action.data
-        };
-    case DELETE_PRODUK:
-        return {
-            ...state,
-            fetch: true,
-            action: action.type,
-            error: action.data
-        };
-    case DELETE_PRODUK_SUCCESS:
-        return {
-            ...state,
-            fetch: false,
-            action: action.type,
-            error: action.data
-        };
-    case DELETE_PRODUK_ERROR:
-        return {
-            ...state,
-            fetch: false,
-            action: action.type,
-            error: action.data
-        };
-    case SEARCH_PRODUK:
-        return {
-            ...state,
-            fetch: true,
-            action: action.type,
-        };
     case SEARCH_PRODUK_SUCCESS:
         return {
             ...state,
@@ -124,6 +44,10 @@ const ProdukDataReducers = (state: ProdukDataListState = initialState, action: P
             action: action.type,
             data: action.data
         };
+    case PRODUK_ERROR:
+    case ADD_PRODUK_ERROR:
+    case UPDATE_PRODUK_ERROR:
+    case DELETE_PRODUK_ERROR:
     case SEARCH_PRODUK_ERROR:
         return {
             ...state,
@@ -131,10 +55,21 @@ const ProdukDataReducers = (state: ProdukDataListState = initialState, action: P
             action: action.type,
             error: action.data
         };
-    case RESET_SEARCH_PRODUK:
+    case ADD_PRODUK:
+    case UPDATE_PRODUK:
+    case DELETE_PRODUK:
         return {
             ...state,
             fetch: true,
+            action: action.type,
+            error: action.data
+        };
+    case ADD_PRODUK_SUCCESS:
+    case UPDATE_PRODUK_SUCCESS:
+    case DELETE_PRODUK_SUCCESS:
+        return {
+            ...state,
+            fetch: false,
             action: action.type,
         };
     default:

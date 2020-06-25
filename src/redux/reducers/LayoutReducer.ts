@@ -20,6 +20,7 @@ const initialState: LayoutState = {
 const LayoutReducers = (state: LayoutState = initialState, action: LayoutAction): LayoutState => {
     switch (action.type) {
         case INDEX_PAGE:
+        case ANOTHER_PAGE:
             return {
                 ...state,
                 fetch: true,
@@ -38,12 +39,7 @@ const LayoutReducers = (state: LayoutState = initialState, action: LayoutAction)
                 ...state,
                 fetch: true,
                 action: action.type,
-            };
-        case ANOTHER_PAGE:
-            return {
-                ...state,
-                fetch: true,
-                action: action.type,
+                error: action.data
             };
         case ANOTHER_PAGE_SUCCESS:
             return {

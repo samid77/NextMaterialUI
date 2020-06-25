@@ -138,12 +138,9 @@ function* workerSagaDeleteProdukData(action: any) {
 function* workerSagaSearchProdukData(action: ProdukDataAction) {
     try {
         const keywords = action.data
-        console.log(`keywords in saga: ${keywords}`)
-
         const response = yield call(HttpService.get, `http://localhost:3001/dataproduk?q=${keywords}`, {});
         
         if (response.status === 200) {
-            console.log(`results: ${response.data}`)
             yield put(produkDataSuccess(response.data));
         } else {
             yield put(produkDataError(response.statusText));

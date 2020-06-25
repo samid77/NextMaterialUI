@@ -100,22 +100,20 @@ const useStyles = makeStyles((theme:any) => ({
 }));
 
 interface NamaProdukType {
-  idFiturProduk: string;
   nama: string;
 }
 interface TipeProdukType {
-  idTipeProduk: string;
   nama: string;
 }
 
 const daftarProduk = [
-  { idFiturProduk:'P0001', nama: 'KPR'},
-  { idFiturProduk:'P0002', nama: 'KRR'},
-  { idFiturProduk:'P0003', nama: 'KBR'},
+  { nama: 'KPR'},
+  { nama: 'KRR'},
+  { nama: 'KBR'},
 ];
 const tipeProduk = [
-  { idTipeProduk:'TP0001', nama: 'Syariah'},
-  { idTipeProduk:'TP0002', nama: 'Konvensional'},
+  { nama: 'Syariah'},
+  { nama: 'Konvensional'},
 ];
 
 export function ProdukList(props) {
@@ -144,7 +142,6 @@ export function ProdukList(props) {
   };
 
   const { className, produk, ...rest } = props;
-  const produkDataState: ProdukDataListState = useSelector((state: AppState) => state.produkData);
   const dispatch = useDispatch();
   const classes = useStyles();
   const [deleteConfirm, setOpenDeleteConfirm] = React.useState(false);
@@ -154,15 +151,11 @@ export function ProdukList(props) {
   const [successAlert, setSuccessAlert] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [produkId, setProdukId] = useState(0);
-  const [data, setData] = useState([]);
   const [openForm, setOpenForm] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const [idInteger, setIdInteger] = useState(0);
-  const [idproduk, setIdProduk] = useState(daftarProduk[0].idFiturProduk);
-  const [namaproduk, setNamaProduk] = useState(daftarProduk[0].nama);
-  const [idtipeproduk, setIdTipeProduk] = useState(tipeProduk[0].idTipeProduk);
-  const [tipeproduk, setTipeProduk] = useState(tipeProduk[0].nama);
+  const [namaproduk, setNamaProduk] = useState(daftarProduk[0]);
+  const [tipeproduk, setTipeProduk] = useState(tipeProduk[0]);
   const [values, setValues] = useState<ProdukData>(defaultVal);
 
   useEffect(() => {
@@ -179,20 +172,19 @@ export function ProdukList(props) {
     });
   };
 
-  const openFormModal = (data) => {
-    const indexProduk = daftarProduk.findIndex(d => d.nama === data.namaFiturProduk);
-    const indexTipe = tipeProduk.findIndex(t => t.nama === data.namaTipeproduk);
-    
-    values.id = data.id;
-    setNamaProduk(daftarProduk[indexProduk].nama);
-    setTipeProduk(tipeProduk[indexTipe].idTipeProduk);
+  const openFormModal = (currentProduct) => {
+    values.id = currentProduct.id;
+    const indexProduk = daftarProduk.findIndex(d => d.nama === currentProduct.namaFiturProduk);
+    const indexTipe = tipeProduk.findIndex(t => t.nama === currentProduct.namaTipeproduk);
+    setNamaProduk(daftarProduk[indexProduk]);
+    setTipeProduk(tipeProduk[indexTipe]);
 
-    values.namaSegmen = data.namaSegmen;
-    values.penghasilanDari = data.penghasilanDari;
-    values.penghasilanSampai = data.penghasilanSampai;
-    values.plafon = data.plafon;
-    values.sukubunga = data.sukubunga;
-    values.tenor = data.tenor;
+    values.namaSegmen = currentProduct.namaSegmen;
+    values.penghasilanDari = currentProduct.penghasilanDari;
+    values.penghasilanSampai = currentProduct.penghasilanSampai;
+    values.plafon = currentProduct.plafon;
+    values.sukubunga = currentProduct.sukubunga;
+    values.tenor = currentProduct.tenor;
     setOpenForm(true);
   };
 
@@ -200,8 +192,8 @@ export function ProdukList(props) {
     setOpenForm(false);
   };
 
-  const handlePageChange = (event, page) => {
-    setPage(page);
+  const handlePageChange = (event, chosenPage) => {
+    setPage(chosenPage);
   };
 
   const handleRowsPerPageChange = event => {
@@ -228,10 +220,8 @@ export function ProdukList(props) {
   }
 
   const updateData = () => {
-    values.namaFiturProduk = namaproduk;
-    values.idFiturProduk = namaproduk;
-    values.idTipeProduk = tipeproduk;
-    values.namaTipeproduk = tipeproduk;
+    values.namaFiturProduk = namaproduk.nama;
+    values.namaTipeproduk = tipeproduk.nama;
     values.penghasilanDari = parseInt(values.penghasilanDari.toString().split(' ').join(''));
     values.penghasilanSampai = parseInt(values.penghasilanSampai.toString().split(' ').join(''));
     values.plafon = parseInt(values.plafon.toString().split(' ').join(''));
@@ -401,10 +391,10 @@ export function ProdukList(props) {
                     id="namaproduk"
                     autoComplete
                     disableClearable
-                    getOptionLabel={(option: NamaProdukType) => option.nama}
                     options={daftarProduk}
+                    getOptionLabel={(option: NamaProdukType) => option.nama}
                     value={namaproduk}
-                    onChange={(event: any, newValue: string | null) => {
+                    onChange={(event: any, newValue: any | null) => {
                       setNamaProduk(newValue);
                     }}
                     renderInput={(params) => (
@@ -413,6 +403,7 @@ export function ProdukList(props) {
                         label="Nama produk"
                         margin="dense"
                         variant="outlined"
+                        required={true}
                         InputProps={{ ...params.InputProps, type: 'search' }}
                       />
                     )}
@@ -426,7 +417,7 @@ export function ProdukList(props) {
                     options={tipeProduk}
                     getOptionLabel={(option: TipeProdukType) => option.nama}
                     value={tipeproduk}
-                    onChange={(event: any, newValue: string | null) => {
+                    onChange={(event: any, newValue: any | null) => {
                       setTipeProduk(newValue);
                     }}
                     renderInput={(params) => (
@@ -435,6 +426,7 @@ export function ProdukList(props) {
                         label="Tipe Produk"
                         margin="dense"
                         variant="outlined"
+                        required={true}
                         InputProps={{ ...params.InputProps, type: 'search' }}
                       />
                     )}
