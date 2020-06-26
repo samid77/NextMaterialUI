@@ -4,21 +4,11 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer } from '@material-ui/core';
 import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import ImageIcon from '@material-ui/icons/Image';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import SettingsIcon from '@material-ui/icons/Settings';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
-import AssignmentIndRoundedIcon from '@material-ui/icons/AssignmentIndRounded';
 import AccountBalanceRoundedIcon from '@material-ui/icons/AccountBalanceRounded';
 import PlaylistAddCheckRoundedIcon from '@material-ui/icons/PlaylistAddCheckRounded';
-import Brightness5RoundedIcon from '@material-ui/icons/Brightness5Rounded';
-import StorageRoundedIcon from '@material-ui/icons/StorageRounded';
 import StarsRoundedIcon from '@material-ui/icons/StarsRounded';
 import { Profile } from './Profile';
 import { SidebarNav } from './SidebarNav';
-import { colors } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme:any) => ({
@@ -94,7 +84,7 @@ export function Sidebar(props) {
       </div>
     </Drawer>
   );
-};
+}
 
 Sidebar.propTypes = {
   className: PropTypes.string,

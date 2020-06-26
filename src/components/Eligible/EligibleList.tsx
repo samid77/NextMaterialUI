@@ -1,28 +1,19 @@
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { Bar } from 'react-chartjs-2';
 import { makeStyles } from '@material-ui/styles';
-import { Grid } from '@material-ui/core';
 import {
   Card,
   CardHeader,
   CardContent,
-  CardActions,
-  Divider,
-  Button
+  Divider
 } from '@material-ui/core';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import List from '@material-ui/core/List';
-import ListItem, { ListItemProps } from '@material-ui/core/ListItem';
+import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-
-import { data, options } from '../General/chart';
 
 const useStyles = makeStyles((theme: any) => ({
   root: {
@@ -97,7 +88,7 @@ export function EligibleList(props) {
       <Divider />
     </Card>
   );
-};
+}
 
 EligibleList.propTypes = {
   className: PropTypes.string

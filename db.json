@@ -2,16 +2,16 @@
   "datamitra": [
     {
       "id": 1,
-      "nama": "Bank OCBC NISP",
-      "tanggalPKS": "Fri Jul 31 2020 07:00:00 GMT+0700 (Western Indonesia Time)",
-      "pksStartDate": "Fri Jul 31 2020 07:00:00 GMT+0700 (Western Indonesia Time)",
-      "pksEndDate": "Sat Aug 01 2020 07:00:00 GMT+0700 (Western Indonesia Time)",
-      "tanggalLimit": "Thu Aug 27 2020 07:00:00 GMT+0700 (Western Indonesia Time)",
-      "limitStartDate": "Thu Aug 27 2020 07:00:00 GMT+0700 (Western Indonesia Time)",
-      "limitEndDate": "Sat Aug 29 2020 07:00:00 GMT+0700 (Western Indonesia Time)",
-      "targetUnit": 170123456789,
-      "maxLimit": 124550000789,
-      "targetNominal": 882729922789,
+      "nama": "Bank Central Asia - BCA",
+      "tanggalPKS": "Sat Jul 25 2020 07:00:00 GMT+0700 (Western Indonesia Time)",
+      "pksStartDate": "Sat Jul 25 2020 07:00:00 GMT+0700 (Western Indonesia Time)",
+      "pksEndDate": "Sun Jul 26 2020 07:00:00 GMT+0700 (Western Indonesia Time)",
+      "tanggalLimit": "2020-08-20",
+      "limitStartDate": "2020-08-20",
+      "limitEndDate": "Wed Aug 26 2020 07:00:00 GMT+0700 (Western Indonesia Time)",
+      "targetUnit": 170000000111,
+      "maxLimit": 124550000333,
+      "targetNominal": 882729922222,
       "approvalStatus": 1,
       "createdAt": ""
     },
@@ -31,6 +31,21 @@
       "id": 2
     },
     {
+      "id": 4,
+      "nama": "Bank OCBC NISP",
+      "tanggalPKS": "Fri Jul 31 2020 19:03:00 GMT+0700 (Western Indonesia Time)",
+      "pksStartDate": "Fri Jul 31 2020 19:03:00 GMT+0700 (Western Indonesia Time)",
+      "pksEndDate": "Sat Aug 01 2020 19:03:00 GMT+0700 (Western Indonesia Time)",
+      "tanggalLimit": "Fri Jul 31 2020 19:03:00 GMT+0700 (Western Indonesia Time)",
+      "limitStartDate": "Fri Jul 31 2020 19:03:00 GMT+0700 (Western Indonesia Time)",
+      "limitEndDate": "Wed Aug 05 2020 19:03:00 GMT+0700 (Western Indonesia Time)",
+      "targetUnit": 100000,
+      "maxLimit": 450000000000,
+      "targetNominal": 320000000000,
+      "approvalStatus": 1,
+      "createdAt": ""
+    },
+    {
       "id": 5,
       "nama": "Bank Negara Indonesia - BNI",
       "tanggalPKS": "Tue Jun 30 2020 18:58:00 GMT+0700 (Western Indonesia Time)",
@@ -38,27 +53,12 @@
       "pksEndDate": "Wed Jul 01 2020 18:58:00 GMT+0700 (Western Indonesia Time)",
       "tanggalLimit": "Tue Jun 30 2020 18:58:00 GMT+0700 (Western Indonesia Time)",
       "limitStartDate": "Tue Jun 30 2020 18:58:00 GMT+0700 (Western Indonesia Time)",
-      "limitEndDate": "Wed Jul 01 2020 18:58:00 GMT+0700 (Western Indonesia Time)",
+      "limitEndDate": "Fri Jul 31 2020 18:58:00 GMT+0700 (Western Indonesia Time)",
       "targetUnit": 234000100111,
       "maxLimit": 345670000333,
       "targetNominal": 123456000222,
       "approvalStatus": 1,
       "createdAt": ""
-    },
-    {
-      "nama": "Bank Central Asia - BCA",
-      "tanggalPKS": "Thu Jun 25 2020 11:32:41 GMT+0700 (Western Indonesia Time)",
-      "pksStartDate": "Thu Jun 25 2020 11:32:41 GMT+0700 (Western Indonesia Time)",
-      "pksEndDate": "Thu Jun 25 2020 11:32:41 GMT+0700 (Western Indonesia Time)",
-      "tanggalLimit": "Thu Jun 25 2020 11:32:41 GMT+0700 (Western Indonesia Time)",
-      "limitStartDate": "Thu Jun 25 2020 11:32:41 GMT+0700 (Western Indonesia Time)",
-      "limitEndDate": "Thu Jun 25 2020 11:32:41 GMT+0700 (Western Indonesia Time)",
-      "targetUnit": 0,
-      "maxLimit": 0,
-      "targetNominal": 0,
-      "approvalStatus": 1,
-      "createdAt": "",
-      "id": 6
     }
   ],
   "dataproduk": [
@@ -118,11 +118,11 @@
       "penghasilanDari": 5500000,
       "penghasilanSampai": 12500000,
       "plafon": 300000000,
-      "sukubunga": 0,
+      "sukubunga": 10,
       "tenor": 10,
       "idStatusPersetujuan": 1,
       "statusPersetujuan": "Approved",
-      "created_at": "2020-06-24T12:50:47.076Z"
+      "created_at": "2020-06-25T09:56:25.151Z"
     }
   ]
 }

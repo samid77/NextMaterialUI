@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import router from 'next/router';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
@@ -10,10 +10,8 @@ import {
   UsersByDevice, 
   LatestProducts, 
   LatestOrders } from '../components/Dashboard';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from '../redux/reducers';
-import { LayoutState } from '../interfaces/Layout';
-import { isIndexPageSuccess, isAnotherPage } from '../redux/actions/LayoutActions';
+import { useDispatch } from 'react-redux';
+import { isAnotherPage } from '../redux/actions/LayoutActions';
 
 
 const useStyles = makeStyles((theme:any) => ({
@@ -28,9 +26,6 @@ export default function Dashboard() {
 
     useEffect(() => {
       dispatch(isAnotherPage(true));
-      if(localStorage.getItem('accesstoken') === null || '' || undefined) {
-        router.push('/login');
-      }
     }, [])
 
     return(

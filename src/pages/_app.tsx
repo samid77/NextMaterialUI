@@ -1,12 +1,8 @@
-import React, { Fragment, useState, useEffect }from 'react';
-import { Box, Container, CssBaseline, useMediaQuery, colors } from '@material-ui/core';
-import red from '@material-ui/core/colors/red';
+import React, { Fragment, useState }from 'react';
+import { Box, Container, CssBaseline, useMediaQuery } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { makeStyles, useTheme } from '@material-ui/styles';
-import axios from 'axios';
-import { SWRConfig } from 'swr';
+import { makeStyles } from '@material-ui/styles';
 import clsx from 'clsx';
-import App from 'next/app';
 import Head from 'next/head';
 // import { Topbar } from '../components/Topbar';
 // import { Sidebar } from '../components/Sidebar';

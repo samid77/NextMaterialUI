@@ -106,7 +106,7 @@ export function ProductCard(props) {
       </CardActions>
     </Card>
   );
-};
+}
 
 ProductCard.propTypes = {
   className: PropTypes.string,

@@ -1,5 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
 import { ProdukToolbar, ProdukList } from '../components/Produk';
 import { makeStyles } from '@material-ui/styles';
 import { useSelector, useDispatch } from 'react-redux';

@@ -5,7 +5,6 @@ import {
 } from 'redux-saga/effects';
 import { ProdukDataAction } from '../../interfaces/ProdukData';
 import { 
-    getProdukData, 
     produkDataSuccess, 
     produkDataError, 
     addProdukDataSuccess, 
@@ -13,11 +12,7 @@ import {
     updateProdukDataSuccess, 
     updateProdukDataError,
     deleteProdukDataSuccess, 
-    deleteProdukDataError,
-    searchProdukData,
-    searchProdukDataSuccess, 
-    searchProdukDataError,
-    resetSearchProdukData
+    deleteProdukDataError
 } from '../actions/ProdukDataAction';
 import { 
     GET_PRODUK, 
@@ -28,18 +23,12 @@ import {
     DELETE_PRODUK,
     DELETE_PRODUK_SUCCESS,
     SEARCH_PRODUK,
-    SEARCH_PRODUK_SUCCESS,
     RESET_SEARCH_PRODUK
 } from '../constants/ProdukConstants';
-import Axios from 'axios';
 import { HttpService } from '../../helpers/HttpService';
   
 function* workerSagaProdukData(action: ProdukDataAction) {
     try {
-        const data = {
-            ...action.data
-        };
-
         const response = yield call(HttpService.get, 'http://localhost:3001/dataproduk', {});
         
         if (response.status === 200) {

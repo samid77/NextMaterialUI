@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
-import { colors } from '@material-ui/core';
 import { SearchInput } from './SearchInput';
 
 
@@ -57,7 +56,7 @@ export function ProductsToolbar(props) {
       </div>
     </div>
   );
-};
+}
 
 ProductsToolbar.propTypes = {
   className: PropTypes.string

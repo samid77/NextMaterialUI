@@ -2,17 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
-import Input from '@material-ui/core/Input';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import DirectionsIcon from '@material-ui/icons/Directions';
 import SearchIcon from '@material-ui/icons/Search';
 import CachedRoundedIcon from '@material-ui/icons/CachedRounded';
-import { getMitraData, resetSearchMitraData } from '../../redux/actions/MitraDataAction';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {
@@ -65,7 +61,7 @@ export function SearchInputCustom(props) {
       </IconButton>
     </Paper>
   );
-};
+}
 
 SearchInputCustom.propTypes = {
   className: PropTypes.string,

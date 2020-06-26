@@ -1,6 +1,6 @@
-import MitraDataReducers from './MasterDataMitraReducer';
-import ProdukDataReducers from './MasterDataProdukReducer';
-import LayoutReducers from './LayoutReducer';
+import MitraDataReducers from './MitraDataReducers';
+import ProdukDataReducers from './ProdukDataReducers';
+import LayoutReducers from './LayoutReducers';
 import { combineReducers } from 'redux';
 
 const AppReducers = combineReducers({

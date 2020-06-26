@@ -71,7 +71,7 @@ export function TotalProfit(props) {
       </CardContent>
     </Card>
   );
-};
+}
 
 TotalProfit.propTypes = {
   className: PropTypes.string

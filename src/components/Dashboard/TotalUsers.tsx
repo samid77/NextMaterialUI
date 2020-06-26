@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import PeopleIcon from '@material-ui/icons/PeopleOutlined';
-import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {
@@ -90,7 +89,7 @@ export function TotalUsers(props) {
       </CardContent>
     </Card>
   );
-};
+}
 
 TotalUsers.propTypes = {
   className: PropTypes.string

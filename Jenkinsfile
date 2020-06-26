@@ -32,21 +32,21 @@ node ('master'){
     def jmeterLoopCount = '10'
     def jmeterErrorRateThresholdPercent = '99'
     def jmeterGitRepo = 'https://bitbucket.tapera.go.id/scm/sam/jmeter.git'
-    def katalonGitRepo = 'https://bitbucket.tapera.go.id/scm/sam/katalon.git'
-    def katalonBranch = 'master'
-    def katalonProjectName = 'TestPlease.prj'
-    def katalonTestSuiteName = 'TestSuiteTapera'
     def jiraIssueKey
     def jiraUrl = 'https://jira.tapera.go.id'
 
-    def branch = 'master'
-    
-    def gitUrl = 'https://bitbucket.tapera.go.id/scm/pmf/pmf--fe.git'
+    def appRepoUrl = 'https://bitbucket.tapera.go.id/scm/pmf/pmf--fe.git'
+    def appBranch = 'master'
+
+    def katalonRepoUrl = 'https://bitbucket.tapera.go.id/scm/pmf/pmf-fe-katalon.git'
+    def katalonBranch = 'master'
+    def katalonProjectName = 'pemanfaatan-fe-test.prj'
+    def katalonTestSuiteName = 'SimpleTestSuite'
 
     stage('Checkout'){
         echo 'Checking out SCM'
         //checkout scm
-        checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[credentialsId: 'ci-cd', url: "${gitUrl}"]], branches: [[name: "${branch}"]]]
+        checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[credentialsId: 'ci-cd', url: "${appRepoUrl}"]], branches: [[name: "${appBranch}"]]]
     }
 
 	stage('Build App'){
@@ -58,17 +58,17 @@ node ('master'){
 
     stage("SonarQube Analysis"){
 		echo 'scan sonarqube'
-        // withSonarQubeEnv(credentialsId: 'sonarqube-token', installationName: 'sonarqube') {
-		// 	sh"sonar-scanner -Dsonar.projectKey=pemanfaatan-fe -Dsonar.sources=. -Dsonar.qualitygate.wait=true"
-		// }
+        withSonarQubeEnv(credentialsId: 'sonarqube-token', installationName: 'sonarqube') {
+			sh"sonar-scanner -Dsonar.projectKey=pmf-fe -Dsonar.sources=. -Dsonar.qualitygate.wait=true"
+		}
 		
-		// //quality gate
-		// timeout(time: 1, unit: 'HOURS') {
-        //       def qg = waitForQualityGate()
-        //       if (qg.status != 'OK') {
-        //           error "Pipeline aborted due to quality gate failure: ${qg.status}"
-        //       }
-        //  }
+		//quality gate
+		timeout(time: 1, unit: 'HOURS') {
+              def qg = waitForQualityGate()
+              if (qg.status != 'OK') {
+                  error "Pipeline aborted due to quality gate failure: ${qg.status}"
+              }
+         }
     }
 	
 	stage('Unit Test') {
@@ -80,9 +80,14 @@ node ('master'){
 
     stage('Build Image') {
         echo "Build Image"
-		sh """ 
-            docker build -t ${appName}:${imageTag} .
-        """
+        withCredentials([usernamePassword(credentialsId: 'ci-cd', passwordVariable: 'nexusPassword', usernameVariable: 'nexusUsername')]) {
+            sh """
+            podman login -u ${nexusUsername} -p ${nexusPassword} ${nexusDockerDevRepoGCP} --tls-verify=false
+            podman build -t ${nexusDockerDevRepoGCP}/${appName}:latest . --tls-verify=false
+            podman push ${nexusDockerDevRepoGCP}/${appName}:latest --tls-verify=false
+            podman rmi ${nexusDockerDevRepoGCP}/${appName}:latest -f
+            """
+        }
     }
 
     stage('Publish Image To GCP repo'){
@@ -103,6 +108,28 @@ node ('master'){
         echo 'delete image'
         //sh "docker rmi tapera.${appName}"
     } 
+
+    stage ("Regression Test") {
+        echo 'regression test'
+        node ('kre-centos') {
+			cleanWs deleteDirs: true
+            checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[credentialsId: 'ci-cd', url: "${katalonRepoUrl}"]], branches: [[name: "${katalonBranch}"]]]
+			
+			withCredentials([string(credentialsId: 'katalon-api-key', variable: 'secret')]) {
+				echo "workspace : ${workspace}"
+				sh """
+				pwd
+				ls
+
+                /katalon01/katalon-studio-engine/katalonc -noSplash -runMode=console \
+                -projectPath='${workspace}/${katalonProjectName}' -retry=0 \
+                -testSuitePath="Test Suites/${katalonTestSuiteName}" \
+                -executionProfile="default" -browserType="Chrome (headless)" \
+                -apiKey=${secret}
+				"""
+			}
+		}
+    }
         
     stage ("Jira Update Status") {
 

@@ -69,7 +69,7 @@ export function GrafikEligible(props) {
       </CardActions>
     </Card>
   );
-};
+}
 
 GrafikEligible.propTypes = {
   className: PropTypes.string

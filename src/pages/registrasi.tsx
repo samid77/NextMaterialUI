@@ -1,7 +1,6 @@
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 import SignUp from '../components/Auth/SignUp';
-import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {

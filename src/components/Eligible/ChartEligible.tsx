@@ -1,8 +1,8 @@
 import React from 'react';
-import { Doughnut, Pie } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles, useTheme } from '@material-ui/styles';
+import { makeStyles} from '@material-ui/styles';
 import {
   Card,
   CardHeader,
@@ -137,7 +137,7 @@ export function ChartEligible(props) {
       </CardContent>
     </Card>
   );
-};
+}
 
 ChartEligible.propTypes = {
   className: PropTypes.string

@@ -1,4 +1,4 @@
-import storage from 'redux-persist/lib/storage';
+// import storage from 'redux-persist/lib/storage';
 
 const hook: any = (state: any, action: any) => {
   // do your hook here

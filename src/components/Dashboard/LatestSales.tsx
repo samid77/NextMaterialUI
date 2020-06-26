@@ -69,7 +69,7 @@ export function LatestSales(props) {
       </CardActions>
     </Card>
   );
-};
+}
 
 LatestSales.propTypes = {
   className: PropTypes.string

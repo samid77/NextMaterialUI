@@ -1,14 +1,10 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import router from 'next/router';
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { Grid, Typography } from '@material-ui/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from '../redux/reducers';
-import { LayoutState } from '../interfaces/Layout';
-import { isIndexPage, isIndexPageSuccess, isAnotherPageSuccess } from '../redux/actions/LayoutActions';
+import { useDispatch } from 'react-redux';
+import { isIndexPage } from '../redux/actions/LayoutActions';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -49,11 +45,7 @@ export default function Search() {
   useEffect(() => {
     dispatch(isIndexPage(true));
     setTimeout(() => {
-      if(localStorage.getItem('accesstoken') === null || '' || undefined) {
-        router.push('/login');
-      } else {
-        router.push('/dashboard');
-      }
+      router.push('/dashboard');
     }, 5000);
   }, [])
 

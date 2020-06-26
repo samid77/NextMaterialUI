@@ -46,7 +46,7 @@ export function SearchInput(props) {
       />
     </Paper>
   );
-};
+}
 
 SearchInput.propTypes = {
   className: PropTypes.string,

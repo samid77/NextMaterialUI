@@ -1,9 +1,7 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import clsx from 'clsx';
-import axios from 'axios';
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles } from '@material-ui/styles';
 import { useTheme } from '@material-ui/core/styles';
@@ -11,8 +9,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  Avatar,
-  Checkbox,
   Table,
   TableBody,
   TableCell,
@@ -28,16 +24,11 @@ import {
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
-import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import TimerRoundedIcon from '@material-ui/icons/TimerRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import Chip from '@material-ui/core/Chip';
 import { yellow, red } from '@material-ui/core/colors';
-import Switch from '@material-ui/core/Switch';
-import Paper from '@material-ui/core/Paper';
-import Collapse from '@material-ui/core/Collapse';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -46,25 +37,17 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DateFnsUtils from '@date-io/date-fns';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
-import SearchIcon from '@material-ui/icons/Search';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from '../../redux/reducers';
-import { MitraDataListState, MitraData } from '../../interfaces/MitraData';
-import { updateMitraData, getMitraData, deleteMitraData } from '../../redux/actions/MitraDataAction';
+import { useDispatch } from 'react-redux';
+import { MitraData } from '../../interfaces/MitraData';
+import { updateMitraData, deleteMitraData } from '../../redux/actions/MitraDataAction';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputMask from 'react-input-mask';
-import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {},
@@ -192,10 +175,12 @@ export function MitraList(props) {
     values.maxLimit = currentMitra.maxLimit;
     values.tanggalPKS = currentMitra.pksStartDate;
     values.pksStartDate = currentMitra.pksStartDate;
+    setPksEndDate(currentMitra.pksEndDate);
     values.pksEndDate = currentMitra.pksEndDate;
     values.tanggalLimit = currentMitra.limitStartDate;
     values.limitStartDate = currentMitra.limitStartDate;
     values.limitEndDate = currentMitra.limitEndDate;
+    setLimitEndDate(currentMitra.limitEndDate);
     setOpenForm(true);
   };
 
@@ -464,7 +449,7 @@ export function MitraList(props) {
                         minDate={pksStartDate}
                         minDateMessage={'Tanggal harus setelah tanggal mulai PKS'}
                         label="Sampai"
-                        value={values.pksEndDate}
+                        value={pksEndDate}
                         onChange={handlePksEndDateChange}
                         KeyboardButtonProps={{
                           'aria-label': 'change date',
@@ -498,7 +483,7 @@ export function MitraList(props) {
                         minDate={limitStartDate}
                         minDateMessage={'Tanggal harus setelah tanggal mulai Limit'}
                         label="Sampai"
-                        value={values.limitEndDate}
+                        value={limitEndDate}
                         onChange={handleLimitEndDateChange}
                         KeyboardButtonProps={{
                           'aria-label': 'change date',
@@ -567,7 +552,7 @@ export function MitraList(props) {
       </Dialog>
     </Fragment>
   );
-};
+}
 
 MitraList.propTypes = {
   className: PropTypes.string,

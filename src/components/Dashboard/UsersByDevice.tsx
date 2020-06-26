@@ -2,7 +2,7 @@ import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles, useTheme } from '@material-ui/styles';
+import { makeStyles} from '@material-ui/styles';
 import {
   Card,
   CardHeader,
@@ -145,7 +145,7 @@ export function UsersByDevice(props) {
       </CardContent>
     </Card>
   );
-};
+}
 
 UsersByDevice.propTypes = {
   className: PropTypes.string

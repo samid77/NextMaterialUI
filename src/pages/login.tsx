@@ -1,20 +1,13 @@
-import React, {Fragment, useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import router, { useRouter } from 'next/router'
+import React, {useState, useEffect, useRef } from 'react';
+import router from 'next/router'
 import validate from 'validate.js';
 import axios from 'axios';
 
 import { makeStyles } from '@material-ui/styles';
-import { Grid, Button,IconButton,TextField,Link,Typography} from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import { blue, purple } from '@material-ui/core/colors';
+import { Grid, Button,TextField,Typography} from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
-import { any } from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 
 
@@ -170,15 +163,10 @@ const Login = props => {
     
     try {
       const { name, value } = event.currentTarget;
-
-      switch (name) {
-        case 'email':
-          setEmail(value);
-          break;
-
-        default:
-          setPassword(value);
-          break;
+      if(name === 'email') {
+        setEmail(value);
+      } else {
+        setPassword(value);
       }
     } catch(err) {
       const errorMessage = `error onChange: ${err.message}`;

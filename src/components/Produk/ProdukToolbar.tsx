@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Link from 'next/link';
 import clsx from 'clsx';
 
 import { SearchInputCustom } from '../General';
@@ -8,7 +7,7 @@ import { SearchInputCustom } from '../General';
 import { makeStyles } from '@material-ui/styles';
 import { useTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import { green, purple, red } from '@material-ui/core/colors';
+import { red } from '@material-ui/core/colors';
 
 import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
 import PublishRoundedIcon from '@material-ui/icons/PublishRounded';
@@ -16,39 +15,21 @@ import PageviewRoundedIcon from '@material-ui/icons/PageviewRounded';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import DateFnsUtils from '@date-io/date-fns';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
-import SearchIcon from '@material-ui/icons/Search';
-import Paper from '@material-ui/core/Paper';
-import axios from 'axios';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import InputMask from 'react-input-mask';
 import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-import {
-  Card,
-  CardHeader,
   CardContent,
-  CardActions,
   Divider,
   Grid,
   TextField
 } from '@material-ui/core';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from '../../redux/reducers';
-import { ProdukDataListState, ProdukData } from '../../interfaces/ProdukData';
-import { addProdukData, getProdukData, searchProdukData, resetSearchProdukData } from '../../redux/actions/ProdukDataAction';
+import { useDispatch } from 'react-redux';
+import { ProdukData } from '../../interfaces/ProdukData';
+import { addProdukData, searchProdukData, resetSearchProdukData } from '../../redux/actions/ProdukDataAction';
 import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme:any) => ({
@@ -482,7 +463,7 @@ export function ProdukToolbar(props) {
       </Dialog>
     </div>
   );
-};
+}
 
 ProdukToolbar.propTypes = {
   className: PropTypes.string

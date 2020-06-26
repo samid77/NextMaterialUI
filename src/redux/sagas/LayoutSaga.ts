@@ -1,24 +1,15 @@
 import {
     put,
     takeLatest,
-    call,
 } from 'redux-saga/effects';
 import { 
-    isIndexPage,
     isIndexPageSuccess,
-    isIndexPageError,
-    isAnotherPage,
     isAnotherPageSuccess,
-    isAnotherPageError,
 } from '../actions/LayoutActions';
 
 import { 
     INDEX_PAGE,
-    INDEX_PAGE_SUCCESS,
-    INDEX_PAGE_ERROR,
     ANOTHER_PAGE,
-    ANOTHER_PAGE_SUCCESS,
-    ANOTHER_PAGE_ERROR, 
 } from '../constants/LayoutConstants';
 
 function* workerSagaIndexPage(action: any) {

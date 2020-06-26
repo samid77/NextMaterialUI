@@ -5,7 +5,6 @@ import {
 } from 'redux-saga/effects';
 import { MitraDataAction } from '../../interfaces/MitraData';
 import { 
-    getMitraData, 
     mitraDataSuccess, 
     mitraDataError, 
     addMitraDataSuccess, 
@@ -13,11 +12,7 @@ import {
     updateMitraDataSuccess, 
     updateMitraDataError,
     deleteMitraDataSuccess, 
-    deleteMitraDataError,
-    searchMitraData,
-    searchMitraDataSuccess, 
-    searchMitraDataError,
-    resetSearchMitraData
+    deleteMitraDataError
 } from '../actions/MitraDataAction';
 import { 
     GET_MITRA, 
@@ -28,18 +23,12 @@ import {
     DELETE_MITRA,
     DELETE_MITRA_SUCCESS,
     SEARCH_MITRA,
-    SEARCH_MITRA_SUCCESS,
     RESET_SEARCH_MITRA
 } from '../constants/MitraConstants';
-import Axios from 'axios';
 import { HttpService } from '../../helpers/HttpService';
   
 function* workerSagaMitraData(action: MitraDataAction) {
     try {
-        const data = {
-            ...action.data
-        };
-
         const response = yield call(HttpService.get, 'http://localhost:3001/datamitra', {});
         
         if (response.status === 200) {

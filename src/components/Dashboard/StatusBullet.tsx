@@ -61,7 +61,7 @@ export function StatusBullet(props) {
       )}
     />
   );
-};
+}
 
 StatusBullet.propTypes = {
   className: PropTypes.string,

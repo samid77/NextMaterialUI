@@ -1,11 +1,10 @@
-import React, { useEffect, useState }  from 'react';
-import Link from 'next/link';
+import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Avatar, Typography } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import { LayoutState } from '../../interfaces/Layout';
 
@@ -56,7 +55,7 @@ export function Profile(props) {
       { layoutState.indexPage ? <Skeleton animation="wave" width={100} height={20} variant="text"/> : <Typography variant="body2">{user.bio}</Typography>}
     </div>
   );
-};
+}
 
 Profile.propTypes = {
   className: PropTypes.string

@@ -1,20 +1,18 @@
-import React, { useState, Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import Link from 'next/link';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles, useTheme } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import { AppBar, Toolbar, Badge, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
-import { useMediaQuery } from '@material-ui/core';
 import router from 'next/router';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import { LayoutState } from '../../interfaces/Layout';
 import Typography from '@material-ui/core/Typography';
-import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {
@@ -104,7 +102,7 @@ export function Topbar(props) {
       <div className={classes.toolbarMargin} />
     </Fragment>
   );
-};
+}
 
 Topbar.propTypes = {
   className: PropTypes.string,

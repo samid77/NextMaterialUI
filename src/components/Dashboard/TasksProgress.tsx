@@ -79,7 +79,7 @@ export function TasksProgress(props) {
       </CardContent>
     </Card>
   );
-};
+}
 
 TasksProgress.propTypes = {
   className: PropTypes.string

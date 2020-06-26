@@ -1,21 +1,18 @@
 /* eslint-disable react/no-multi-comp */
 /* eslint-disable react/display-name */
-import React, { forwardRef, useState, Fragment, useEffect } from 'react';
+import React, { forwardRef, useState, Fragment } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { List, ListItem, ListItemIcon, ListItemText, Button, colors } from '@material-ui/core';
+import { List, ListItem, Button, colors } from '@material-ui/core';
 import Collapse from '@material-ui/core/Collapse';
-import StarBorder from '@material-ui/icons/StarBorder';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import AccountBalanceRoundedIcon from '@material-ui/icons/AccountBalanceRounded';
 import StarsRoundedIcon from '@material-ui/icons/StarsRounded';
 import Skeleton from '@material-ui/lab/Skeleton';
-import Hidden from '@material-ui/core/Hidden';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import { LayoutState } from '../../interfaces/Layout';
 
@@ -162,7 +159,7 @@ export function SidebarNav(props) {
       </List>
     </Fragment>
   );
-};
+}
 
 SidebarNav.propTypes = {
   className: PropTypes.string,

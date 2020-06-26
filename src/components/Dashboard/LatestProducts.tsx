@@ -93,7 +93,7 @@ export function LatestProducts(props) {
       </CardActions>
     </Card>
   );
-};
+}
 
 LatestProducts.propTypes = {
   className: PropTypes.string
