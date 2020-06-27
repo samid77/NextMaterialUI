@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { ProdukToolbar, ProdukList } from '../components/Produk';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../redux/reducers';
 import { ProdukDataListState } from '../interfaces/ProdukData';
 import { getProdukData } from '../redux/actions/ProdukDataAction';
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   root: {
     padding: theme.spacing(3),
   },

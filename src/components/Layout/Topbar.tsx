@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import Link from 'next/link';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Badge, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
@@ -14,7 +14,7 @@ import { AppState } from '../../redux/reducers';
 import { LayoutState } from '../../interfaces/Layout';
 import Typography from '@material-ui/core/Typography';
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   root: {
     boxShadow: 'none'
   },

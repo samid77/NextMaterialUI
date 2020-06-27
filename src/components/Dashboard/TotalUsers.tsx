@@ -1,12 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import PeopleIcon from '@material-ui/icons/PeopleOutlined';
+import { colors } from '@material-ui/core';
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   root: {
     height: '100%'
   },
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme:any) => ({
     fontWeight: 700
   },
   avatar: {
-    backgroundColor: theme.palette.success.main,
+    backgroundColor: colors.green[600],
     height: 56,
     width: 56
   },
@@ -32,10 +33,10 @@ const useStyles = makeStyles((theme:any) => ({
     alignItems: 'center'
   },
   differenceIcon: {
-    color: theme.palette.success.dark
+    color: colors.green[900]
   },
   differenceValue: {
-    color: theme.palette.success.dark,
+    color: colors.green[900],
     marginRight: theme.spacing(1)
   }
 }));

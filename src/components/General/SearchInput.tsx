@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Paper, Input } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { colors } from '@material-ui/core';
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   root: {
     borderRadius: '4px',
     alignItems: 'center',

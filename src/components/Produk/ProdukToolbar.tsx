@@ -4,8 +4,7 @@ import clsx from 'clsx';
 
 import { SearchInputCustom } from '../General';
 
-import { makeStyles } from '@material-ui/styles';
-import { useTheme } from '@material-ui/core/styles';
+import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 
@@ -32,7 +31,7 @@ import { ProdukData } from '../../interfaces/ProdukData';
 import { addProdukData, searchProdukData, resetSearchProdukData } from '../../redux/actions/ProdukDataAction';
 import { colors } from '@material-ui/core';
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   root: {},
   row: {
     height: '42px',

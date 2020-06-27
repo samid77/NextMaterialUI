@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
 import {
   Card,
@@ -49,7 +49,7 @@ import { updateMitraData, deleteMitraData } from '../../redux/actions/MitraDataA
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputMask from 'react-input-mask';
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   root: {},
   content: {
     padding: 0
@@ -112,6 +112,8 @@ export function MitraList(props) {
   };
 
   const { className, mitra, ...rest } = props;
+  let totalData = 0;
+  typeof(mitra) === 'object' ? totalData = Object.keys(mitra).length : totalData;
   const dispatch = useDispatch();
   const classes = useStyles();
   const [deleteConfirm, setOpenDeleteConfirm] = React.useState(false);
@@ -351,7 +353,7 @@ export function MitraList(props) {
         <CardActions className={classes.actions}>
           <TablePagination
             component="div"
-            count={mitra.length}
+            count={totalData}
             onChangePage={handlePageChange}
             onChangeRowsPerPage={handleRowsPerPageChange}
             page={page}
@@ -555,8 +557,7 @@ export function MitraList(props) {
 }
 
 MitraList.propTypes = {
-  className: PropTypes.string,
-  mitra: PropTypes.array.isRequired
+  className: PropTypes.string
 };
 
 export default MitraList;

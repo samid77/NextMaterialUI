@@ -3,8 +3,7 @@ import clsx from 'clsx';
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { makeStyles } from '@material-ui/styles';
-import { useTheme } from '@material-ui/core/styles';
+import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import {
   Card,
   CardActions,
@@ -40,7 +39,7 @@ import { useDispatch } from 'react-redux';
 import { ProdukData } from '../../interfaces/ProdukData';
 import { updateProdukData, deleteProdukData } from '../../redux/actions/ProdukDataAction';
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   root: {},
   content: {
     padding: 0
@@ -116,6 +115,8 @@ export function ProdukList(props) {
   };
 
   const { className, produk, ...rest } = props;
+  let totalData = 0;
+  typeof(produk) === 'object' ? totalData = Object.keys(produk).length : totalData;
   const dispatch = useDispatch();
   const classes = useStyles();
   const [deleteConfirm, setOpenDeleteConfirm] = React.useState(false);
@@ -315,7 +316,7 @@ export function ProdukList(props) {
         <CardActions className={classes.actions}>
           <TablePagination
             component="div"
-            count={produk.length}
+            count={totalData}
             onChangePage={handlePageChange}
             onChangeRowsPerPage={handleRowsPerPageChange}
             page={page}

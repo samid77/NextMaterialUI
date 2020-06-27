@@ -3,7 +3,7 @@ import router from 'next/router'
 import validate from 'validate.js';
 import axios from 'axios';
 
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Grid, Button,TextField,Typography} from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -27,7 +27,7 @@ const schema = {
   }
 };
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   root: {
     backgroundColor: '#F4F6F8',
     height: '100%',

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Card,
   CardHeader,
@@ -11,7 +11,7 @@ import {
   TextField
 } from '@material-ui/core';
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   root: {
     padding: theme.spacing(4)
   }

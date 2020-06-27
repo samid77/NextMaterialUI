@@ -2,7 +2,7 @@ import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles} from '@material-ui/styles';
+import { makeStyles, Theme} from '@material-ui/core/styles';
 import {
   Card,
   CardHeader,
@@ -17,7 +17,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import TabletMacIcon from '@material-ui/icons/TabletMac';
 import { colors } from '@material-ui/core';
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   root: {
     height: '100%'
   },
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme:any) => ({
     padding: theme.spacing(1)
   },
   deviceIcon: {
-    color: theme.palette.icon
+    color: colors.blueGrey[600]
   }
 }));
 

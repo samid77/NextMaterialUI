@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import router from 'next/router';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import { 
   TotalUsers, 
@@ -14,7 +13,7 @@ import { useDispatch } from 'react-redux';
 import { isAnotherPage } from '../redux/actions/LayoutActions';
 
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   root: {
     padding: theme.spacing(4)
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Card,
   CardContent,
@@ -14,7 +14,7 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { colors } from '@material-ui/core';
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   root: {},
   imageContainer: {
     height: 64,
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme:any) => ({
     alignItems: 'center'
   },
   statsIcon: {
-    color: theme.palette.icon,
+    color: colors.blueGrey[600],
     marginRight: theme.spacing(1)
   }
 }));

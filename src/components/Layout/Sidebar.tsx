@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Divider, Drawer } from '@material-ui/core';
 import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
 import AccountBalanceRoundedIcon from '@material-ui/icons/AccountBalanceRounded';
@@ -11,7 +11,7 @@ import { Profile } from './Profile';
 import { SidebarNav } from './SidebarNav';
 
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   drawer: {
     width: 240,
     [theme.breakpoints.up('lg')]: {

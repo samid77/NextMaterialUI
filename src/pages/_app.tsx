@@ -1,11 +1,9 @@
 import React, { Fragment, useState }from 'react';
 import { Box, Container, CssBaseline, useMediaQuery } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Head from 'next/head';
-// import { Topbar } from '../components/Topbar';
-// import { Sidebar } from '../components/Sidebar';
 import { Topbar, Sidebar } from '../components/Layout';
 import palette from '../theme/palette';
 import typography from '../theme/typography';
@@ -44,22 +42,16 @@ const useStyles = makeStyles((basetheme:any) => ({
 function MyApp({ Component, pageProps }) {
 
   const [openSidebar, setOpenSidebar] = useState(false);
-
-
   const isDesktop = useMediaQuery('(min-width:1280px)', {
     defaultMatches: true
   });
-
   const handleSidebarOpen = () => {
     setOpenSidebar(true);
   };
-
   const handleSidebarClose = () => {
     setOpenSidebar(false);
   };
-
   const classes = useStyles();
-
   const shouldOpenSidebar = isDesktop ? true : openSidebar;
 
   return (

@@ -2,16 +2,16 @@
   "datamitra": [
     {
       "id": 1,
-      "nama": "Bank Central Asia - BCA",
-      "tanggalPKS": "Sat Jul 25 2020 07:00:00 GMT+0700 (Western Indonesia Time)",
-      "pksStartDate": "Sat Jul 25 2020 07:00:00 GMT+0700 (Western Indonesia Time)",
-      "pksEndDate": "Sun Jul 26 2020 07:00:00 GMT+0700 (Western Indonesia Time)",
+      "nama": "Bank DKI",
+      "tanggalPKS": "Fri Jul 31 2020 07:00:00 GMT+0700 (Western Indonesia Time)",
+      "pksStartDate": "Fri Jul 31 2020 07:00:00 GMT+0700 (Western Indonesia Time)",
+      "pksEndDate": "Sat Aug 01 2020 07:00:00 GMT+0700 (Western Indonesia Time)",
       "tanggalLimit": "2020-08-20",
       "limitStartDate": "2020-08-20",
       "limitEndDate": "Wed Aug 26 2020 07:00:00 GMT+0700 (Western Indonesia Time)",
-      "targetUnit": 170000000111,
-      "maxLimit": 124550000333,
-      "targetNominal": 882729922222,
+      "targetUnit": 170000000000,
+      "maxLimit": 223232002200,
+      "targetNominal": 123402002222,
       "approvalStatus": 1,
       "createdAt": ""
     },

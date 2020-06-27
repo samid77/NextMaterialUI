@@ -1,14 +1,14 @@
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Avatar, Typography } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import { LayoutState } from '../../interfaces/Layout';
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',

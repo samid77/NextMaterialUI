@@ -1,8 +1,8 @@
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import SignUp from '../components/Auth/SignUp';
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   root: {
     backgroundColor: '#F4F6F8',
     height: '100%'

@@ -4,7 +4,7 @@ import React, { forwardRef, useState, Fragment } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { List, ListItem, Button, colors } from '@material-ui/core';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import { LayoutState } from '../../interfaces/Layout';
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   root: {},
   item: {
     display: 'flex',
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme:any) => ({
     fontWeight: theme.typography.fontWeightMedium
   },
   icon: {
-    color: theme.palette.icon,
+    color: colors.blueGrey[600],
     width: 24,
     height: 24,
     display: 'flex',

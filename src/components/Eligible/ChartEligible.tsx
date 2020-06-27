@@ -2,7 +2,7 @@ import React from 'react';
 import { Pie } from 'react-chartjs-2';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles} from '@material-ui/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Card,
   CardHeader,
@@ -16,7 +16,7 @@ import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import { colors } from '@material-ui/core';
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   root: {
     height: '100%'
   },
