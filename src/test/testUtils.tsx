@@ -1,9 +1,7 @@
 import { render } from '@testing-library/react'
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
 import { Store, Persistore } from '../redux/core/store';
 import { PersistGate } from 'redux-persist/integration/react';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 const AppWrapper = ({children}) => {
   return (

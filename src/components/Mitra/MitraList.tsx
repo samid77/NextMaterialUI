@@ -3,8 +3,7 @@ import clsx from 'clsx';
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import { useTheme } from '@material-ui/core/styles';
+import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import {
   Card,
   CardActions,
@@ -48,6 +47,9 @@ import { MitraData } from '../../interfaces/MitraData';
 import { updateMitraData, deleteMitraData } from '../../redux/actions/MitraDataAction';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputMask from 'react-input-mask';
+import NumberFormat from 'react-number-format';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles((theme:Theme) => ({
   root: {},
@@ -75,15 +77,132 @@ const useStyles = makeStyles((theme:Theme) => ({
     color: theme.palette.getContrastText(yellow[500]),
     backgroundColor: yellow[500],
   },
+  customTableHead: {
+    backgroundColor: '#C2E8CE'
+  },
+  tableClass: {
+    fontWeight: 600
+  },
+  tableDataClass: {
+    fontWeight: 500,
+    letterSpacing: '-0.05px'
+  },
+  dialogTitleSection: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  dialogContent: {
+    marginTop: theme.spacing(-2)
+  },
+  dateLabel: {
+    marginBottom: theme.spacing(-6)
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
   buttons: {},
   tableRow: {},
-  dialogContent: {},
   dialogAction: {},
-  dateLabel: {},
 }));
 
 interface NamaMitraType {
   nama: string;
+}
+
+interface NumberProps {
+  inputRef: (instance: NumberFormat | null) => void;
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
+
+const NumberFormatTargetNominal = (props: NumberProps) =>  {
+  const { inputRef, onChange, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      isAllowed={(values) => {
+          const { formattedValue, floatValue } = values;
+          return formattedValue === "" || floatValue <= 999999999;
+      }}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator={'.'}
+      decimalSeparator={','}
+      isNumericString
+      allowLeadingZeros={false}
+      defaultValue={0}
+      allowNegative={false}
+      prefix="Rp. "
+    />
+  );
+}
+
+const NumberFormatMaximalLimit = (props: NumberProps) =>  {
+  const { inputRef, onChange, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      isAllowed={(values) => {
+          const { formattedValue, floatValue } = values;
+          return formattedValue === "" || floatValue <= 999999999;
+      }}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator={'.'}
+      decimalSeparator={','}
+      isNumericString
+      allowLeadingZeros={false}
+      defaultValue={0}
+      allowNegative={false}
+      prefix="Rp. "
+    />
+  );
+}
+
+const NumberFormatTargetUnit = (props: NumberProps) =>  {
+  const { inputRef, onChange, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      isAllowed={(values) => {
+          const { formattedValue, floatValue } = values;
+          return formattedValue === "" || floatValue <= 999999999;
+      }}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator={'.'}
+      decimalSeparator={','}
+      isNumericString
+      allowLeadingZeros={false}
+      defaultValue={0}
+      allowNegative={false}
+      suffix=" unit"
+    />
+  );
 }
 
 const daftarMitra = [
@@ -93,6 +212,15 @@ const daftarMitra = [
   { nama: 'Bank OCBC NISP'},
   { nama: 'Bank Tabungan Negara - BTN'}
 ];
+
+let totalData = 0;
+const validateMitraProps = (val) => {
+  if(typeof(val) === 'object') {
+    return totalData = Object.keys(val).length
+  } else {
+    return totalData;
+  }
+}
 
 export function MitraList(props) {
   const defaultValues: MitraData = {
@@ -112,8 +240,7 @@ export function MitraList(props) {
   };
 
   const { className, mitra, ...rest } = props;
-  let totalData = 0;
-  typeof(mitra) === 'object' ? totalData = Object.keys(mitra).length : totalData;
+  validateMitraProps(mitra);
   const dispatch = useDispatch();
   const classes = useStyles();
   const [deleteConfirm, setOpenDeleteConfirm] = React.useState(false);
@@ -166,6 +293,12 @@ export function MitraList(props) {
     values.limitEndDate = date.toString();
   };
 
+  const parseTargetUnit = (tgrunit) => {
+      return tgrunit.toString().split('').reverse().join('').match(/.{1,3}/g).map(function(x){
+          return x.split('').reverse().join('')
+      }).reverse();
+  }
+
   const openFormModal = (currentMitra) => {
     values.id = currentMitra.id;
     setMitraId(currentMitra.id);
@@ -217,6 +350,11 @@ export function MitraList(props) {
     }
   }
 
+  const currency = new Intl.NumberFormat('in-IN', {
+    style: 'currency',
+    currency: 'IDR',
+  });
+
   const updateData = () => {
     values.nama = namamitra.nama;
     values.targetUnit = parseInt(values.targetUnit.toString().split(' '). join(''));
@@ -231,29 +369,8 @@ export function MitraList(props) {
     }
   }
 
-  const currency = new Intl.NumberFormat('in-IN', {
-    style: 'currency',
-    currency: 'IDR',
-  });
-
   return (
     <Fragment>
-      <SweetAlert success title="Data Updated!" 
-          customButtons={
-            <React.Fragment>
-              <Button
-                  color="primary"
-                  variant="contained"
-                  className={classes.buttons}
-                  onClick={() => setSuccessAlert(false)}
-              >
-                <a style={{color: "white", textDecoration: "none"}}>OK</a>
-              </Button>
-            </React.Fragment>
-          } 
-        show={successAlert} onConfirm={() => setSuccessAlert(false)}>
-        Data is successfully updated!
-      </SweetAlert>
       <SweetAlert success title="Data Deleted!" 
           customButtons={
             <React.Fragment>
@@ -270,6 +387,22 @@ export function MitraList(props) {
         show={deleteSuccess} onConfirm={() => setSuccessAlert(false)}>
         Data is successfully updated!
       </SweetAlert>
+       <SweetAlert success title="Data Mitra Updated!" 
+          customButtons={
+            <React.Fragment>
+              <Button
+                  color="primary"
+                  variant="contained"
+                  className={classes.buttons}
+                  onClick={() => setSuccessAlert(false)}
+              >
+                <a style={{color: "white", textDecoration: "none"}}>OK</a>
+              </Button>
+            </React.Fragment>
+          } 
+        show={successAlert} onConfirm={() => setSuccessAlert(false)}>
+        Data is successfully updated!
+      </SweetAlert>
       <Card
         {...rest}
         className={clsx(classes.root, className)}>
@@ -277,17 +410,17 @@ export function MitraList(props) {
           <PerfectScrollbar>
             <div className={classes.inner}>
               <TableContainer>
-                  <Table stickyHeader>
-                    <TableHead>
+                  <Table>
+                    <TableHead className={classes.customTableHead}>
                       <TableRow>
-                        <TableCell>Nama</TableCell>
-                        <TableCell>Tanggal PKS</TableCell>
-                        <TableCell>Tanggal Limit</TableCell>
-                        <TableCell>Target Unit</TableCell>
-                        <TableCell>Target Nominal</TableCell>
-                        <TableCell>Maksimal Limit</TableCell>
-                        <TableCell>Approval Status</TableCell>
-                        <TableCell>Actions</TableCell>
+                        <TableCell className={classes.tableClass}>Nama</TableCell>
+                        <TableCell className={classes.tableClass}>Tanggal PKS</TableCell>
+                        <TableCell className={classes.tableClass}>Tanggal Limit</TableCell>
+                        <TableCell className={classes.tableClass}>Target Unit</TableCell>
+                        <TableCell className={classes.tableClass}>Target Nominal</TableCell>
+                        <TableCell className={classes.tableClass}>Maksimal Limit</TableCell>
+                        <TableCell className={classes.tableClass}>Approval Status</TableCell>
+                        <TableCell className={classes.tableClass}>Actions</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -305,14 +438,14 @@ export function MitraList(props) {
                         >
                           <TableCell>
                             <div className={classes.nameContainer}>
-                                <Typography variant="body1">{m.nama}</Typography>
+                                <Typography variant="body1" className={classes.tableDataClass}>{m.nama}</Typography>
                             </div>
                           </TableCell>
-                          <TableCell>{m.tanggalPKS.substring(0,10)}</TableCell>
-                          <TableCell>{m.tanggalLimit.substring(0,10)}</TableCell>
-                          <TableCell>{m.targetUnit}</TableCell>
-                          <TableCell>{currency.format(m.targetNominal)}</TableCell>
-                          <TableCell>{currency.format(m.maxLimit)}</TableCell>
+                          <TableCell className={classes.tableDataClass}>{m.tanggalPKS.substring(0,10)}</TableCell>
+                          <TableCell className={classes.tableDataClass}>{m.tanggalLimit.substring(0,10)}</TableCell>
+                          <TableCell className={classes.tableDataClass}>{parseTargetUnit(m.targetUnit).join('.')}</TableCell>
+                          <TableCell className={classes.tableDataClass}>{currency.format(m.targetNominal)}</TableCell>
+                          <TableCell className={classes.tableDataClass}>{currency.format(m.maxLimit)}</TableCell>
                           <TableCell>
                             {m.approvalStatus === 3 
                               ?  <Chip
@@ -362,41 +495,23 @@ export function MitraList(props) {
           />
         </CardActions>
       </Card>
-      <Dialog
-        fullWidth
-        open={deleteConfirm}
-        onClose={closeDeleteConfirm}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          <Typography variant="h2">Hapus data mitra ini?</Typography>
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Data akan sepenuhnya terhapus dari sistem.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained"
-                  className={classes.buttons} onClick={closeDeleteConfirm} color="secondary">
-            Batal
-          </Button>
-          <Button variant="contained"
-                  className={classes.buttons} onClick={deleteDataMitra} color="primary" autoFocus>
-            Hapus
-          </Button>
-        </DialogActions>
-      </Dialog>
-
+      
       <Dialog
         fullScreen={fullScreen}
         open={openForm}
         onClose={closeFormModal}
-        aria-labelledby="responsive-dialog-title"
-      >
-        <DialogTitle id="tambahdatamitra">Edit Data Mitra</DialogTitle>
-        <DialogContent className={classes.dialogContent}>
+        aria-labelledby="responsive-dialog-title">
+        <DialogTitle id="editdataatamitra">
+          <MuiDialogTitle disableTypography className={classes.dialogTitleSection}>
+            <Typography variant="h5">Edit Data Mitra</Typography>
+            {openForm ? (
+              <IconButton aria-label="close" className={classes.closeButton} onClick={closeFormModal}>
+                <CloseIcon />
+              </IconButton>
+            ) : null}
+          </MuiDialogTitle>
+        </DialogTitle>
+        <DialogContent dividers className={classes.dialogContent}>
            <form autoComplete="off" noValidate>
             <CardContent>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -493,32 +608,34 @@ export function MitraList(props) {
                       />
                       </Grid>
                       <Grid item md={12} xs={12}>
-                        <InputMask
-                          mask="999 999 999 999"
+                        <TextField
+                          label="Target Unit"
                           value={values.targetUnit}
-                          onChange={handleChange}>
-                          {() => <TextField
-                            fullWidth
-                            label="Target Unit"
-                            margin="dense"
-                            name="targetUnit"
-                            type="text"
-                            variant="outlined"/>}
-                        </InputMask>
+                          onChange={handleChange}
+                          name="targetUnit"
+                          id="targetUnit" 
+                          required={true}
+                          variant="outlined"
+                          margin="dense"
+                          fullWidth
+                          InputProps={{
+                            inputComponent: NumberFormatTargetUnit as any,
+                          }} />
                       </Grid>
                       <Grid item md={12} xs={12}>
-                        <InputMask
-                          mask="999 999 999 999"
+                        <TextField
+                          label="Target Nominal"
                           value={values.targetNominal}
-                          onChange={handleChange}>
-                          {() => <TextField
-                              fullWidth
-                              label="Target Nominal"
-                              margin="dense"
-                              name="targetNominal"
-                              type="text"
-                              variant="outlined"/>}
-                        </InputMask>
+                          onChange={handleChange}
+                          name="targetNominal"
+                          id="targetNominal" 
+                          required={true}
+                          variant="outlined"
+                          margin="dense"
+                          fullWidth
+                          InputProps={{
+                            inputComponent: NumberFormatTargetNominal as any,
+                          }} />
                       </Grid>
                       <Grid item md={12} xs={12}>
                         <InputMask
@@ -546,18 +663,48 @@ export function MitraList(props) {
               color="secondary"
               variant="contained"
               startIcon={<SaveRoundedIcon />}
-              onClick={updateData}
-          >
+              disabled={
+                values.targetUnit === 0 || 
+                values.targetNominal === 0 || 
+                values.maxLimit === 0 }
+              onClick={updateData}>
               Update Data
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Dialog
+        fullWidth
+        open={deleteConfirm}
+        onClose={closeDeleteConfirm}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description">
+        <DialogTitle id="alert-dialog-title">
+          <Typography variant="h2">Hapus data mitra ini?</Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Data akan sepenuhnya terhapus dari sistem.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" className={classes.buttons} onClick={closeDeleteConfirm} color="secondary">
+            Batal
+          </Button>
+          <Button variant="contained" className={classes.buttons} onClick={deleteDataMitra} color="primary" autoFocus>
+            Hapus
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      
     </Fragment>
   );
 }
 
 MitraList.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  mitra: PropTypes.any
 };
 
 export default MitraList;

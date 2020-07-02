@@ -16,21 +16,32 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme:Theme) => ({
   root: {
-    boxShadow: 'none'
+    boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
+    backgroundColor: '#FFFFFF',
   },
   flexGrow: {
     flexGrow: 1
   },
   signOutButton: {
-    marginLeft: theme.spacing(1)
+    marginLeft: theme.spacing(0.5),
+  },
+  iconClass: {
+    color: '#4caf50',
+    fontSize: '2rem'
   },
   toolbarMargin: {
     ...theme.mixins.toolbar,
     marginBottom: '2em'
   },
   logoTitle: {
-    marginLeft: theme.spacing(1),
-    fontSize: '22px'
+    marginLeft: theme.spacing(2),
+    fontSize: '22px',
+    color: '#326144',
+    fontWeight: 600
+  },
+  logoImage: {
+    marginBottom: theme.spacing(1),
+    marginTop: theme.spacing(0)
   }
 }));
 
@@ -43,8 +54,7 @@ export function Topbar(props) {
     localStorage.removeItem('accesstoken');
     router.push('/login');
   }
-
-
+  
   return (
     <Fragment>
       <AppBar
@@ -54,12 +64,15 @@ export function Topbar(props) {
       >
         <Toolbar>
           <Link href="/">
-            {layoutState.indexPage ? <Skeleton animation="wave" variant="circle" width={40} height={40} /> : <img
-              alt="Logo"
-              src="/images/logos/tapera-logo.svg"
-              height={75}
-              width={75}
-            />}
+            {layoutState.indexPage 
+              ? <Skeleton animation="wave" variant="circle" width={40} height={40} /> 
+              : <img
+                  alt="Logo"
+                  src="/images/logos/tapera.png"
+                  className={classes.logoImage}
+                  height={75}
+                  width={75}
+                />}
           </Link>
           {layoutState.indexPage 
             ? <Skeleton animation="wave" style={{marginLeft: '1vw'}}variant="text" width={130} height={30}/> 
@@ -70,21 +83,16 @@ export function Topbar(props) {
             ? <Fragment>
             <Hidden mdDown>
               <IconButton color="inherit">
-                <Badge
-                  badgeContent={5}
-                  color="primary"
-                  variant="dot"
-                >
-                  <NotificationsIcon />
+                <Badge badgeContent={2} color="error">
+                  <NotificationsIcon className={classes.iconClass}/>
                 </Badge>
               </IconButton>
               <Link href="/login">
                 <IconButton
                   className={classes.signOutButton}
                   color="inherit"
-                  onClick={handleSignOut}
-                >
-                  <InputIcon />
+                  onClick={handleSignOut}>
+                  <InputIcon className={classes.iconClass} />
                 </IconButton>
               </Link>
             </Hidden>

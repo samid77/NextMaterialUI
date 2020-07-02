@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme:Theme) => ({
   avatar: {
     width: 60,
     height: 60,
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(2)
   },
   name: {
     marginTop: theme.spacing(1)
@@ -33,7 +33,7 @@ export function Profile(props) {
   const user = {
     name: 'John Doe',
     avatar: 'https://www.shareicon.net/data/512x512/2016/05/24/770117_people_512x512.png',
-    bio: 'Developer'
+    bio: 'System Analyst'
   };
 
   return (

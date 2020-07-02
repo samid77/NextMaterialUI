@@ -3,10 +3,14 @@ node ('master'){
     def appDockerImg
     def baseTag = '1.1.0'
 
-    def appName = 'pmf-fe'
+    def appName = 'pemanfaatan-dana-fe'
+    def namespace = 'pemanfaatan-dana'
     def nexusPluginsRepoUrl = 'https://nexus.tapera.go.id/repository/maven-central/'
-    def imageTag
-    def appPomVersion
+    def imageTag = 'latest'
+    def sonarSrc = 'src'
+    def sonarTest = 'src/components'
+    def testReportPath = 'reports/test-reporter.xml'
+    def lcovPath = 'coverage/lcov.info'
 
 	def nexusGoCentral = 'nexus.tapera.go.id/repository/go-central'
     def nexusDockerDevRepoGCP = '10.172.24.50:8082'
@@ -15,7 +19,6 @@ node ('master'){
     // def nexusDockerDevRepoGCP = 'http://192.168.43.176:8123'
     // def nexusDockerDevRepoALI = 'http://192.168.43.176:8124'
 
-    def namespace = 'sample'
     def memLimit = '512Mi'
     def cpuLimit = '500m'
     def imagePullSecret = 'nexus-dev-repo'
@@ -50,16 +53,34 @@ node ('master'){
     }
 
 	stage('Build App'){
+        echo 'build app'
         sh '''
 		npm install
 		npm run build
 		'''
     }
 
+    stage('Unit Test') {
+        echo 'unit test'
+        sh '''
+        npm run test -- --ci --coverage
+        '''
+    }
+
     stage("SonarQube Analysis"){
 		echo 'scan sonarqube'
         withSonarQubeEnv(credentialsId: 'sonarqube-token', installationName: 'sonarqube') {
-			sh"sonar-scanner -Dsonar.projectKey=pmf-fe -Dsonar.sources=. -Dsonar.qualitygate.wait=true"
+			sh"""
+                sonar-scanner \
+                -Dsonar.projectKey=pmf-fe \
+                -Dsonar.qualitygate.wait=true \
+                -Dsonar.sources=${sonarSrc} \
+                -Dsonar.tests=${sonarTest} \
+                -Dsonar.javascript.lcov.reportPaths=${lcovPath} \
+                -Dsonar.testExecutionReportPaths=${testReportPath} \
+                -Dsonar.test.inclusions="**/*.test.tsx" \
+                -Dsonar.test.exclusions="**/vendor/**,**/pages/**,**/configurations/**,**/helpers/**,**/theme/**,**/redux/**" \
+            """
 		}
 		
 		//quality gate
@@ -70,44 +91,61 @@ node ('master'){
               }
          }
     }
-	
-	stage('Unit Test') {
-        echo 'unit test'
-    }
-
-    stage("Security Check"){
-    }
 
     stage('Build Image') {
         echo "Build Image"
         withCredentials([usernamePassword(credentialsId: 'ci-cd', passwordVariable: 'nexusPassword', usernameVariable: 'nexusUsername')]) {
             sh """
-            podman login -u ${nexusUsername} -p ${nexusPassword} ${nexusDockerDevRepoGCP} --tls-verify=false
-            podman build -t ${nexusDockerDevRepoGCP}/${appName}:latest . --tls-verify=false
-            podman push ${nexusDockerDevRepoGCP}/${appName}:latest --tls-verify=false
-            podman rmi ${nexusDockerDevRepoGCP}/${appName}:latest -f
+            docker-compose build --force-rm
+            #docker login -u=${nexusUsername} -p=${nexusPassword} ${nexusDockerDevRepoGCP}
+            #docker build -t pemanfaatan-fe:dev .
             """
         }
     }
 
-    stage('Publish Image To GCP repo'){
-        echo 'publish image to gcp repo'
-        //docker.withRegistry(nexusDockerDevRepoGCP, imagePullSecret) {
-        //    appDockerImg.push(baseTag)
-        //}
+    stage('Publish to GKE'){
+        echo 'publish to GKE'
+        withCredentials([usernamePassword(credentialsId: 'ci-cd', passwordVariable: 'nexusPassword', usernameVariable: 'nexusUsername')]) {
+            sh """
+                docker login -u=${nexusUsername} -p=${nexusPassword} ${nexusDockerDevRepoGCP}
+                docker push ${nexusDockerDevRepoGCP}/${appName}:${imageTag}
+                docker logout ${nexusDockerDevRepoGCP} 
+            """
+        }
     }
     
-    stage('Publish Image To Ali repo'){
-        echo 'publish image to ali repo'
-        //docker.withRegistry(nexusDockerDevRepoALI, imagePullSecret) {
-        //    appDockerImg.push(baseTag)
-        //}
+    stage('Publish to ALI'){
+        echo 'publish to ALI'
     }
 
     stage('Delete Image'){
         echo 'delete image'
-        //sh "docker rmi tapera.${appName}"
+        sh """
+            docker-compose rm -f
+        """ 
     } 
+
+    stage('Deploy to GKE'){
+        echo 'deploy to GKE'
+        
+        sh """
+		cat kubernetes/gcp-deployment-template.yaml | sed 's/{APP_NAME}/${appName}/g'  \
+		| sed 's/{NEXUS_REPO}/${nexusDockerDevRepoGCP}/g' | sed 's/{IMG_TAG}/${imageTag}/g' \
+		| sed 's/{MEMORY_LIMIT}/${memLimit}/g' | sed 's/{CPU_LIMIT}/${cpuLimit}/g' \
+		| sed 's/{IMG_PULL_SECRET}/${imagePullSecret}/g' |  sed 's/{SERVICE_TYPE}/${serviceTypeGKE}/g' \
+		| kubectl --kubeconfig='${gkeKubeConfig}' apply -n '${namespace}' -f -
+		
+		kubectl --kubeconfig='${gkeKubeConfig}' rollout status deployment/'${appName}' -n '${namespace}'
+		"""
+    }
+
+    stage('Deploy to Ali'){
+        echo 'deploy to Alicloud'
+    }
+
+    stage("Security Check"){
+        echo 'security check'
+    }
 
     stage ("Regression Test") {
         echo 'regression test'
@@ -132,7 +170,7 @@ node ('master'){
     }
         
     stage ("Jira Update Status") {
-
+        echo 'Jira update status'
     }
 }
 

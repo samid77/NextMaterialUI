@@ -5,8 +5,12 @@ import {
 } from 'redux-saga/effects';
 import { ProdukDataAction } from '../../interfaces/ProdukData';
 import { 
-    produkDataSuccess, 
+    produkDataSuccess,
     produkDataError, 
+    getProdukFiturDataSuccess, 
+    getProdukFiturDataError,
+    getProdukTipeDataSuccess, 
+    getProdukTipeDataError,
     addProdukDataSuccess, 
     addProdukDataError,
     updateProdukDataSuccess, 
@@ -16,6 +20,8 @@ import {
 } from '../actions/ProdukDataAction';
 import { 
     GET_PRODUK, 
+    GET_PRODUK_FITUR,
+    GET_PRODUK_TIPE,
     ADD_PRODUK, 
     ADD_PRODUK_SUCCESS, 
     UPDATE_PRODUK, 
@@ -29,7 +35,7 @@ import { HttpService } from '../../helpers/HttpService';
   
 function* workerSagaProdukData(action: ProdukDataAction) {
     try {
-        const response = yield call(HttpService.get, 'http://localhost:3001/dataproduk', {});
+        const response = yield call(HttpService.get, 'http://localhost:3000/api/master-data/produk', {});
         
         if (response.status === 200) {
             yield put(produkDataSuccess(response.data));
@@ -41,35 +47,60 @@ function* workerSagaProdukData(action: ProdukDataAction) {
     }
 }
 
+function* workerSagaGetProdukFiturData(action: ProdukDataAction) {
+    try {
+        const response = yield call(HttpService.get, 'http://localhost:3000/api/master-data/produk/fitur-produk', {});
+        
+        if (response.status === 200) {
+            yield put(getProdukFiturDataSuccess(response.data));
+        } else {
+            yield put(getProdukFiturDataError(response.statusText));
+        }
+    } catch (error) {
+        yield put(produkDataError(error.message));
+    }
+}
+
+function* workerSagaGetProdukTipeData(action: ProdukDataAction) {
+    try {
+        const response = yield call(HttpService.get, 'http://localhost:3000/api/master-data/produk/tipe-produk', {});
+        
+        if (response.status === 200) {
+            yield put(getProdukTipeDataSuccess(response.data));
+        } else {
+            yield put(getProdukTipeDataError(response.statusText));
+        }
+    } catch (error) {
+        yield put(produkDataError(error.message));
+    }
+}
+
 function* workerSagaAddProdukData(action: ProdukDataAction) {
     try {
         const data: object = {
-            idFiturProduk:'P003',
+            idFiturProduk: action.data.idFiturProduk,
             namaFiturProduk: action.data.namaFiturProduk,
-            idTipeProduk:'TP0002',
-            namaTipeproduk: action.data.namaTipeproduk,
+            idTipeProduk:action.data.idTipeProduk,
+            namaTipeProduk: action.data.namaTipeProduk,
             namaSegmen: action.data.namaSegmen,
             penghasilanDari: action.data.penghasilanDari,
             penghasilanSampai: action.data.penghasilanSampai,
             plafon: action.data.plafon,
-            sukubunga: action.data.sukubunga,
-            tenor: action.data.tenor,
-            idStatusPersetujuan: 1,
-            statusPersetujuan: action.data.statusPersetujuan,
-            created_at: new Date(),
+            sukuBunga: action.data.sukuBunga,
+            tenor: action.data.tenor
         }
         const headers = {
             'Content-Type': 'application/json'
         }
-        const response = yield call(HttpService.post, 'http://localhost:3001/dataproduk', data, headers);
+        const response = yield call(HttpService.post, 'http://localhost:3000/api/master-data/produk', data, headers);
 
-        if (response.status === 201) {
-            yield put(addProdukDataSuccess(response.data))
+        if (response.status === 200) {
+            yield put(addProdukDataSuccess(response.status))
         } else {
             yield put(addProdukDataError(response.statusText));
         }
     } catch (error) {
-        yield put(addProdukDataError(error.message));
+        yield put(addProdukDataError(error));
     }
 }
 
@@ -80,21 +111,18 @@ function* workerSagaUpdateProdukData(action: ProdukDataAction) {
             idFiturProduk:action.data.idFiturProduk,
             namaFiturProduk: action.data.namaFiturProduk,
             idTipeProduk:action.data.idTipeProduk,
-            namaTipeproduk: action.data.namaTipeproduk,
+            namaTipeProduk: action.data.namaTipeProduk,
             namaSegmen: action.data.namaSegmen,
             penghasilanDari: action.data.penghasilanDari,
             penghasilanSampai: action.data.penghasilanSampai,
             plafon: action.data.plafon,
-            sukubunga: action.data.sukubunga,
+            sukuBunga: action.data.sukuBunga,
             tenor: action.data.tenor,
-            idStatusPersetujuan: 1,
-            statusPersetujuan: action.data.statusPersetujuan,
-            created_at: new Date(),
         }
         const headers = {
             'Content-Type': 'application/json'
         }
-        const response = yield call(HttpService.put, `http://localhost:3001/dataproduk/${data.id}`, data, headers);
+        const response = yield call(HttpService.put, `http://localhost:3000/api/master-data/produk/${data.id}`, data, headers);
 
         if (response.status === 200) {
             yield put(updateProdukDataSuccess(response.data))
@@ -102,7 +130,7 @@ function* workerSagaUpdateProdukData(action: ProdukDataAction) {
             yield put(updateProdukDataError(response.statusText));
         }
     } catch (error) {
-        yield put(updateProdukDataError(error.message));
+        yield put(updateProdukDataError(error));
     }
 }
 
@@ -111,15 +139,14 @@ function* workerSagaDeleteProdukData(action: any) {
         const headers = {
             'Content-Type': 'application/json'
         }
-        const response = yield call(HttpService.delete, `http://localhost:3001/dataproduk/${action.data}`, null, headers);
-
+        const response = yield call(HttpService.delete, `http://localhost:3000/api/master-data/produk/${action.data}`, null, headers);
         if (response.status === 200) {
-            yield put(deleteProdukDataSuccess(response.data))
+            yield put(deleteProdukDataSuccess(response.status))
         } else {
             yield put(deleteProdukDataError(response.statusText));
         }
     } catch (error) {
-        yield put(deleteProdukDataError(error.message));
+        yield put(deleteProdukDataError(error));
     }    
     
 }
@@ -142,6 +169,8 @@ function* workerSagaSearchProdukData(action: ProdukDataAction) {
 
 export const watcherProdukData = [
     takeLatest(GET_PRODUK, workerSagaProdukData),
+    takeLatest(GET_PRODUK_FITUR, workerSagaGetProdukFiturData),
+    takeLatest(GET_PRODUK_TIPE, workerSagaGetProdukTipeData),
     takeLatest(ADD_PRODUK, workerSagaAddProdukData),
     takeLatest(ADD_PRODUK_SUCCESS, workerSagaProdukData),
     takeLatest(UPDATE_PRODUK, workerSagaUpdateProdukData),

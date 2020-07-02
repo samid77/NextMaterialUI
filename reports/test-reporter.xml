@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/Eligible/test/eligible.test.tsx">
+        <testCase name="ChartEligible component ChartEligible component rendered" duration="253"/>
+        <testCase name="EligibleList component EligibleList component rendered" duration="106"/>
+        <testCase name="GrafikEligible component GrafikEligible component rendered" duration="305"/>
+    </file>
+    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/Dashboard/test/dashboard.test.tsx">
+        <testCase name="LatestOrders component LatestOrders component rendered" duration="621"/>
+        <testCase name="LatestProducts component LatestProducts component rendered" duration="493"/>
+        <testCase name="StatusBullet component StatusBullet component rendered" duration="142"/>
+        <testCase name="TasksProgress component TasksProgress component rendered" duration="123"/>
+    </file>
+    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/Mitra/test/mitra.test.tsx">
+        <testCase name="MitraList component MitraList component rendered" duration="378"/>
+        <testCase name="MitraToolbar component MitraToolbar component rendered" duration="55"/>
+    </file>
+    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/Produk/test/produk.test.tsx">
+        <testCase name="ProdukList component ProdukList component rendered" duration="366"/>
+        <testCase name="ProdukToolbar component ProdukToolbar component rendered" duration="101"/>
+    </file>
+</testExecutions>

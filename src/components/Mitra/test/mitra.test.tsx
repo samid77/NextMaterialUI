@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent } from '../../../test/testUtils'
+import { render } from '../../../test/testUtils'
 import MitraList from '../MitraList'
 import MitraToolbar from '../MitraToolbar'
 

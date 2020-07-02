@@ -42,16 +42,22 @@ const useStyles = makeStyles((basetheme:any) => ({
 function MyApp({ Component, pageProps }) {
 
   const [openSidebar, setOpenSidebar] = useState(false);
+
+
   const isDesktop = useMediaQuery('(min-width:1280px)', {
     defaultMatches: true
   });
+
   const handleSidebarOpen = () => {
     setOpenSidebar(true);
   };
+
   const handleSidebarClose = () => {
     setOpenSidebar(false);
   };
+
   const classes = useStyles();
+
   const shouldOpenSidebar = isDesktop ? true : openSidebar;
 
   return (

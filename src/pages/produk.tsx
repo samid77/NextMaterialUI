@@ -4,7 +4,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../redux/reducers';
 import { ProdukDataListState } from '../interfaces/ProdukData';
-import { getProdukData } from '../redux/actions/ProdukDataAction';
+import { getProdukData, getProdukFiturData, getProdukTipeData } from '../redux/actions/ProdukDataAction';
 
 const useStyles = makeStyles((theme:Theme) => ({
   root: {
@@ -22,14 +22,16 @@ export default function Produk() {
 
     useEffect(() => {
       dispatch(getProdukData(''));
+      dispatch(getProdukFiturData(''));
+      dispatch(getProdukTipeData(''));
       // eslint-disable-next-line
     }, []);
 
     return (
         <div className={classes.root}>
-          <ProdukToolbar />
+          <ProdukToolbar fiturproduk={produkDataState.fiturProduk} tipeproduk={produkDataState.tipeProduk}/>
           <div className={classes.content}>
-            <ProdukList produk={produkDataState.data }/>
+            <ProdukList fiturproduk={produkDataState.fiturProduk} tipeproduk={produkDataState.tipeProduk} produk={produkDataState.data }/>
           </div>
         </div>
     );

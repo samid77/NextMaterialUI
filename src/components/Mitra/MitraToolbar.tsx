@@ -7,10 +7,11 @@ import { SearchInputCustom } from '../General';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
-
+import NumberFormat from 'react-number-format';
 import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
 import PublishRoundedIcon from '@material-ui/icons/PublishRounded';
 import PageviewRoundedIcon from '@material-ui/icons/PageviewRounded';
+import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -19,12 +20,14 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import DateFnsUtils from '@date-io/date-fns';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import FormControl from '@material-ui/core/FormControl';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import Select from '@material-ui/core/Select';
+import Typography from '@material-ui/core/Typography';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import InputMask from 'react-input-mask';
+import CloseIcon from '@material-ui/icons/Close';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -84,11 +87,21 @@ const useStyles = makeStyles((theme:Theme) => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(2)
   },
+  dialogTitleSection: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
   dialogContent: {
     marginTop: theme.spacing(-2)
   },
   dateLabel: {
     marginBottom: theme.spacing(-6)
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
   },
   paper: {
     padding: theme.spacing(2),
@@ -98,8 +111,97 @@ const useStyles = makeStyles((theme:Theme) => ({
 
 }));
 
-interface NamaMitraType {
-  nama: string;
+interface NumberProps {
+  inputRef: (instance: NumberFormat | null) => void;
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
+
+const NumberFormatTargetNominal = (props: NumberProps) =>  {
+  const { inputRef, onChange, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      isAllowed={(values) => {
+          const { formattedValue, floatValue } = values;
+          return formattedValue === "" || floatValue <= 999999999;
+      }}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator={'.'}
+      decimalSeparator={','}
+      isNumericString
+      allowLeadingZeros={false}
+      defaultValue={0}
+      allowNegative={false}
+      prefix="Rp. "
+    />
+  );
+}
+
+const NumberFormatMaximalLimit = (props: NumberProps) =>  {
+  const { inputRef, onChange, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      isAllowed={(values) => {
+          const { formattedValue, floatValue } = values;
+          return formattedValue === "" || floatValue <= 999999999;
+      }}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator={'.'}
+      decimalSeparator={','}
+      isNumericString
+      allowLeadingZeros={false}
+      defaultValue={0}
+      allowNegative={false}
+      prefix="Rp. "
+    />
+  );
+}
+
+const NumberFormatTargetUnit = (props: NumberProps) =>  {
+  const { inputRef, onChange, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      isAllowed={(values) => {
+          const { formattedValue, floatValue } = values;
+          return formattedValue === "" || floatValue <= 999999999;
+      }}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator={'.'}
+      decimalSeparator={','}
+      isNumericString
+      allowLeadingZeros={false}
+      defaultValue={0}
+      allowNegative={false}
+      suffix=" unit"
+    />
+  );
 }
 
 const daftarMitra = [
@@ -109,6 +211,10 @@ const daftarMitra = [
   { nama: 'Bank OCBC NISP'},
   { nama: 'Bank Tabungan Negara - BTN'}
 ];
+
+interface NamaMitraType {
+  nama: string;
+}
 
 export function MitraToolbar(props) {
   const defaultValues: MitraData = {
@@ -226,8 +332,7 @@ export function MitraToolbar(props) {
                 color="primary"
                 variant="contained"
                 className={classes.buttons}
-                onClick={() => setSuccessAlert(false)}
-            >
+                onClick={() => setSuccessAlert(false)}>
               <a style={{color: "white", textDecoration: "none"}}>OK</a>
             </Button>
           </React.Fragment>
@@ -266,14 +371,172 @@ export function MitraToolbar(props) {
           <a style={{color: "white", textDecoration: "none"}}>Tambah Mitra</a>
         </Button>
       </div>
+
+      <Dialog
+        fullScreen={fullScreen}
+        open={openAdvanceSearch}
+        onClose={closeSearchModal}
+        fullWidth={true}
+        maxWidth={'sm'}
+        aria-labelledby="responsive-dialog-title">
+        <DialogTitle id="alert-dialog-title">{"Cari Data Mitra"}</DialogTitle>
+        <DialogContent>
+          <form autoComplete="off" noValidate>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <Grid container spacing={3}>
+                <Grid item xs={6}>
+                  <Autocomplete
+                    freeSolo
+                    id="free-solo-2-demo"
+                    disableClearable
+                    options={daftarMitra.map((m) => m.nama)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Nama Mitra"
+                        margin="dense"
+                        variant="outlined"
+                        InputProps={{ ...params.InputProps, type: 'search' }}/>
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    fullWidth
+                    label="Target Unit"
+                    margin="dense"
+                    name="targetUnit"
+                    onChange={handleChange}
+                    type="number"
+                    value={values.targetUnit}
+                    variant="outlined"/>
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    fullWidth
+                    label="Target Nominal"
+                    margin="dense"
+                    name="targetNominal"
+                    onChange={handleChange}
+                    type="number"
+                    value={values.targetNominal}
+                    variant="outlined"/>
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    fullWidth
+                    label="Maksimal Limit"
+                    margin="dense"
+                    name="maxLimit"
+                    onChange={handleChange}
+                    type="number"
+                    value={values.maxLimit}
+                    variant="outlined"/>
+                </Grid>
+                <Grid item xs={4}>
+                  <h3>Tanggal PKS</h3>
+                  <Divider />
+                </Grid>
+                <Grid item xs={4}>
+                   <KeyboardDatePicker
+                      variant="inline"
+                      format="dd/MM/yyyy"
+                      margin="dense"
+                      id="pksStartDate"
+                      label="Dari"
+                      value={pksStartDate}
+                      onChange={handlePksStartDateChange}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}/>
+                </Grid>
+                <Grid item xs={4}>
+                   <KeyboardDatePicker
+                      variant="inline"
+                      format="dd/MM/yyyy"
+                      margin="dense"
+                      id="pksEndDate"
+                      label="Sampai"
+                      value={pksEndDate}
+                      onChange={handlePksEndDateChange}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}/>
+                </Grid>
+                <Grid item xs={4}>
+                  <h3>Tanggal Limit</h3>
+                  <Divider />
+                </Grid>
+                <Grid item xs={4}>
+                   <KeyboardDatePicker
+                      format="dd/MM/yyyy"
+                      margin="dense"
+                      id="limitStartDate"
+                      label="Dari"
+                      value={limitStartDate}
+                      onChange={handleLimitStartDateChange}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                      variant="inline"/>
+                </Grid>
+                <Grid item xs={4}>
+                   <KeyboardDatePicker
+                      variant="inline"
+                      format="dd/MM/yyyy"
+                      margin="dense"
+                      id="limitEndDate"
+                      label="Sampai"
+                      value={limitEndDate}
+                      onChange={handleLimitEndDateChange}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}/>
+                </Grid>
+                <Grid item xs={6}>
+                  <FormControl variant="outlined" className={classes.formControlSearch}>
+                    <InputLabel id="demo-simple-select-outlined-label">Approval Status</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value={values.approvalStatus}
+                      label="Approval Status">
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={1}>Menunggu Persetujuan</MenuItem>
+                      <MenuItem value={2}>Disetujui</MenuItem>
+                      <MenuItem value={3}>Ditolak</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </MuiPickersUtilsProvider>
+          </form>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeSearchModal} color="primary" autoFocus>
+            Search
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <Dialog
         fullScreen={fullScreen}
         open={openForm}
         onClose={closeFormModal}
-        aria-labelledby="responsive-dialog-title"
-      >
-        <DialogTitle id="tambahdatamitra">Tambah Data Mitra</DialogTitle>
-        <DialogContent className={classes.dialogContent}>
+        aria-labelledby="responsive-dialog-title">
+        <DialogTitle id="tambahdatamitra">
+          <MuiDialogTitle disableTypography className={classes.dialogTitleSection}>
+            <Typography variant="h5">Tambah Data Mitra</Typography>
+            {openForm ? (
+              <IconButton aria-label="close" className={classes.closeButton} onClick={closeFormModal}>
+                <CloseIcon />
+              </IconButton>
+            ) : null}
+          </MuiDialogTitle>
+        </DialogTitle>
+        <DialogContent dividers className={classes.dialogContent}>
            <form autoComplete="off" noValidate>
             <CardContent>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -369,48 +632,49 @@ export function MitraToolbar(props) {
                       />
                       </Grid>
                       <Grid item md={12} xs={12}>
-                        <InputMask
-                          mask="999 999"
+                        <TextField
+                          label="Target Unit"
                           value={values.targetUnit}
-                          onChange={handleChange}>
-                          {() => <TextField
-                            fullWidth
-                            label="Target Unit"
-                            margin="dense"
-                            name="targetUnit"
-                            required={true}
-                            type="text"
-                            variant="outlined"/>}
-                        </InputMask>
+                          onChange={handleChange}
+                          name="targetUnit"
+                          id="targetUnit" 
+                          required={true}
+                          variant="outlined"
+                          margin="dense"
+                          fullWidth
+                          InputProps={{
+                            inputComponent: NumberFormatTargetUnit as any,
+                          }} />
                       </Grid>
                       <Grid item md={12} xs={12}>
-                        <InputMask
-                          mask="999 999 999 999"
+                        <TextField
+                          label="Target Nominal"
                           value={values.targetNominal}
-                          onChange={handleChange}>
-                          {() => <TextField
-                              fullWidth
-                              label="Target Nominal"
-                              margin="dense"
-                              name="targetNominal"
-                              type="text"
-                              variant="outlined"/>}
-                        </InputMask>
+                          onChange={handleChange}
+                          name="targetNominal"
+                          id="targetNominal" 
+                          required={true}
+                          variant="outlined"
+                          margin="dense"
+                          fullWidth
+                          InputProps={{
+                            inputComponent: NumberFormatTargetNominal as any,
+                          }} />
                       </Grid>
                       <Grid item md={12} xs={12}>
-                        <InputMask
-                          mask="999 999 999 999"
+                        <TextField
+                          label="Maksimal Limit"
                           value={values.maxLimit}
-                          onChange={handleChange}>
-                          {() => <TextField
-                              fullWidth
-                              label="Maksimal Limit"
-                              margin="dense"
-                              name="maxLimit"
-                              type="text"
-                              variant="outlined"
-                          />}
-                        </InputMask>
+                          onChange={handleChange}
+                          name="maxLimit"
+                          id="maxLimit" 
+                          required={true}
+                          variant="outlined"
+                          margin="dense"
+                          fullWidth
+                          InputProps={{
+                            inputComponent: NumberFormatMaximalLimit as any,
+                          }} />
                       </Grid>
                   </Grid>
               </MuiPickersUtilsProvider>
@@ -421,168 +685,14 @@ export function MitraToolbar(props) {
         <DialogActions className={classes.dialogAction}>
           <Button
               color="secondary"
-              variant="contained"
+              variant="contained" 
+              disabled={
+                values.targetUnit === 0 || 
+                values.targetNominal === 0 || 
+                values.maxLimit === 0 }
               startIcon={<SaveRoundedIcon />}
               onClick={addMitra}>
               Simpan Data
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog
-        fullScreen={fullScreen}
-        open={openAdvanceSearch}
-        onClose={closeSearchModal}
-        fullWidth={true}
-        maxWidth={'sm'}
-        aria-labelledby="responsive-dialog-title">
-        <DialogTitle id="alert-dialog-title">{"Cari Data Mitra"}</DialogTitle>
-        <DialogContent>
-          <form autoComplete="off" noValidate>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <Grid container spacing={3}>
-                <Grid item xs={6}>
-                  <Autocomplete
-                    freeSolo
-                    id="free-solo-2-demo"
-                    disableClearable
-                    options={daftarMitra.map((m) => m.nama)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Nama Mitra"
-                        margin="dense"
-                        variant="outlined"
-                        InputProps={{ ...params.InputProps, type: 'search' }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                      fullWidth
-                      label="Target Unit"
-                      margin="dense"
-                      name="targetUnit"
-                      onChange={handleChange}
-                      type="number"
-                      value={values.targetUnit}
-                      variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                          fullWidth
-                          label="Target Nominal"
-                          margin="dense"
-                          name="targetNominal"
-                          onChange={handleChange}
-                          type="number"
-                          value={values.targetNominal}
-                          variant="outlined"
-                      />
-                </Grid>
-                <Grid item xs={6}>
-                   <TextField
-                          fullWidth
-                          label="Maksimal Limit"
-                          margin="dense"
-                          name="maxLimit"
-                          onChange={handleChange}
-                          type="number"
-                          value={values.maxLimit}
-                          variant="outlined"
-                      />
-                </Grid>
-                <Grid item xs={4}>
-                  <h3>Tanggal PKS</h3>
-                  <Divider />
-                </Grid>
-                <Grid item xs={4}>
-                   <KeyboardDatePicker
-                        variant="inline"
-                        format="dd/MM/yyyy"
-                        margin="dense"
-                        id="pksStartDate"
-                        label="Dari"
-                        value={pksStartDate}
-                        onChange={handlePksStartDateChange}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
-                      />
-                </Grid>
-                <Grid item xs={4}>
-                   <KeyboardDatePicker
-                        variant="inline"
-                        format="dd/MM/yyyy"
-                        margin="dense"
-                        id="pksEndDate"
-                        label="Sampai"
-                        value={pksEndDate}
-                        onChange={handlePksEndDateChange}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
-                        />
-                </Grid>
-                <Grid item xs={4}>
-                  <h3>Tanggal Limit</h3>
-                  <Divider />
-                </Grid>
-                <Grid item xs={4}>
-                   <KeyboardDatePicker
-                        format="dd/MM/yyyy"
-                        margin="dense"
-                        id="limitStartDate"
-                        label="Dari"
-                        value={limitStartDate}
-                        onChange={handleLimitStartDateChange}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
-                        variant="inline"
-                      />
-                </Grid>
-                <Grid item xs={4}>
-                   <KeyboardDatePicker
-                        variant="inline"
-                        format="dd/MM/yyyy"
-                        margin="dense"
-                        id="limitEndDate"
-                        label="Sampai"
-                        value={limitEndDate}
-                        onChange={handleLimitEndDateChange}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
-                        />
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControl variant="outlined" className={classes.formControlSearch}>
-                    <InputLabel id="demo-simple-select-outlined-label">Approval Status</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={values.approvalStatus}
-                      label="Approval Status"
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={1}>Menunggu Persetujuan</MenuItem>
-                      <MenuItem value={2}>Disetujui</MenuItem>
-                      <MenuItem value={3}>Ditolak</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-            </MuiPickersUtilsProvider>
-          </form>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeSearchModal} color="primary" autoFocus>
-            Search
           </Button>
         </DialogActions>
       </Dialog>

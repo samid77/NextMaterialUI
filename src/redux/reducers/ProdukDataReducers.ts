@@ -2,6 +2,12 @@ import {
     GET_PRODUK, 
     PRODUK_SUCCESS, 
     PRODUK_ERROR,
+    GET_PRODUK_FITUR, 
+    GET_PRODUK_FITUR_SUCCESS, 
+    GET_PRODUK_FITUR_ERROR,
+    GET_PRODUK_TIPE, 
+    GET_PRODUK_TIPE_SUCCESS, 
+    GET_PRODUK_TIPE_ERROR,
     ADD_PRODUK, 
     ADD_PRODUK_SUCCESS, 
     ADD_PRODUK_ERROR,
@@ -23,12 +29,16 @@ const initialState: ProdukDataListState = {
     error: null,
     response: undefined,
     action: '',
-    data: []
+    data: [],
+    fiturProduk: [],
+    tipeProduk: []
 }
 
 const ProdukDataReducers = (state: ProdukDataListState = initialState, action: ProdukDataAction): ProdukDataListState => {
   switch (action.type) {
     case GET_PRODUK:
+    case GET_PRODUK_FITUR:
+    case GET_PRODUK_TIPE:
     case SEARCH_PRODUK:
     case RESET_SEARCH_PRODUK:
         return {
@@ -44,7 +54,23 @@ const ProdukDataReducers = (state: ProdukDataListState = initialState, action: P
             action: action.type,
             data: action.data
         };
+    case GET_PRODUK_FITUR_SUCCESS: 
+        return {
+            ...state,
+            fetch: false,
+            action: action.type,
+            fiturProduk: action.fiturProduk
+        }
+    case GET_PRODUK_TIPE_SUCCESS: 
+        return {
+            ...state,
+            fetch: false,
+            action: action.type,
+            tipeProduk: action.tipeProduk
+        }
     case PRODUK_ERROR:
+    case GET_PRODUK_FITUR_ERROR:
+    case GET_PRODUK_TIPE_ERROR:
     case ADD_PRODUK_ERROR:
     case UPDATE_PRODUK_ERROR:
     case DELETE_PRODUK_ERROR:
@@ -53,8 +79,10 @@ const ProdukDataReducers = (state: ProdukDataListState = initialState, action: P
             ...state,
             fetch: false,
             action: action.type,
-            error: action.data
+            response: action.data.status,
+            error: action.data.data
         };
+        console.log(`error called`)
     case ADD_PRODUK:
     case UPDATE_PRODUK:
     case DELETE_PRODUK:
@@ -71,6 +99,7 @@ const ProdukDataReducers = (state: ProdukDataListState = initialState, action: P
             ...state,
             fetch: false,
             action: action.type,
+            response: action.data
         };
     default:
       return state;

@@ -1,10 +1,9 @@
-import React, {useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import router from 'next/router'
 import validate from 'validate.js';
-import axios from 'axios';
 
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { Grid, Button,TextField,Typography} from '@material-ui/core';
+import { Grid, Button, TextField, Typography } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
@@ -27,7 +26,7 @@ const schema = {
   }
 };
 
-const useStyles = makeStyles((theme:Theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: '#F4F6F8',
     height: '100%',
@@ -147,7 +146,7 @@ const Login = props => {
   }, [formState.values]);
 
   useEffect(() => {
-    if(localStorage.getItem('accesstoken') !== null || '') {
+    if (localStorage.getItem('accesstoken') !== null || '') {
       router.push('/dashboard')
     }
   }, [])
@@ -160,15 +159,15 @@ const Login = props => {
 
   const handleChange = event => {
     event.persist();
-    
+
     try {
       const { name, value } = event.currentTarget;
-      if(name === 'email') {
+      if (name === 'email') {
         setEmail(value);
       } else {
         setPassword(value);
       }
-    } catch(err) {
+    } catch (err) {
       const errorMessage = `error onChange: ${err.message}`;
       console.log(errorMessage);
     }
@@ -187,6 +186,7 @@ const Login = props => {
         [event.target.name]: true
       }
     }));
+    console.log(JSON.stringify(formState.touched));
   };
 
 
@@ -196,21 +196,10 @@ const Login = props => {
         'Content-Type': 'application/json',
       },
     }
-    
+
     try { 
       event.preventDefault();
       const payload = { email, password };
-      if (!loading) {
-        setLoading(true);
-        const res = await axios.post('http://localhost:5000/api/auth', payload, config)
-        timer.current = setTimeout(() => {
-          if(res.data.token !== null || '') {
-            localStorage.setItem('accesstoken', res.data.token); 
-            router.push('/dashboard');
-          }
-          console.log(res.status)
-        }, 1000);
-      }
     } catch (error) {
       setSuccess(false);
       setLoading(false);
@@ -226,14 +215,14 @@ const Login = props => {
 
   return (
     <div className={classes.root}>
-      <Grid className={classes.grid} container justify="center"> 
+      <Grid className={classes.grid} container justify="center">
         <Paper className={classes.paper}>
           <div className={classes.content}>
             <div>
               <form
                 className={classes.form}
                 onSubmit={handleSignIn}
-              > 
+              >
                 <Typography
                   className={classes.title}
                   variant="h2"
@@ -278,7 +267,7 @@ const Login = props => {
                   <Button
                     className={classes.signInButton}
                     color="primary"
-                    disabled={!formState.isValid || loading}
+                    // disabled={!formState.isValid || loading}
                     fullWidth
                     size="large"
                     type="submit"
@@ -289,7 +278,7 @@ const Login = props => {
                   {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
                 </div>
                 {!success ? <Alert className={classes.alert} severity="error">
-                <AlertTitle>Login Failed</AlertTitle>
+                  <AlertTitle>Login Failed</AlertTitle>
                 Username or password is invalid
               </Alert> : <div></div>}
               </form>

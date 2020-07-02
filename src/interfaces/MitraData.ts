@@ -26,3 +26,28 @@ export interface MitraDataAction{
     type: string;
     data: any;
 }
+
+export interface MitraDataInterface {
+  page: number;
+  totalResult: number;
+  totalPages: number;
+  result: [
+    {
+      id: string;
+      namaMitra: string;
+      tanggalMulaiPKS: string;
+      tanggalAkhirPKS: string;
+      tanggalMulaiLimit: string;
+      tanggalAkhirLimit: string;
+      targetUnit: number;
+      targetNominal: number;
+      maksimalLimit: number;
+      sisaLimit: number;
+      approvalStatus: string;
+      createdAt: string;
+      createdBy: string;
+      updatedAt: string;
+      updatedBy: string;
+    }
+  ]
+}

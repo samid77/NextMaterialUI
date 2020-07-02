@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent } from '../../../test/testUtils'
+import { render } from '../../../test/testUtils'
 import LatestOrders from '../LatestOrders'
 import LatestProducts from '../LatestProducts'
 import StatusBullet from '../StatusBullet'

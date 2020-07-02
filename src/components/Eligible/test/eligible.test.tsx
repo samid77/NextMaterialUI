@@ -1,6 +1,5 @@
 import React from 'react'
-import { shallow } from 'enzyme/build';
-import { render, fireEvent } from '../../../test/testUtils'
+import { render} from '../../../test/testUtils'
 import ChartEligible from '../ChartEligible'
 import EligibleList from '../EligibleList'
 import GrafikEligible from '../GrafikEligible'

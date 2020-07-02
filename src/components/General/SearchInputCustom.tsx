@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import CachedRoundedIcon from '@material-ui/icons/CachedRounded';
 
-const useStyles = makeStyles((theme:Theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: '2px 4px',
     display: 'flex',

@@ -20,10 +20,8 @@ import {
   Divider,
   TextField
 } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
-import { yellow, red } from '@material-ui/core/colors';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -34,10 +32,16 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import InputMask from 'react-input-mask';
-import { useDispatch } from 'react-redux';
-import { ProdukData } from '../../interfaces/ProdukData';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState } from '../../redux/reducers';
+import { ProdukData, ProdukDataListState } from '../../interfaces/ProdukData';
 import { updateProdukData, deleteProdukData } from '../../redux/actions/ProdukDataAction';
+import NumberFormat from 'react-number-format';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import { green } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme:Theme) => ({
   root: {},
@@ -47,7 +51,7 @@ const useStyles = makeStyles((theme:Theme) => ({
   inner: {
     minWidth: 1050
   },
-  nameContainer: {
+  produkNameContainer: {
     display: 'flex',
     alignItems: 'center'
   },
@@ -57,37 +61,185 @@ const useStyles = makeStyles((theme:Theme) => ({
   actions: {
     justifyContent: 'flex-end'
   },
-  ditolakChip: {
-    color: theme.palette.getContrastText(red[500]),
-    backgroundColor: red[500],
+  tableClass: {
+    fontWeight: 600
   },
-  menungguChip: {
-    color: theme.palette.getContrastText(yellow[500]),
-    backgroundColor: yellow[500],
+  tableDataClass: {
+    fontWeight: 500
   },
-  buttons: {},
+  customTableHead: {
+    backgroundColor: '#C2E8CE'
+  },
+  dialogTitleSection: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+  buttonProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
+  wrapper: {
+    margin: theme.spacing(1),
+    position: 'relative',
+  },
+  buttons: {
+    marginLeft: theme.spacing(1)
+  },
   tableRow: {},
   dialogContent: {},
   dateLabel: {},
-  dialogAction: {}
+  dialogAction: {},
 }));
 
 interface NamaProdukType {
-  nama: string;
+  id: string;
+  namaFiturProduk: string;
 }
 interface TipeProdukType {
-  nama: string;
+  id: string;
+  namaTipeProduk: string;
 }
 
-const daftarProduk = [
-  { nama: 'KPR'},
-  { nama: 'KRR'},
-  { nama: 'KBR'},
-];
-const tipeProduk = [
-  { nama: 'Syariah'},
-  { nama: 'Konvensional'},
-];
+interface NumberFormatCustomProps {
+  inputRef: (instance: NumberFormat | null) => void;
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
+
+const NumberFormatPenghasilan = (props: NumberFormatCustomProps) =>  {
+  const { inputRef, onChange, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      isAllowed={(values) => {
+          const { formattedValue, floatValue } = values;
+          return formattedValue === "" || floatValue <= 999999999;
+      }}
+      isNumericString
+      allowLeadingZeros={false}
+      defaultValue={0}
+      allowNegative={false}
+      prefix="Rp. "
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator={'.'}
+      decimalSeparator={','}
+    />
+  );
+}
+
+const NumberFormatTenor = (props: NumberFormatCustomProps) =>  {
+  const { inputRef, onChange, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      isAllowed={(values) => {
+          const { formattedValue, floatValue } = values;
+          return formattedValue === "" || floatValue <= 40;
+      }}
+      thousandSeparator={'.'}
+      decimalSeparator={','}
+      isNumericString
+      allowLeadingZeros={false}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      defaultValue={0}
+      allowNegative={false}
+      suffix=" thn"
+    />
+  );
+}
+
+const NumberFormatSukuBunga = (props: NumberFormatCustomProps) =>  {
+  const { inputRef, onChange, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      isAllowed={(values) => {
+          const { formattedValue, floatValue } = values;
+          return formattedValue === "" || floatValue <= 99;
+      }}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator={'.'}
+      decimalSeparator={','}
+      isNumericString
+      allowLeadingZeros={true}
+      defaultValue={0}
+      allowNegative={false}
+      suffix=" %"
+    />
+  );
+}
+
+const NumberFormatPlafon = (props: NumberFormatCustomProps) =>  {
+  const { inputRef, onChange, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      isAllowed={(values) => {
+          const { formattedValue, floatValue } = values;
+          return formattedValue === "" || floatValue <= 9999999999;
+      }}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      defaultValue={0}
+      allowNegative={false}
+      prefix="Rp. "
+      thousandSeparator={'.'}
+      decimalSeparator={','}
+      isNumericString
+      allowLeadingZeros={true}
+    />
+  );
+}
+
+let totalData = 0;
+const validateProdukProps = (val) => {
+  if(typeof(val) === 'object') {
+    return totalData = Object.keys(val).length
+  } else {
+    return totalData;
+  }
+}
 
 export function ProdukList(props) {
   const defaultVal: ProdukData = {
@@ -95,28 +247,18 @@ export function ProdukList(props) {
     idFiturProduk: '',
     namaFiturProduk:'',
     idTipeProduk: '',
-    namaTipeproduk:'',
-    namaSegmen:'',
+    namaTipeProduk:'',
+    namaSegmen: null,
     penghasilanDari: 0,
     penghasilanSampai: 0,
     plafon:0,
-    sukubunga:0,
-    tenor:0,
-    idStatusPersetujuan: '',
-    statusPersetujuan:'Approved',
-    created_at: '',
-    created_by: '',
-    updated_at: '',
-    updated_by: '',
-    checked_at: '',
-    checked_by: '',
-    approved_at: '',
-    approved_by: ''
+    sukuBunga:0,
+    tenor:0
   };
 
-  const { className, produk, ...rest } = props;
-  let totalData = 0;
-  typeof(produk) === 'object' ? totalData = Object.keys(produk).length : totalData;
+  const { className, produk, fiturproduk, tipeproduk, ...rest } = props;
+  validateProdukProps(produk);
+  const produkDataState: ProdukDataListState = useSelector((state: AppState) => state.produkData);
   const dispatch = useDispatch();
   const classes = useStyles();
   const [deleteConfirm, setOpenDeleteConfirm] = React.useState(false);
@@ -129,9 +271,12 @@ export function ProdukList(props) {
   const [openForm, setOpenForm] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const [namaproduk, setNamaProduk] = useState(daftarProduk[0]);
-  const [tipeproduk, setTipeProduk] = useState(tipeProduk[0]);
+  const [namaproduk, setNamaProduk] = useState(null);
+  const [tipeProduk, setTipeProduk] = useState(null);
   const [values, setValues] = useState<ProdukData>(defaultVal);
+  const [loading, setLoading] = useState(false);
+  const [errorAlert, setErrorAlert] = useState(false);
+  const [errorUpdateAlert, setErrorUpdateAlert] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -149,16 +294,18 @@ export function ProdukList(props) {
 
   const openFormModal = (currentProduct) => {
     values.id = currentProduct.id;
-    const indexProduk = daftarProduk.findIndex(d => d.nama === currentProduct.namaFiturProduk);
-    const indexTipe = tipeProduk.findIndex(t => t.nama === currentProduct.namaTipeproduk);
-    setNamaProduk(daftarProduk[indexProduk]);
-    setTipeProduk(tipeProduk[indexTipe]);
-
+    const indexProduk = fiturproduk.findIndex(d => d.namaFiturProduk === currentProduct.namaFiturProduk);
+    const indexTipe = tipeproduk.findIndex(t => t.id === currentProduct.idTipeProduk);
+    setNamaProduk(fiturproduk[indexProduk]);
+    setTipeProduk(tipeproduk[indexTipe]);
+    values.idFiturProduk = currentProduct.idFiturProduk;
+    values.idTipeProduk = currentProduct.idTipeProduk;
+    values.namaTipeProduk = currentProduct.namaTipeProduk;
     values.namaSegmen = currentProduct.namaSegmen;
     values.penghasilanDari = currentProduct.penghasilanDari;
     values.penghasilanSampai = currentProduct.penghasilanSampai;
     values.plafon = currentProduct.plafon;
-    values.sukubunga = currentProduct.sukubunga;
+    values.sukuBunga = currentProduct.sukuBunga;
     values.tenor = currentProduct.tenor;
     setOpenForm(true);
   };
@@ -186,26 +333,51 @@ export function ProdukList(props) {
 
   const deleteDataProduk = () => {
     try {
-      dispatch(deleteProdukData(produkId));
-      setDeleteSuccess(true);
-      setOpenDeleteConfirm(false);
+      setLoading(true);
+      setTimeout(() => {
+        dispatch(deleteProdukData(produkId));
+        if(produkDataState.response === 400 || produkDataState.response === 500) {
+          setOpenDeleteConfirm(false);
+          setDeleteSuccess(false);
+          setErrorAlert(true);
+          setLoading(false)
+        } else {
+          setErrorAlert(false);
+          setDeleteSuccess(true);
+          setOpenDeleteConfirm(false);
+          setLoading(false);
+        }
+      }, 2000);
     } catch (error) {
       console.error(error.message);
     }
   }
 
   const updateData = () => {
-    values.namaFiturProduk = namaproduk.nama;
-    values.namaTipeproduk = tipeproduk.nama;
+    values.idFiturProduk = namaproduk.id;
+    values.namaFiturProduk = namaproduk.namaFiturProduk;
+    values.idTipeProduk = tipeProduk.id;
+    values.namaTipeProduk = tipeProduk.namaTipeProduk;
     values.penghasilanDari = parseInt(values.penghasilanDari.toString().split(' ').join(''));
     values.penghasilanSampai = parseInt(values.penghasilanSampai.toString().split(' ').join(''));
     values.plafon = parseInt(values.plafon.toString().split(' ').join(''));
-    values.sukubunga = parseInt(values.sukubunga.toString().split(' ').join(''));
+    values.sukuBunga = parseInt(values.sukuBunga.toString().split(' ').join(''));
     values.tenor = parseInt(values.tenor.toString().split(' ').join(''));
     try {
-      dispatch(updateProdukData(values));
-      setOpenForm(false);
-      setSuccessAlert(true);
+      setLoading(true);
+      setTimeout(() => {
+        dispatch(updateProdukData(values));
+        console.log(`produkDataState: ${JSON.stringify(produkDataState)}`)
+        if(produkDataState.response === 400 || produkDataState.response === 500) {
+          setErrorUpdateAlert(true);
+          setLoading(false)
+        } else {
+          setErrorUpdateAlert(false);
+          setOpenForm(false);
+          setLoading(false);
+          setSuccessAlert(true);
+        }
+      }, 2000);
     } catch (err) {
       console.error(err.message);
     }
@@ -219,7 +391,23 @@ export function ProdukList(props) {
 
   return (
     <Fragment>
-      <SweetAlert success title="Data Updated!" 
+      <SweetAlert error title="Failed to delete data" 
+          customButtons={
+            <React.Fragment>
+              <Button
+                  color="primary"
+                  variant="contained"
+                  className={classes.buttons}
+                  onClick={() => setErrorAlert(false)}
+              >
+                <a style={{color: "white", textDecoration: "none"}}>OK</a>
+              </Button>
+            </React.Fragment>
+          } 
+        show={errorAlert} onConfirm={() => setErrorAlert(false)}>
+        Failed to delete data from server!
+      </SweetAlert>
+      <SweetAlert success title="Data Produk Updated!" 
           customButtons={
             <React.Fragment>
               <Button
@@ -258,17 +446,17 @@ export function ProdukList(props) {
           <PerfectScrollbar>
             <div className={classes.inner}>
               <TableContainer>
-                  <Table stickyHeader>
-                    <TableHead>
+                  <Table>
+                    <TableHead className={classes.customTableHead}>
                       <TableRow>
-                        <TableCell>Nama Produk</TableCell>
-                        <TableCell>Tipe Produk</TableCell>
-                        <TableCell>Nama Segmen</TableCell>
-                        <TableCell>Penghasilan</TableCell>
-                        <TableCell>Plafon</TableCell>
-                        <TableCell>Suku Bunga</TableCell>
-                        <TableCell>Tenor</TableCell>
-                        <TableCell>Actions</TableCell>
+                        <TableCell className={classes.tableClass}>Nama Produk</TableCell>
+                        <TableCell className={classes.tableClass}>Tipe Produk</TableCell>
+                        <TableCell className={classes.tableClass}>Nama Segmen</TableCell>
+                        <TableCell className={classes.tableClass}>Penghasilan</TableCell>
+                        <TableCell className={classes.tableClass}>Plafon</TableCell>
+                        <TableCell className={classes.tableClass}>Suku Bunga</TableCell>
+                        <TableCell className={classes.tableClass}>Tenor</TableCell>
+                        <TableCell className={classes.tableClass}>Actions</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -278,32 +466,28 @@ export function ProdukList(props) {
                               <CircularProgress />
                             </TableCell>
                           </TableRow> 
-                        : produk.slice(0, rowsPerPage).map(p => (
-                        <TableRow
-                            className={classes.tableRow}
-                            hover
-                            key={p.id}
-                        >
+                        : produk.Result.slice(0, rowsPerPage).map(p => (
+                        <TableRow className={classes.tableRow} hover key={p.id}>
                           <TableCell>
-                            <div className={classes.nameContainer}>
-                                <Typography variant="body1">{p.namaFiturProduk}</Typography>
+                            <div className={classes.produkNameContainer}>
+                              <Typography variant="body1" className={classes.tableDataClass}>{p.namaFiturProduk}</Typography>
                             </div>
                           </TableCell>
-                          <TableCell>{p.namaTipeproduk}</TableCell>
-                          <TableCell>{p.namaSegmen}</TableCell>
-                          <TableCell>{currency.format(p.penghasilanDari) +' ' + ' s/d ' + ' '+ currency.format(p.penghasilanSampai)}</TableCell>
-                          <TableCell>{currency.format(p.plafon)}</TableCell>
-                          <TableCell>{p.sukubunga}</TableCell>
-                          <TableCell>{p.tenor}</TableCell>
+                          <TableCell className={classes.tableDataClass}>{p.namaTipeProduk}</TableCell>
+                          <TableCell className={classes.tableDataClass}>{p.namaSegmen}</TableCell>
+                          <TableCell className={classes.tableDataClass}>{currency.format(p.penghasilanDari) +' ' + ' s/d ' + ' '+ currency.format(p.penghasilanSampai)}</TableCell>
+                          <TableCell className={classes.tableDataClass}>{currency.format(p.plafon)}</TableCell>
+                          <TableCell className={classes.tableDataClass}>{p.sukuBunga} %</TableCell>
+                          <TableCell className={classes.tableDataClass}>{p.tenor} tahun</TableCell>
                           <TableCell>
-                              <div>
-                                  <IconButton onClick={() => openDeleteConfirm(p.id)} aria-label="delete">
-                                      <DeleteIcon />
-                                  </IconButton>
-                                  <IconButton onClick={() => openFormModal(p)} aria-label="edit">
-                                      <EditRoundedIcon />
-                                  </IconButton>
-                              </div>
+                            <div>
+                              <IconButton onClick={() => openDeleteConfirm(p.id)} aria-label="delete">
+                                <DeleteIcon />
+                              </IconButton>
+                              <IconButton onClick={() => openFormModal(p)} aria-label="edit">
+                                <EditRoundedIcon />
+                              </IconButton>
+                            </div>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -321,8 +505,7 @@ export function ProdukList(props) {
             onChangeRowsPerPage={handleRowsPerPageChange}
             page={page}
             rowsPerPage={rowsPerPage}
-            rowsPerPageOptions={[5, 10, 25]}
-          />
+            rowsPerPageOptions={[5, 10, 25]}/>
         </CardActions>
       </Card>
       <Dialog
@@ -341,12 +524,26 @@ export function ProdukList(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button variant="contained"className={classes.buttons} onClick={closeDeleteConfirm} color="secondary">
-            Batal
-          </Button>
-          <Button variant="contained"className={classes.buttons} onClick={deleteDataProduk} color="primary" autoFocus>
-            Hapus
-          </Button>
+          <div className={classes.wrapper}>
+            <Button 
+              variant="contained" 
+              className={classes.buttons} 
+              onClick={closeDeleteConfirm} 
+              color="secondary"
+              disabled={loading}>
+              Batal
+            </Button>
+            <Button 
+              variant="contained" 
+              className={classes.buttons} 
+              onClick={deleteDataProduk} 
+              color="primary" 
+              disabled={loading}
+              autoFocus>
+              Hapus
+            </Button>
+            {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+          </div>
         </DialogActions>
       </Dialog>
 
@@ -356,8 +553,17 @@ export function ProdukList(props) {
         onClose={closeFormModal}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="tambahdataProduk">Edit Data Produk</DialogTitle>
-        <DialogContent className={classes.dialogContent}>
+        <DialogTitle id="editdataProduk">
+          <MuiDialogTitle disableTypography className={classes.dialogTitleSection}>
+            <Typography variant="h5">Edit Data Produk</Typography>
+            {openForm ? (
+              <IconButton aria-label="close" className={classes.closeButton} onClick={closeFormModal}>
+                <CloseIcon />
+              </IconButton>
+            ) : null}
+          </MuiDialogTitle>
+        </DialogTitle>
+        <DialogContent dividers className={classes.dialogContent}>
            <form autoComplete="off" noValidate>
             <CardContent>
               <Grid container spacing={3}>
@@ -366,8 +572,8 @@ export function ProdukList(props) {
                     id="namaproduk"
                     autoComplete
                     disableClearable
-                    options={daftarProduk}
-                    getOptionLabel={(option: NamaProdukType) => option.nama}
+                    options={fiturproduk}
+                    getOptionLabel={(option: NamaProdukType) => option.namaFiturProduk}
                     value={namaproduk}
                     onChange={(event: any, newValue: any | null) => {
                       setNamaProduk(newValue);
@@ -389,9 +595,9 @@ export function ProdukList(props) {
                     id="tipeproduk"
                     autoComplete
                     disableClearable
-                    options={tipeProduk}
-                    getOptionLabel={(option: TipeProdukType) => option.nama}
-                    value={tipeproduk}
+                    options={tipeproduk}
+                    getOptionLabel={(option: TipeProdukType) => option.namaTipeProduk}
+                    value={tipeProduk}
                     onChange={(event: any, newValue: any | null) => {
                       setTipeProduk(newValue);
                     }}
@@ -415,7 +621,11 @@ export function ProdukList(props) {
                     name="namaSegmen"
                     required={true}
                     type="text" 
-                    value={values.namaSegmen}
+                    error={values.namaSegmen === ''}
+                    helperText={
+                      values.namaSegmen === '' ? 'Nama segment tidak boleh kosong' : null
+                    }
+                    value={values.namaSegmen || ''}
                     onChange={handleChange}
                     variant="outlined"/>
                 </Grid>
@@ -424,79 +634,86 @@ export function ProdukList(props) {
                   <h3>Penghasilan</h3>
                 </Grid>
                 <Grid item md={6} xs={12}>
-                  <InputMask
-                    mask="9 999 999"
+                 <TextField
+                    label="Dari"
                     value={values.penghasilanDari}
-                    onChange={handleChange}>
-                    {() => <TextField
-                      fullWidth
-                      label="Dari"
-                      margin="dense"
-                      name="penghasilanDari"
-                      required={true}
-                      type="text"
-                      variant="outlined"/>}
-                  </InputMask>
+                    onChange={handleChange}
+                    name="penghasilanDari"
+                    id="penghasilanDari" 
+                    required={true}
+                    variant="outlined"
+                    margin="dense"
+                    fullWidth
+                    InputProps={{
+                      inputComponent: NumberFormatPenghasilan as any,
+                    }} />
                 </Grid>
                 <Grid item md={6} xs={12}>
-                  <InputMask
-                    mask="9 999 999"
+                  <TextField
+                    fullWidth
+                    label="Sampai"
+                    margin="dense"
+                    name="penghasilanSampai"
+                    required={true}
                     value={values.penghasilanSampai}
-                    onChange={handleChange}>
-                    {() => <TextField
-                      fullWidth
-                      label="Sampai"
-                      margin="dense"
-                      name="penghasilanSampai"
-                      required={true}
-                      type="text"
-                      variant="outlined"/>}
-                  </InputMask>
+                    onChange={handleChange}
+                    variant="outlined"
+                    InputProps={{
+                      inputComponent: NumberFormatPenghasilan as any,
+                    }}/>
                 </Grid>
                 <Grid item md={12} xs={12}>
-                  <InputMask
-                    mask="9 999 999 999"
+                  <TextField
+                    label="Plafon"
                     value={values.plafon}
-                    onChange={handleChange}>
-                    {() => <TextField
-                      fullWidth
-                      label="Plafon"
-                      margin="dense"
-                      name="plafon"
-                      required={true}
-                      type="text"
-                      variant="outlined"/>}
-                  </InputMask>
+                    onChange={handleChange}
+                    name="plafon"
+                    id="plafon" 
+                    required={true}
+                    variant="outlined"
+                    margin="dense"
+                    fullWidth
+                    InputProps={{
+                      inputComponent: NumberFormatPlafon as any,
+                    }} />
                 </Grid>
                 <Grid item md={12} xs={12}>
-                  <InputMask
-                    mask="99" 
-                    value={values.sukubunga}
-                    onChange={handleChange}>
-                    {() => <TextField
-                      fullWidth
-                      label="Suku Bunga"
-                      margin="dense"
-                      name="sukubunga"
-                      required={true}
-                      type="text"
-                      variant="outlined"/>}
-                  </InputMask>
+                  <TextField
+                    label="Suku Bunga"
+                    value={values.sukuBunga}
+                    onChange={handleChange}
+                    name="sukuBunga"
+                    id="sukuBunga" 
+                    required={true}
+                    variant="outlined"
+                    margin="dense"
+                    fullWidth
+                    InputProps={{
+                      inputComponent: NumberFormatSukuBunga as any,
+                    }} />
                 </Grid>
                 <Grid item md={12} xs={12}>
-                  <InputMask
-                    mask="99"
+                  <TextField
+                    label="Tenor"
                     value={values.tenor}
-                    onChange={handleChange}>
-                    {() => <TextField
-                      fullWidth
-                      label="Tenor"
-                      margin="dense"
-                      name="tenor"
-                      required={true}
-                      type="text"
-                      variant="outlined"/>}
-                  </InputMask>
+                    onChange={handleChange}
+                    name="tenor"
+                    id="tenor" 
+                    required={true}
+                    variant="outlined"
+                    margin="dense"
+                    fullWidth
+                    InputProps={{
+                      inputComponent: NumberFormatTenor as any,
+                    }} />
+                </Grid>
+                <Grid item md={12} xs={12}>
+                {errorUpdateAlert 
+                  ? <Alert severity="error">
+                      <AlertTitle>Update Produk Data Failed</AlertTitle>
+                      {produkDataState.error.msg}
+                    </Alert> 
+                  : null}
                 </Grid>
               </Grid>
             </CardContent>
@@ -504,14 +721,25 @@ export function ProdukList(props) {
           </form>
         </DialogContent>
         <DialogActions className={classes.dialogAction}>
-          <Button
-              color="secondary"
-              variant="contained"
-              startIcon={<SaveRoundedIcon />}
-              onClick={updateData}
-          >
-              Update Data
-          </Button>
+          <div className={classes.wrapper}>
+            <Button
+                color="secondary"
+                variant="contained"
+                startIcon={<SaveRoundedIcon />}
+                disabled={
+                  values.namaSegmen === '' || 
+                  values.namaSegmen === null || 
+                  values.penghasilanDari === 0 || 
+                  values.penghasilanSampai === 0 || 
+                  values.plafon === 0 || 
+                  values.sukuBunga === 0 ||
+                  values.tenor === 0 || 
+                  loading}
+                onClick={updateData}>
+                Update Data
+            </Button>
+            {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+          </div>
         </DialogActions>
       </Dialog>
     </Fragment>
@@ -520,7 +748,9 @@ export function ProdukList(props) {
 
 ProdukList.propTypes = {
   className: PropTypes.string,
-  produk: PropTypes.any
+  produk: PropTypes.any,
+  fiturproduk: PropTypes.any,
+  tipeproduk: PropTypes.any
 };
 
 export default ProdukList;
