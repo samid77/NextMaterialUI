@@ -186,7 +186,6 @@ const Login = props => {
         [event.target.name]: true
       }
     }));
-    console.log(JSON.stringify(formState.touched));
   };
 
 

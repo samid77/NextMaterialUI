@@ -1,29 +1,29 @@
 FROM node:12-alpine AS build
 
-ENV PORT 3000
-
 # Set workdir directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Installing dependencies
-COPY package*.json /usr/src/app/
+COPY package*.json /app/
 RUN npm install
 
 # Copying source files
-COPY . /usr/src/app
+COPY . /app
 
 # Building app
 RUN npm run build
 
 FROM node:12-alpine
 
+RUN NODE_OPTIONS=--max-old-space-size=8192
+
 # Set workdir directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # copy from build image
-COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY --from=build /app /app
 
-EXPOSE $APP_PORT
+EXPOSE 3000
 
 # Running the app
 CMD "npm" "run" "start"

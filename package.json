@@ -5,7 +5,7 @@
   "scripts": {
     "json-server": "json-server --watch db.json --port 3001",
     "dev": "next dev",
-    "start": "concurrently \"npm run dev\" \"npm run json-server\"",
+    "start": "npm run dev",
     "build": "next build",
     "test": "jest"
   },
@@ -18,13 +18,13 @@
     "@material-ui/pickers": "^3.2.10",
     "@material-ui/styles": "^4.10.0",
     "axios": "0.19.2",
-    "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
     "chart.js": "^2.9.3",
     "clsx": "^1.1.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "history": "^4.10.1",
+    "js-file-download": "^0.4.12",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.26.0",
     "mui-datatables": "^3.0.1",
@@ -101,6 +101,5 @@
     "reportPath": "reports",
     "reportFile": "test-reporter.xml",
     "indent": 4
-  },
-  "proxy": "http://localhost:3001"
+  }
 }

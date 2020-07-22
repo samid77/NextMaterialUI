@@ -7,3 +7,5 @@ jest.mock('react-chartjs-2', () => ({
 HTMLCanvasElement.prototype.getContext = () => { 
   return;
 };
+
+// jest.setTimeout(20000)

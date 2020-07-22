@@ -11,10 +11,8 @@ import {
   Divider,
   Typography
 } from '@material-ui/core';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
-import RefreshIcon from '@material-ui/icons/Refresh';
-import TabletMacIcon from '@material-ui/icons/TabletMac';
+import BeenhereRoundedIcon from '@material-ui/icons/BeenhereRounded';
+import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme:Theme) => ({
@@ -47,18 +45,17 @@ export function UsersByDevice(props) {
   const data = {
     datasets: [
       {
-        data: [63, 15, 22],
+        data: [63, 37],
         backgroundColor: [
           colors.green[500],
           colors.red[600],
-          colors.orange[600]
         ],
         borderWidth: 8,
         borderColor: '#FFFFFF',
         hoverBorderColor: '#FFFFFF'
       }
     ],
-    labels: ['Desktop', 'Tablet', 'Mobile']
+    labels: ['Eligible', 'Ineligible']
   };
 
   const options = {
@@ -85,23 +82,17 @@ export function UsersByDevice(props) {
 
   const devices = [
     {
-      title: 'Desktop',
+      title: 'Eligible',
       value: '63',
-      icon: <LaptopMacIcon />,
+      icon: <BeenhereRoundedIcon />,
       color: colors.green[500]
     },
     {
-      title: 'Tablet',
+      title: 'Ineligible',
       value: '15',
-      icon: <TabletMacIcon />,
+      icon: <CancelRoundedIcon />,
       color: colors.red[600]
     },
-    {
-      title: 'Mobile',
-      value: '23',
-      icon: <PhoneIphoneIcon />,
-      color: colors.orange[600]
-    }
   ];
 
   return (
@@ -109,14 +100,7 @@ export function UsersByDevice(props) {
       {...rest}
       className={clsx(classes.root, className)}
     >
-      <CardHeader
-        action={
-          <IconButton size="small">
-            <RefreshIcon />
-          </IconButton>
-        }
-        title="Users By Device"
-      />
+      <CardHeader title="Grafik Eligible"/>
       <Divider />
       <CardContent>
         <div className={classes.chartContainer}>

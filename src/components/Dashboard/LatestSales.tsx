@@ -46,7 +46,7 @@ export function LatestSales(props) {
             Last 7 days <ArrowDropDownIcon />
           </Button>
         }
-        title="Latest Sales"
+        title="Grafik Pemanfaatan"
       />
       <Divider />
       <CardContent>

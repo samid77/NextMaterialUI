@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Card,
@@ -11,10 +10,14 @@ import {
   Divider,
   Typography
 } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import { colors } from '@material-ui/core';
+import {ParameterEligible, ParameterEligibleState} from '../../interfaces/ParameterEligible';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../redux/reducers';
 
 const useStyles = makeStyles((theme:Theme) => ({
   root: {
@@ -39,17 +42,23 @@ const useStyles = makeStyles((theme:Theme) => ({
 }));
 
 export function ChartEligible(props) {
-  const { className, ...rest } = props;
-
   const classes = useStyles();
+  const parameterEligibleState: ParameterEligibleState = useSelector((state: AppState) => state.parameterEligible);
+  const isEmpty = (obj) => {
+    for(var key in obj) {
+      if(obj.hasOwnProperty(key))
+        return false;
+    }
+    return true;
+  }
 
   const data = {
     datasets: [
       {
-        data: [1000, 3000],
+        data: isEmpty(props.parameligible) ? [0, 0] : [props.parameligible.eligible, props.parameligible.ineligible],
         backgroundColor: [
-          colors.green[500],
-          colors.red[600],
+          '#00B45A',
+          '#326144',
         ],
         borderWidth: 8,
         borderColor: '#FFFFFF',
@@ -81,66 +90,51 @@ export function ChartEligible(props) {
     }
   };
 
-  const devices = [
+  const chartParamEligible = [
     {
       title: 'Eligible',
-      value: '1000',
+      value: isEmpty(props.parameligible) ? 0 : props.parameligible.eligible,
       icon: <CheckCircleRoundedIcon />,
-      color: colors.green[500]
+      color: '#00B45A'
     },
     {
       title: 'Tidak Eligible',
-      value: '3000',
+      value: isEmpty(props.parameligible) ? 0 : props.parameligible.ineligible,
       icon: <CancelRoundedIcon />,
-      color: colors.red[600]
+      color: '#326144'
     },
   ];
 
   return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
-      <CardHeader
-        action={
-          <IconButton size="small">
-            <RefreshIcon />
-          </IconButton>
-        }
-        title="Chart Eligible"
-      />
+    <Card>
+      <CardHeader title="Chart Eligible"/>
       <Divider />
       <CardContent>
-        <div className={classes.chartContainer}>
-          <Pie
-            data={data}
-            options={options}
-          />
-        </div>
-        <div className={classes.stats}>
-          {devices.map(device => (
-            <div
-              className={classes.device}
-              key={device.title}
-            >
-              <span className={classes.deviceIcon}>{device.icon}</span>
-              <Typography variant="body1">{device.title}</Typography>
-              <Typography
-                style={{ color: device.color }}
-                variant="h2"
-              >
-                {device.value}
-              </Typography>
+        {
+          isEmpty(props.parameligible) || parameterEligibleState.response === 404 || parameterEligibleState.response === 500 || parameterEligibleState.response === 400
+          ? <div className={classes.stats}>
+              <img src={'/images/nodata.jpg'} height="400" width="400"/>
             </div>
-          ))}
-        </div>
+          : <div>
+              <div className={classes.chartContainer}>
+                <Pie data={data} options={options}/>
+              </div>
+              <div className={classes.stats}>
+                {chartParamEligible.map(device => (
+                  <div className={classes.device} key={device.title}>
+                    <span className={classes.deviceIcon}>{device.icon}</span>
+                    <Typography variant="body1">{device.title}</Typography>
+                    <Typography style={{ color: device.color }} variant="h2">
+                      {device.value}
+                    </Typography>
+                  </div>
+                ))}
+              </div>
+            </div>
+        }
       </CardContent>
     </Card>
   );
 }
-
-ChartEligible.propTypes = {
-  className: PropTypes.string
-};
 
 export default ChartEligible;

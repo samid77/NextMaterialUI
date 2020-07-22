@@ -14,6 +14,15 @@ import {
     SEARCH_MITRA, 
     SEARCH_MITRA_SUCCESS, 
     SEARCH_MITRA_ERROR,
+    SEARCH_ADV_MITRA, 
+    SEARCH_ADV_MITRA_SUCCESS, 
+    SEARCH_ADV_MITRA_ERROR,
+    EXPORTCSV_MITRA,
+    EXPORTCSV_MITRA_SUCCESS, 
+    EXPORTCSV_MITRA_ERROR,
+    EXPORTEXCEL_MITRA,
+    EXPORTEXCEL_MITRA_SUCCESS, 
+    EXPORTEXCEL_MITRA_ERROR,
     RESET_SEARCH_MITRA
 } from '../constants/MitraConstants';
 import { MitraDataListState, MitraDataAction } from '../../interfaces/MitraData';
@@ -30,7 +39,10 @@ const MitraDataReducers = (state: MitraDataListState = initialState, action: Mit
   switch (action.type) {
     case GET_MITRA:
     case SEARCH_MITRA:
+    case SEARCH_ADV_MITRA:
     case RESET_SEARCH_MITRA:
+    case EXPORTCSV_MITRA:
+    case EXPORTEXCEL_MITRA:
         return {
             ...state,
             fetch: true,
@@ -38,6 +50,7 @@ const MitraDataReducers = (state: MitraDataListState = initialState, action: Mit
         };
     case MITRA_SUCCESS:
     case SEARCH_MITRA_SUCCESS:
+    case SEARCH_ADV_MITRA_SUCCESS:
         return {
             ...state,
             fetch: false,
@@ -45,15 +58,27 @@ const MitraDataReducers = (state: MitraDataListState = initialState, action: Mit
             data: action.data
         };
     case MITRA_ERROR:
-    case ADD_MITRA_ERROR:
-    case UPDATE_MITRA_ERROR:
-    case DELETE_MITRA_ERROR:
-    case SEARCH_MITRA_ERROR:
         return {
             ...state,
             fetch: false,
             action: action.type,
-            error: action.data
+            response: action.data.status,
+            error: action.data.data,
+            data: []
+        };
+    case ADD_MITRA_ERROR:
+    case UPDATE_MITRA_ERROR:
+    case DELETE_MITRA_ERROR:
+    case SEARCH_MITRA_ERROR:
+    case SEARCH_ADV_MITRA_ERROR:
+    case EXPORTCSV_MITRA_ERROR:
+    case EXPORTEXCEL_MITRA_ERROR:
+        return {
+            ...state,
+            fetch: false,
+            action: action.type,
+            response: action.data.status,
+            error: action.data.data
         };
     case ADD_MITRA:
     case UPDATE_MITRA:
@@ -67,10 +92,13 @@ const MitraDataReducers = (state: MitraDataListState = initialState, action: Mit
     case ADD_MITRA_SUCCESS:
     case UPDATE_MITRA_SUCCESS:
     case DELETE_MITRA_SUCCESS:
+    case EXPORTCSV_MITRA_SUCCESS:
+    case EXPORTEXCEL_MITRA_SUCCESS:
         return {
             ...state,
             fetch: false,
             action: action.type,
+            response: action.data
         };
     default:
       return state;

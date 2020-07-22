@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Card,
   CardHeader,
@@ -20,7 +20,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import mockData from './latestproductdata';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme:Theme) => ({
   root: {
     height: '100%'
   },
@@ -28,8 +28,9 @@ const useStyles = makeStyles(() => ({
     padding: 0
   },
   image: {
-    height: 48,
-    width: 48
+    height: 40,
+    width: 62,
+    marginRight: theme.spacing(2)
   },
   actions: {
     justifyContent: 'flex-end'
@@ -50,7 +51,7 @@ export function LatestProducts(props) {
     >
       <CardHeader
         subtitle={`${products.length} in total`}
-        title="Latest products"
+        title="Daftar Mitra (SAMPLE)"
       />
       <Divider />
       <CardContent className={classes.content}>

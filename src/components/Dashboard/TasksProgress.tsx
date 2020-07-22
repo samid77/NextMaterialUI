@@ -61,7 +61,7 @@ export function TasksProgress(props) {
               gutterBottom
               variant="body2"
             >
-              TASKS PROGRESS
+              PROGRESS SERAPAN DANA (SAMPLE)
             </Typography>
             <Typography variant="h3">75.5%</Typography>
           </Grid>

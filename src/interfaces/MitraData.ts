@@ -1,22 +1,31 @@
 export interface MitraData{
-    id: number;
-    nama: string;
-    tanggalPKS: string;
-    pksStartDate: string;
-    pksEndDate: string;
-    tanggalLimit: string;
-    limitStartDate: string;
-    limitEndDate: string;
+    id?: string;
+    namaMitra: string;
+    tanggalMulaiPKS: string;
+    tanggalAkhirPKS: string;
+    tanggalMulaiLimit: string;
+    tanggalAkhirLimit: string;
     targetUnit: number;
-    maxLimit: number;
     targetNominal: number;
-    approvalStatus: number;
-    createdAt: string;
+    maksimalLimit: number;
+    sisaLimit?: number;
+    approvalStatus?: string;
+}
+
+export interface MitraDataFilter{
+    namaMitrafilter: string;
+    tanggalMulaiPKSfilter: any;
+    tanggalAkhirPKSfilter: any;
+    tanggalMulaiLimitfilter: any;
+    tanggalAkhirLimitfilter: any;
+    targetUnitfilter: any;
+    targetNominalfilter: any;
+    maksimalLimitfilter: any;
 }
 
 export interface MitraDataListState{
     fetch: boolean;
-    error: object | object[] | string | null;
+    error: any;
     response: any;
     action: string | null;
     data: MitraData[];
@@ -25,6 +34,11 @@ export interface MitraDataListState{
 export interface MitraDataAction{
     type: string;
     data: any;
+}
+
+export interface DaftarMitra {
+    id: string;
+    namaMitra: string;
 }
 
 export interface MitraDataInterface {

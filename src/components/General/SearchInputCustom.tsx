@@ -52,9 +52,7 @@ export function SearchInputCustom(props) {
         onChange={onChange}
         onKeyUp={onKeyUp}
       />
-      <IconButton type="submit" className={classes.iconButton} aria-label="search">
-        <SearchIcon />
-      </IconButton>
+      <SearchIcon />
       <Divider className={classes.divider} orientation="vertical" />
       <IconButton onClick={resetSearch} color="primary" className={classes.iconButton} aria-label="directions">
         <CachedRoundedIcon />

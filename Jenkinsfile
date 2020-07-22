@@ -1,12 +1,9 @@
 
 node ('master'){
-    def appDockerImg
-    def baseTag = '1.1.0'
-
     def appName = 'pemanfaatan-dana-fe'
     def namespace = 'pemanfaatan-dana'
     def nexusPluginsRepoUrl = 'https://nexus.tapera.go.id/repository/maven-central/'
-    def imageTag = 'latest'
+    def imageTag
     def sonarSrc = 'src'
     def sonarTest = 'src/components'
     def testReportPath = 'reports/test-reporter.xml'
@@ -19,8 +16,8 @@ node ('master'){
     // def nexusDockerDevRepoGCP = 'http://192.168.43.176:8123'
     // def nexusDockerDevRepoALI = 'http://192.168.43.176:8124'
 
-    def memLimit = '512Mi'
-    def cpuLimit = '500m'
+    def memLimit = '700Mi'
+    def cpuLimit = '150m'
     def imagePullSecret = 'nexus-dev-repo'
     def serviceTypeGKE = 'LoadBalancer'
     def serviceTypeALI = 'NodePort'
@@ -43,13 +40,14 @@ node ('master'){
 
     def katalonRepoUrl = 'https://bitbucket.tapera.go.id/scm/pmf/pmf-fe-katalon.git'
     def katalonBranch = 'master'
-    def katalonProjectName = 'pemanfaatan-fe-test.prj'
-    def katalonTestSuiteName = 'SimpleTestSuite'
+    def katalonProjectName = 'BP Tapera.prj'
+    def katalonTestSuiteName = 'TestSuite_Eligible'
 
     stage('Checkout'){
         echo 'Checking out SCM'
         //checkout scm
-        checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[credentialsId: 'ci-cd', url: "${appRepoUrl}"]], branches: [[name: "${appBranch}"]]]
+        scmVars = checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[credentialsId: 'ci-cd', url: "${appRepoUrl}"]], branches: [[name: "${appBranch}"]]]
+        imageTag = scmVars.GIT_COMMIT
     }
 
 	stage('Build App'){
@@ -57,6 +55,7 @@ node ('master'){
         sh '''
 		npm install
 		npm run build
+        ls
 		'''
     }
 
@@ -69,36 +68,36 @@ node ('master'){
 
     stage("SonarQube Analysis"){
 		echo 'scan sonarqube'
-        withSonarQubeEnv(credentialsId: 'sonarqube-token', installationName: 'sonarqube') {
-			sh"""
-                sonar-scanner \
-                -Dsonar.projectKey=pmf-fe \
-                -Dsonar.qualitygate.wait=true \
-                -Dsonar.sources=${sonarSrc} \
-                -Dsonar.tests=${sonarTest} \
-                -Dsonar.javascript.lcov.reportPaths=${lcovPath} \
-                -Dsonar.testExecutionReportPaths=${testReportPath} \
-                -Dsonar.test.inclusions="**/*.test.tsx" \
-                -Dsonar.test.exclusions="**/vendor/**,**/pages/**,**/configurations/**,**/helpers/**,**/theme/**,**/redux/**" \
-            """
-		}
+        // withSonarQubeEnv(credentialsId: 'sonarqube-token', installationName: 'sonarqube') {
+		// 	sh"""
+        //         sonar-scanner \
+        //         -Dsonar.projectKey=pmf-fe \
+        //         -Dsonar.qualitygate.wait=true \
+        //         -Dsonar.sources=${sonarSrc} \
+        //         -Dsonar.tests=${sonarTest} \
+        //         -Dsonar.javascript.lcov.reportPaths=${lcovPath} \
+        //         -Dsonar.testExecutionReportPaths=${testReportPath} \
+        //         -Dsonar.test.inclusions="**/*.test.tsx" \
+        //         -Dsonar.test.exclusions="**/vendor/**,**/pages/**,**/configurations/**,**/helpers/**,**/theme/**,**/redux/**.**/api/**" \
+        //     """
+		// }
 		
-		//quality gate
-		timeout(time: 1, unit: 'HOURS') {
-              def qg = waitForQualityGate()
-              if (qg.status != 'OK') {
-                  error "Pipeline aborted due to quality gate failure: ${qg.status}"
-              }
-         }
+		// //quality gate
+		// timeout(time: 1, unit: 'HOURS') {
+        //     def qg = waitForQualityGate()
+        //     if (qg.status != 'OK') {
+        //         error "Pipeline aborted due to quality gate failure: ${qg.status}"
+        //     }
+        // }
     }
 
     stage('Build Image') {
         echo "Build Image"
         withCredentials([usernamePassword(credentialsId: 'ci-cd', passwordVariable: 'nexusPassword', usernameVariable: 'nexusUsername')]) {
             sh """
+            docker rmi -f ${nexusDockerDevRepoGCP}/${appName}:${imageTag}
             docker-compose build --force-rm
-            #docker login -u=${nexusUsername} -p=${nexusPassword} ${nexusDockerDevRepoGCP}
-            #docker build -t pemanfaatan-fe:dev .
+            docker tag ${nexusDockerDevRepoGCP}/${appName} ${nexusDockerDevRepoGCP}/${appName}:${imageTag}
             """
         }
     }
@@ -122,6 +121,7 @@ node ('master'){
         echo 'delete image'
         sh """
             docker-compose rm -f
+            docker rmi -f ${nexusDockerDevRepoGCP}/${appName}:${imageTag}
         """ 
     } 
 

@@ -12,6 +12,19 @@ export interface ProdukData{
     tenor:number;
 }
 
+export interface ProdukDataFilter{
+    idFiturProdukfilter:string;
+    namaFiturProdukfilter:string;
+    idTipeProdukfilter:string;
+    namaTipeProdukfilter:string;
+    namaSegmenfilter:string;
+    penghasilanDarifilter:any;
+    penghasilanSampaifilter:any;
+    plafonfilter:any;
+    sukuBungafilter:any;
+    tenorfilter:any;
+}
+
 export interface FiturProduk {
     id: string;
     namaFiturProduk: string;

@@ -6,7 +6,12 @@ import { Divider, Drawer } from '@material-ui/core';
 import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
 import AccountBalanceRoundedIcon from '@material-ui/icons/AccountBalanceRounded';
 import PlaylistAddCheckRoundedIcon from '@material-ui/icons/PlaylistAddCheckRounded';
+import NextWeekRoundedIcon from '@material-ui/icons/NextWeekRounded';
+import NewReleasesRoundedIcon from '@material-ui/icons/NewReleasesRounded';
 import StarsRoundedIcon from '@material-ui/icons/StarsRounded';
+import BeenhereRoundedIcon from '@material-ui/icons/BeenhereRounded';
+import AssignmentIndRoundedIcon from '@material-ui/icons/AssignmentIndRounded';
+import DonutSmallRoundedIcon from '@material-ui/icons/DonutSmallRounded';
 import { Profile } from './Profile';
 import { SidebarNav } from './SidebarNav';
 
@@ -46,10 +51,15 @@ export function Sidebar(props) {
       icon: <DashboardRoundedIcon />
     },
     {
-      title: 'Daftar Eligible',
+      title: 'Parameter Eligible',
       href: '/eligible',
-      icon: <PlaylistAddCheckRoundedIcon />
+      icon: <DonutSmallRoundedIcon />
     },
+    // {
+    //   title: 'List Eligible',
+    //   href: '/listeligible',
+    //   icon: <BeenhereRoundedIcon />
+    // },
     {
       title: 'Master Data Mitra',
       href: '/mitra',
@@ -60,7 +70,26 @@ export function Sidebar(props) {
       href: '/produk',
       icon: <StarsRoundedIcon />
     },
-    
+    {
+      title: 'Skenario Kuota',
+      href: '/skenariokuota',
+      icon: <NextWeekRoundedIcon />
+    },
+    {
+      title: 'Skenario Prioritas',
+      href: '/skenarioprioritas',
+      icon: <NewReleasesRoundedIcon />
+    },
+    {
+      title: 'Peserta Eligible',
+      href: '/pesertaeligible',
+      icon: <AssignmentIndRoundedIcon />
+    },
+    {
+      title: 'Peserta Prioritas',
+      href: '/pesertaprioritas',
+      icon: <AssignmentIndRoundedIcon />
+    },
   ];
 
   return (

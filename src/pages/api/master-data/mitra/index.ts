@@ -20,34 +20,69 @@ export function getMitra(req: Request, res: Response) {
     var param = ""
     if (req.query.size) {
         param += "&size=" + req.query.size
+    } else {
+        param += "&size=10"
     }
     if (req.query.page) {
         param += "&page=" + req.query.page
+    } else {
+        param += "&page=1"
     }
 
-    if (req.query.namaMitra) {
-        param += "&namaMitra=" + req.query.namaMitra
+    if (req.query.q) {
+        param += "&q=" + req.query.q
     }
-    if (req.query.tanggalMulaiPKS) {
-        param += "&tanggalMulaiPKS=" + req.query.tanggalMulaiPKS
+    if (req.query.sort_by) {
+        param += "&sort_by=" + req.query.sort_by
     }
-    if (req.query.tanggalAkhirPKS) {
-        param += "&tanggalAkhirPKS=" + req.query.tanggalAkhirPKS
+    if (req.query.asc) {
+        param += "&asc=" + req.query.asc
     }
-    if (req.query.tanggalMulaiLimit) {
-        param += "&tanggalMulaiLimit=" + req.query.tanggalMulaiLimit
+
+    if (req.query.nama_mitra) {
+        param += "&nama_mitra=" + req.query.nama_mitra
     }
-    if (req.query.tanggalAkhirLimit) {
-        param += "&tanggalAkhirLimit=" + req.query.tanggalAkhirLimit
+    if (req.query.tanggal_mulai_pks) {
+        param += "&tanggal_mulai_pks=" + req.query.tanggal_mulai_pks
     }
-    if (req.query.targetUnit) {
-        param += "&targetUnit=" + req.query.targetUnit
+    if (req.query.tanggal_akhir_pks) {
+        param += "&tanggal_akhir_pks=" + req.query.tanggal_akhir_pks
     }
-    if (req.query.targetNominal) {
-        param += "&targetNominal=" + req.query.targetNominal
+    if (req.query.tanggal_mulai_limit) {
+        param += "&tanggal_mulai_limit=" + req.query.tanggal_mulai_limit
     }
-    if (req.query.maksimalLimit) {
-        param += "&maksimalLimit=" + req.query.maksimalLimit
+    if (req.query.tanggal_akhir_limit) {
+        param += "&tanggal_akhir_limit=" + req.query.tanggal_akhir_limit
+    }
+    if (req.query.target_unit) {
+        param += "&target_unit=" + req.query.target_unit
+    }
+    if (req.query.target_nominal) {
+        param += "&target_nominal=" + req.query.target_nominal
+    }
+    if (req.query.maksimal_limit) {
+        param += "&maksimal_limit=" + req.query.maksimal_limit
+    }
+    if (req.query.approval_status) {
+        param += "&approval_status=" + req.query.approval_status
+    }
+    if (req.query.target_unit_opr) {
+        param += "&target_unit_opr=" + req.query.target_unit_opr
+    }
+    if (req.query.target_nominal_opr) {
+        param += "&target_nominal_opr=" + req.query.target_nominal_opr
+    }
+    if (req.query.maksimal_limit_opr) {
+        param += "&maksimal_limit_opr=" + req.query.maksimal_limit_opr
+    }
+    if (req.query.target_unit_max) {
+        param += "&target_unit_max=" + req.query.target_unit_max
+    }
+    if (req.query.target_nominal_max) {
+        param += "&target_nominal_max=" + req.query.target_nominal_max
+    }
+    if (req.query.maksimal_limit_max) {
+        param += "&maksimal_limit_max=" + req.query.maksimal_limit_max
     }
     var options = {
         uri: url + param,

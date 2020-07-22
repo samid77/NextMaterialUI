@@ -14,8 +14,17 @@ import {
     SEARCH_MITRA,
     SEARCH_MITRA_SUCCESS, 
     SEARCH_MITRA_ERROR,
+    SEARCH_ADV_MITRA,
+    SEARCH_ADV_MITRA_SUCCESS, 
+    SEARCH_ADV_MITRA_ERROR,
+    EXPORTCSV_MITRA,
+    EXPORTCSV_MITRA_SUCCESS, 
+    EXPORTCSV_MITRA_ERROR,
+    EXPORTEXCEL_MITRA,
+    EXPORTEXCEL_MITRA_SUCCESS, 
+    EXPORTEXCEL_MITRA_ERROR,
     RESET_SEARCH_MITRA } from '../constants/MitraConstants';
-import { MitraDataAction, MitraData } from '../../interfaces/MitraData';
+import { MitraDataAction, MitraData, MitraDataFilter } from '../../interfaces/MitraData';
 
 export const getMitraData = (params: any): MitraDataAction => ({type: GET_MITRA, data: params});
 export const mitraDataSuccess = (data: MitraData[]): MitraDataAction => ({type: MITRA_SUCCESS, data: data});
@@ -36,5 +45,17 @@ export const deleteMitraDataError = (error: any): MitraDataAction => ({type: DEL
 export const searchMitraData = (keywords: any): MitraDataAction => ({type: SEARCH_MITRA, data: keywords});
 export const searchMitraDataSuccess = (data: MitraData[]): MitraDataAction => ({type: SEARCH_MITRA_SUCCESS, data: data});
 export const searchMitraDataError = (error: any): MitraDataAction => ({type: SEARCH_MITRA_ERROR, data: error});
+
+export const searchAdvMitraData = (params: MitraDataFilter): MitraDataAction => ({type: SEARCH_ADV_MITRA, data: params});
+export const searchAdvMitraDataSuccess = (data: MitraData[]): MitraDataAction => ({type: SEARCH_ADV_MITRA_SUCCESS, data: data});
+export const searchAdvMitraDataError = (error: any): MitraDataAction => ({type: SEARCH_ADV_MITRA_ERROR, data: error});
+
+export const exportCSVMitra = (params: any): MitraDataAction => ({type: EXPORTCSV_MITRA, data: params});
+export const exportCSVMitraSuccess = (data: MitraData[]): MitraDataAction => ({type: EXPORTCSV_MITRA_SUCCESS, data: data});
+export const exportCSVMitraError = (error: any): MitraDataAction => ({type: EXPORTCSV_MITRA_ERROR, data: error});
+
+export const exportExcelMitra = (params: any): MitraDataAction => ({type: EXPORTEXCEL_MITRA, data: params});
+export const exportExcelMitraSuccess = (data: MitraData[]): MitraDataAction => ({type: EXPORTEXCEL_MITRA_SUCCESS, data: data});
+export const exportExcelMitraError = (error: any): MitraDataAction => ({type: EXPORTEXCEL_MITRA_ERROR, data: error});
 
 export const resetSearchMitraData = (params: any): MitraDataAction => ({type: RESET_SEARCH_MITRA, data: params});

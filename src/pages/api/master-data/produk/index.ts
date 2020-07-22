@@ -21,9 +21,13 @@ function getProduk(req: Request, res: Response) {
   var param = ""
   if (req.query.size) {
     param += "&size=" + req.query.size
+  } else {
+    param += "&size=10"
   }
   if (req.query.page) {
     param += "&page=" + req.query.page
+  } else {
+    param += "&page=1"
   }
   if (req.query.q) {
     param += "&q=" + req.query.q
@@ -58,6 +62,38 @@ function getProduk(req: Request, res: Response) {
   }
   if (req.query.desc) {
     param += "&desc=" + req.query.desc
+  }
+
+
+  if (req.query.penghasilanDariOpr) {
+    param += "&penghasilanDariOpr=" + req.query.penghasilanDariOpr
+  }
+  if (req.query.penghasilanSampaiOpr) {
+    param += "&penghasilanSampaiOpr=" + req.query.penghasilanSampaiOpr
+  }
+  if (req.query.plafonOpr) {
+    param += "&plafonOpr=" + req.query.plafonOpr
+  }
+  if (req.query.sukuBungaOpr) {
+    param += "&sukuBungaOpr=" + req.query.sukuBungaOpr
+  }
+  if (req.query.tenorOpr) {
+    param += "&tenorOpr=" + req.query.tenorOpr
+  }
+  if (req.query.penghasilanDariMax) {
+    param += "&penghasilanDariMax=" + req.query.penghasilanDariMax
+  }
+  if (req.query.penghasilanSampaiMax) {
+    param += "&penghasilanSampaiMax=" + req.query.penghasilanSampaiMax
+  }
+  if (req.query.plafonMax) {
+    param += "&plafonMax=" + req.query.plafonMax
+  }
+  if (req.query.sukuBungaMax) {
+    param += "&sukuBungaMax=" + req.query.sukuBungaMax
+  }
+  if (req.query.tenorMax) {
+    param += "&tenorMax=" + req.query.tenorMax
   }
   var options = {
     uri: url + param,

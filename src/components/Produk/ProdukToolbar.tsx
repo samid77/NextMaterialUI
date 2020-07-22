@@ -1,40 +1,47 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import SweetAlert from 'react-bootstrap-sweetalert';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { AppState } from '../../redux/reducers';
 import { SearchInputCustom } from '../General';
+import { NumberFormatHelper } from '../../helpers/NumberFormatHelper';
+import { ProdukData, ProdukDataFilter, ProdukDataListState, FiturProduk, TipeProduk } from '../../interfaces/ProdukData';
+import { addProdukData, searchProdukData, searchAdvProdukData, resetSearchProdukData, exportCSVProduk, exportExcelProduk } from '../../redux/actions/ProdukDataAction';
+
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
-import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
-import PublishRoundedIcon from '@material-ui/icons/PublishRounded';
-import PageviewRoundedIcon from '@material-ui/icons/PageviewRounded';
-import Dialog from '@material-ui/core/Dialog';
+import Link from '@material-ui/core/Link';
+import IconButton from '@material-ui/core/IconButton';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Paper from '@material-ui/core/Paper';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
-import SweetAlert from 'react-bootstrap-sweetalert';
-import NumberFormat from 'react-number-format';
 import Typography from '@material-ui/core/Typography';
+import Dialog from '@material-ui/core/Dialog';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Collapse from '@material-ui/core/Collapse';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import {
   CardContent,
   Divider,
   Grid,
-  TextField
+  TextField,
+  Button,
+  colors
 } from '@material-ui/core';
-import { ProdukData, ProdukDataListState } from '../../interfaces/ProdukData';
-import { addProdukData, searchProdukData, resetSearchProdukData } from '../../redux/actions/ProdukDataAction';
-import { colors } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '../../redux/reducers';
-import { Alert, AlertTitle } from '@material-ui/lab';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
+
+import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
+import PublishRoundedIcon from '@material-ui/icons/PublishRounded';
+import PageviewRoundedIcon from '@material-ui/icons/PageviewRounded';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
+import CloseIcon from '@material-ui/icons/Close';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 
 const useStyles = makeStyles((theme:Theme) => ({
@@ -52,15 +59,33 @@ const useStyles = makeStyles((theme:Theme) => ({
     marginRight: theme.spacing(1)
   },
   buttons: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
+    backgroundColor: '#4a9667',
+    '&:hover': {
+        backgroundColor: '#38664a',
+    },
+  },
+  buttonProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   },
   produkAdvanceSearch: {
     margin: theme.spacing(1),
     color: theme.palette.getContrastText(red[500]),
-    backgroundColor: red[500],
+    backgroundColor: '#4a9667',
     '&:hover': {
-        backgroundColor: red[700],
+        backgroundColor: '#38664a',
     },
+  },
+  closeButtonProduk: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
   },
   formControl: {
     minWidth: 520,
@@ -70,6 +95,10 @@ const useStyles = makeStyles((theme:Theme) => ({
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
+  },
+  dialogTitleSectionProduk: {
+    margin: 0,
+    padding: theme.spacing(2),
   },
   dialogAction: {
     marginTop: theme.spacing(1),
@@ -81,164 +110,39 @@ const useStyles = makeStyles((theme:Theme) => ({
   dateLabel: {
     marginBottom: theme.spacing(-4)
   },
+  advancedSearchRow: {
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
+  },
+  searchPaper: {
+    padding: theme.spacing(4)
+  },
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
     color: colors.blueGrey[600],
   },
-  dialogTitleSection: {
-    margin: 0,
-    padding: theme.spacing(2),
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-  buttonProgress: {
-    color: green[500],
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginTop: -12,
-    marginLeft: -12,
-  },
   wrapper: {
     margin: theme.spacing(1),
     position: 'relative',
   },
+  advanceSearch: {
+    margin: theme.spacing(1),
+    color: theme.palette.getContrastText(red[500]),
+    backgroundColor: '#4a9667',
+    '&:hover': {
+        backgroundColor: '#38664a',
+    },
+  },
+  divider: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(3),
+    backgroundColor: '#cee0d4'
+  },
+  filterTitle: {
+    marginBottom: theme.spacing(2)
+  }
 }));
-interface NumberFormatCustomProps {
-  inputRef: (instance: NumberFormat | null) => void;
-  onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string;
-}
-
-const NumberFormatPenghasilan = (props: NumberFormatCustomProps) =>  {
-  const { inputRef, onChange, ...other } = props;
-  return (
-    <NumberFormat
-      {...other}
-      isAllowed={(values) => {
-          const { formattedValue, floatValue } = values;
-          return formattedValue === "" || floatValue <= 999999999;
-      }}
-      isNumericString
-      allowLeadingZeros={false}
-      defaultValue={0}
-      allowNegative={false}
-      prefix="Rp. "
-      getInputRef={inputRef}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      thousandSeparator={'.'}
-      decimalSeparator={','}
-    />
-  );
-}
-
-const NumberFormatTenor = (props: NumberFormatCustomProps) =>  {
-  const { inputRef, onChange, ...other } = props;
-  return (
-    <NumberFormat
-      {...other}
-      isAllowed={(values) => {
-          const { formattedValue, floatValue } = values;
-          return formattedValue === "" || floatValue <= 40;
-      }}
-      thousandSeparator={'.'}
-      decimalSeparator={','}
-      isNumericString
-      allowLeadingZeros={false}
-      getInputRef={inputRef}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      defaultValue={0}
-      allowNegative={false}
-      suffix=" thn"
-    />
-  );
-}
-
-const NumberFormatsukuBunga = (props: NumberFormatCustomProps) =>  {
-  const { inputRef, onChange, ...other } = props;
-  return (
-    <NumberFormat
-      {...other}
-      isAllowed={(values) => {
-          const { formattedValue, floatValue } = values;
-          return formattedValue === "" || floatValue <= 99;
-      }}
-      getInputRef={inputRef}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      thousandSeparator={'.'}
-      decimalSeparator={','}
-      isNumericString
-      allowLeadingZeros={true}
-      defaultValue={0}
-      allowNegative={false}
-      suffix=" %"
-    />
-  );
-}
-
-const NumberFormatPlafon = (props: NumberFormatCustomProps) =>  {
-  const { inputRef, onChange, ...other } = props;
-  return (
-    <NumberFormat
-      {...other}
-      isAllowed={(values) => {
-          const { formattedValue, floatValue } = values;
-          return formattedValue === "" || floatValue <= 9999999999;
-      }}
-      getInputRef={inputRef}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      defaultValue={0}
-      allowNegative={false}
-      prefix="Rp. "
-      thousandSeparator={'.'}
-      decimalSeparator={','}
-      isNumericString
-      allowLeadingZeros={true}
-    />
-  );
-}
-
-interface NamaProdukType {
-  id: string;
-  namaFiturProduk: string;
-}
-interface TipeProdukType {
-  id: string;
-  namaTipeProduk: string;
-}
 
 
 export function ProdukToolbar(props) {
@@ -255,6 +159,19 @@ export function ProdukToolbar(props) {
     tenor:0
   };
 
+  const filterValues: ProdukDataFilter = {
+    idFiturProdukfilter: '',
+    namaFiturProdukfilter:'',
+    idTipeProdukfilter: '',
+    namaTipeProdukfilter:'',
+    namaSegmenfilter: '',
+    penghasilanDarifilter: 0,
+    penghasilanSampaifilter: 0,
+    plafonfilter:0,
+    sukuBungafilter:0,
+    tenorfilter:0
+  };
+
   const dispatch = useDispatch();
   const { className, fiturproduk, tipeproduk, ...rest } = props;
   const produkDataState: ProdukDataListState = useSelector((state: AppState) => state.produkData);
@@ -266,8 +183,12 @@ export function ProdukToolbar(props) {
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [namaproduk, setNamaProduk] = useState(null);
   const [tipeProduk, setTipeProduk] = useState(null);
+  const [namaprodukfilter, setNamaProdukFilter] = useState(null);
+  const [tipeProdukfilter, setTipeProdukFilter] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
+  const [filterForm, setFilterForm] = useState(false);
+  const [filterVal, setFilterVal] = useState(filterValues);
 
   const openFormModal = () => {
     setLoading(false);
@@ -278,12 +199,8 @@ export function ProdukToolbar(props) {
     setOpenForm(false);
   };
 
-  const openSearchModal = () => {
-    setOpenAdvanceSearch(true);
-  };
-
-  const closeSearchModal = () => {
-    setOpenAdvanceSearch(false);
+  const toggleFilterForm = () => {
+    setFilterForm((prev) => !prev);
   };
 
   const [values, setValues] = useState(defaultVal);
@@ -295,8 +212,66 @@ export function ProdukToolbar(props) {
     });
   };
 
+  const handleChangeFilter = event => {
+    setFilterVal({
+      ...filterVal,
+      [event.target.name]: event.target.value
+    });
+  };
+
+  const exportCSV = () => {
+    dispatch(exportCSVProduk(''))
+  }
+
+  const exportExcel = () => {
+    dispatch(exportExcelProduk(''))
+  }
+
   const handleSearch = event => {
     dispatch(searchProdukData(event.target.value))
+  }
+
+  const searchAdvanceProdukData = () => {
+    namaprodukfilter === null ? filterVal.idFiturProdukfilter = '' : filterVal.idFiturProdukfilter = namaprodukfilter.id;
+    namaprodukfilter === null ? filterVal.namaFiturProdukfilter = '' : filterVal.namaFiturProdukfilter = namaprodukfilter.namaFiturProduk;
+    tipeProdukfilter === null ? filterVal.idTipeProdukfilter = '' : filterVal.idTipeProdukfilter = tipeProdukfilter.id;
+    tipeProdukfilter === null ? filterVal.namaTipeProdukfilter = '' : filterVal.namaTipeProdukfilter = tipeProdukfilter.namaTipeProduk;
+    try {
+      setLoading(true);
+      
+      filterVal.penghasilanDarifilter === 0 ? filterVal.penghasilanDarifilter = '' : filterVal.penghasilanDarifilter;
+      filterVal.penghasilanSampaifilter === 0 ? filterVal.penghasilanSampaifilter = '' : filterVal.penghasilanSampaifilter;
+      filterVal.plafonfilter === 0 ? filterVal.plafonfilter = '' : filterVal.plafonfilter;
+      filterVal.sukuBungafilter === 0 ? filterVal.sukuBungafilter = '' : filterVal.sukuBungafilter;
+      filterVal.tenorfilter === 0 ? filterVal.tenorfilter = '' : filterVal.tenorfilter;
+
+      setTimeout(() => {
+        dispatch(searchAdvProdukData(filterVal));
+        if(produkDataState.response === 400 || produkDataState.response === 500) {
+          setErrorAlert(true);
+          setLoading(false)
+        } else {
+          setErrorAlert(false);
+          setOpenForm(false);
+          setLoading(false);
+        }
+      }, 2000);
+    } catch (err) {
+      setLoading(false);
+      console.error(err.message);
+    }
+  }
+
+  const resetSearchForm = () => {
+    filterVal.idFiturProdukfilter = ''
+    filterVal.namaFiturProdukfilter = ''
+    filterVal.idTipeProdukfilter = ''
+    filterVal.namaTipeProdukfilter = ''
+    filterVal.penghasilanDarifilter = 0
+    filterVal.penghasilanSampaifilter = 0
+    filterVal.plafonfilter = 0
+    filterVal.sukuBungafilter = 0
+    filterVal.tenorfilter = 0
   }
 
   const addProduk = () => {
@@ -313,6 +288,7 @@ export function ProdukToolbar(props) {
       setLoading(true);
       setTimeout(() => {
         dispatch(addProdukData(values));
+        console.log(`produk resp: ${produkDataState.response}`);
         if(produkDataState.response === 400 || produkDataState.response === 500) {
           setErrorAlert(true);
           setLoading(false)
@@ -329,10 +305,7 @@ export function ProdukToolbar(props) {
   }
 
   return (
-    <div
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
+    <div {...rest} className={clsx(classes.root, className)}>
       <SweetAlert 
         success 
         title="Data Added!" 
@@ -349,31 +322,255 @@ export function ProdukToolbar(props) {
         } 
         show={successAlert} 
         onConfirm={() => setSuccessAlert(false)}>
-        Data is successfully added!
+        Data pembiayaan berhasil ditambahkan!
       </SweetAlert>
+      <div className={classes.row}>
+        <Typography variant="h2">Master Data Pembiayaan</Typography>
+      </div>
+      <div className={classes.row}>
+        <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+          <Link color="inherit" href="/" onClick={() => {}}>
+            Pemanfaatan Dana
+          </Link>
+          <Link color="inherit" href="/" onClick={() => {}}>
+            Master Data
+          </Link>
+          <Typography color="textPrimary">Pembiayaan</Typography>
+        </Breadcrumbs>
+      </div>
+      <Divider className={classes.divider}/>
+      <div className={classes.advancedSearchRow}>
+        <Collapse in={filterForm}>
+          <Paper className={classes.searchPaper} elevation={3}>
+            <div className={classes.filterTitle}>
+              <Typography variant="h4">Filter Data Pembiayaan</Typography>
+              <Divider />
+            </div>
+            <form autoComplete="off">
+              <Grid container spacing={3}>
+                <Grid item xs={4}>
+                  <Autocomplete
+                    id="filternamaproduk"
+                    autoComplete
+                    disableClearable
+                    options={fiturproduk}
+                    getOptionLabel={(option: FiturProduk) => option.namaFiturProduk}
+                    value={namaprodukfilter}
+                    onChange={(event: any, newValue: string | null) => {
+                      setNamaProdukFilter(newValue);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Jenis Pembiayaan" 
+                        margin="dense"
+                        variant="outlined"
+                        InputProps={{ ...params.InputProps, type: 'search' }}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <Autocomplete
+                    id="tipeproduk"
+                    autoComplete
+                    disableClearable
+                    options={tipeproduk}
+                    getOptionLabel={(option: TipeProduk) => option.namaTipeProduk}
+                    value={tipeProdukfilter}
+                    onChange={(event: any, newValue: string | null) => {
+                      setTipeProdukFilter(newValue);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Bentuk Pembiayaan"
+                        margin="dense"
+                        variant="outlined"
+                        InputProps={{ ...params.InputProps, type: 'search' }}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                  fullWidth
+                  label="Segment"
+                  margin="dense"
+                  name="namaSegmenfilter"
+                  type="text" 
+                  value={filterVal.namaSegmenfilter || ''}
+                  onChange={handleChangeFilter}
+                  variant="outlined"/>
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                  label="Dari"
+                  value={filterVal.penghasilanDarifilter}
+                  onChange={handleChangeFilter}
+                  name="penghasilanDarifilter"
+                  id="penghasilanDarifilter" 
+                  required={true}
+                  variant="outlined"
+                  margin="dense"
+                  fullWidth
+                  InputProps={{
+                    inputComponent: NumberFormatHelper as any,
+                    inputProps: { 
+                      prefix: 'Rp. ', 
+                      tenormax: 999999999,
+                      thousandSeparator: '.', 
+                      decimalSeparator: ',', 
+                      decimalScale:2}
+                  }} />
+                </Grid>
+                <Grid item md={4} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Sampai"
+                    margin="dense"
+                    name="penghasilanSampaifilter"
+                    required={true}
+                    value={filterVal.penghasilanSampaifilter}
+                    onChange={handleChangeFilter}
+                    variant="outlined"
+                    InputProps={{
+                      inputComponent: NumberFormatHelper as any,
+                      inputProps: { 
+                        prefix: 'Rp. ', 
+                        tenormax: 999999999,
+                        thousandSeparator: '.', 
+                        decimalSeparator: ',',
+                        decimalScale:2}
+                    }} />
+                </Grid>
+                <Grid item md={4} xs={12}>
+                  <TextField
+                    label="Plafon"
+                    value={filterVal.plafonfilter}
+                    onChange={handleChangeFilter}
+                    name="plafonfilter"
+                    id="plafonfilter" 
+                    required={true}
+                    variant="outlined"
+                    margin="dense"
+                    fullWidth
+                    InputProps={{
+                      inputComponent: NumberFormatHelper as any,
+                      inputProps: { 
+                        prefix: 'Rp. ', 
+                        tenormax: 9999999999,
+                        thousandSeparator: '.', 
+                        decimalSeparator: ',',
+                        decimalScale:2}
+                    }} />
+                </Grid>
+                <Grid item md={4} xs={12}>
+                  <TextField
+                    label="Suku Bunga"
+                    value={filterVal.sukuBungafilter}
+                    onChange={handleChangeFilter}
+                    name="sukuBungafilter"
+                    id="sukuBungafilter" 
+                    required={true}
+                    variant="outlined"
+                    margin="dense"
+                    fullWidth
+                    InputProps={{
+                      inputComponent: NumberFormatHelper as any,
+                      inputProps: { 
+                        suffix: ' %', 
+                        tenormax: 99,
+                        thousandSeparator: '.', 
+                        decimalSeparator: ',', 
+                        decimalScale:3}
+                    }} />
+                </Grid>
+                <Grid item md={4} xs={12}>
+                  <TextField
+                    label="Tenor"
+                    value={filterVal.tenorfilter}
+                    onChange={handleChangeFilter}
+                    name="tenorfilter"
+                    id="tenorfilter" 
+                    required={true}
+                    variant="outlined"
+                    margin="dense"
+                    fullWidth
+                    InputProps={{
+                      inputComponent: NumberFormatHelper as any,
+                      inputProps: { 
+                        suffix: ' thn',
+                        tenormax: 99,
+                        thousandSeparator: '.', 
+                        decimalSeparator: ',', 
+                        decimalScale:3}
+                    }} />
+                </Grid>
+                <Grid item xs={6}>
+                  <div className={classes.wrapper}>
+                    <Button
+                      size="medium"
+                      disableElevation
+                      variant="contained"
+                      disabled={loading}
+                      className={classes.advanceSearch}
+                      onClick={searchAdvanceProdukData}>
+                      <a style={{color: "white", textDecoration: "none"}}>Cari</a>
+                      {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+                    </Button>
+                    <Button
+                      size="medium"
+                      disableElevation
+                      variant="contained"
+                      disabled={loading}
+                      className={classes.advanceSearch}
+                      onClick={toggleFilterForm}>
+                      <a style={{color: "white", textDecoration: "none"}}>Tutup</a>
+                    </Button>
+                  </div>
+                </Grid>
+              </Grid>
+            </form>
+          </Paper>
+        </Collapse>
+      </div>
       <div className={classes.row}>
         <SearchInputCustom
           className={classes.searchInput}
           onKeyUp={handleSearch}
           dispatchFunc={resetSearchProdukData('')}
-          placeholder="Cari Produk"/>
+          placeholder="Cari Pembiayaan"/>
         <span className={classes.spacer} />
         <Button
-          variant="contained"
+          variant="contained" 
+          disableElevation
           className={classes.produkAdvanceSearch}
           startIcon={<PageviewRoundedIcon />}
-          onClick={openSearchModal}>
+          onClick={toggleFilterForm}>
           <a style={{color: "white", textDecoration: "none"}}>Advanced Search</a>
         </Button>
         <Button
           color="primary"
+          disableElevation
           variant="contained"
           className={classes.buttons}
+          onClick={exportCSV}
           startIcon={<PublishRoundedIcon />}>
           <a style={{color: "white", textDecoration: "none"}}>Export to CSV</a>
         </Button>
         <Button
+          color="primary"
+          disableElevation
+          variant="contained"
+          className={classes.buttons}
+          onClick={exportExcel}
+          startIcon={<PublishRoundedIcon />}>
+          <a style={{color: "white", textDecoration: "none"}}>Export to Excel</a>
+        </Button>
+        <Button
           color="secondary"
+          disableElevation
           variant="contained"
           className={classes.buttons}
           startIcon={<AddCircleOutlineRoundedIcon />}
@@ -385,13 +582,12 @@ export function ProdukToolbar(props) {
         fullScreen={fullScreen}
         open={openForm}
         onClose={closeFormModal}
-        aria-labelledby="responsive-dialog-title"
-      >
+        aria-labelledby="responsive-dialog-title">
         <DialogTitle id="tambahdataProduk">
-          <MuiDialogTitle disableTypography className={classes.dialogTitleSection}>
-            <Typography variant="h5">Tambah Data Produk</Typography>
+          <MuiDialogTitle disableTypography className={classes.dialogTitleSectionProduk}>
+            <Typography variant="h5">Tambah Data Pembiayaan</Typography>
             {openForm ? (
-              <IconButton aria-label="close" className={classes.closeButton} onClick={closeFormModal}>
+              <IconButton aria-label="close" className={classes.closeButtonProduk} onClick={closeFormModal}>
                 <CloseIcon />
               </IconButton>
             ) : null}
@@ -407,7 +603,7 @@ export function ProdukToolbar(props) {
                     autoComplete
                     disableClearable
                     options={fiturproduk}
-                    getOptionLabel={(option: NamaProdukType) => option.namaFiturProduk}
+                    getOptionLabel={(option: FiturProduk) => option.namaFiturProduk}
                     value={namaproduk}
                     onChange={(event: any, newValue: string | null) => {
                       setNamaProduk(newValue);
@@ -415,7 +611,7 @@ export function ProdukToolbar(props) {
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Nama produk" 
+                        label="Jenis Pembiayaan" 
                         margin="dense"
                         variant="outlined"
                         InputProps={{ ...params.InputProps, type: 'search' }}
@@ -429,7 +625,7 @@ export function ProdukToolbar(props) {
                     autoComplete
                     disableClearable
                     options={tipeproduk}
-                    getOptionLabel={(option: TipeProdukType) => option.namaTipeProduk}
+                    getOptionLabel={(option: TipeProduk) => option.namaTipeProduk}
                     value={tipeProduk}
                     onChange={(event: any, newValue: string | null) => {
                       setTipeProduk(newValue);
@@ -437,7 +633,7 @@ export function ProdukToolbar(props) {
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Tipe Produk"
+                        label="Bentuk Pembiayaan"
                         margin="dense"
                         variant="outlined"
                         InputProps={{ ...params.InputProps, type: 'search' }}
@@ -477,7 +673,13 @@ export function ProdukToolbar(props) {
                     margin="dense"
                     fullWidth
                     InputProps={{
-                      inputComponent: NumberFormatPenghasilan as any,
+                      inputComponent: NumberFormatHelper as any,
+                      inputProps: { 
+                        prefix: 'Rp. ', 
+                        tenormax: 999999999,
+                        thousandSeparator: '.', 
+                        decimalSeparator: ',', 
+                        decimalScale:2}
                     }} />
                 </Grid>
                 <Grid item md={6} xs={12}>
@@ -491,8 +693,14 @@ export function ProdukToolbar(props) {
                     onChange={handleChange}
                     variant="outlined"
                     InputProps={{
-                      inputComponent: NumberFormatPenghasilan as any,
-                    }}/>
+                      inputComponent: NumberFormatHelper as any,
+                      inputProps: { 
+                        prefix: 'Rp. ', 
+                        tenormax: 999999999,
+                        thousandSeparator: '.', 
+                        decimalSeparator: ',',
+                        decimalScale:2}
+                    }} />
                 </Grid>
                 <Grid item md={12} xs={12}>
                   <TextField
@@ -506,7 +714,13 @@ export function ProdukToolbar(props) {
                     margin="dense"
                     fullWidth
                     InputProps={{
-                      inputComponent: NumberFormatPlafon as any,
+                      inputComponent: NumberFormatHelper as any,
+                      inputProps: { 
+                        prefix: 'Rp. ', 
+                        tenormax: 9999999999,
+                        thousandSeparator: '.', 
+                        decimalSeparator: ',',
+                        decimalScale:2}
                     }} />
                 </Grid>
                 <Grid item md={12} xs={12}>
@@ -521,7 +735,13 @@ export function ProdukToolbar(props) {
                     margin="dense"
                     fullWidth
                     InputProps={{
-                      inputComponent: NumberFormatsukuBunga as any,
+                      inputComponent: NumberFormatHelper as any,
+                      inputProps: { 
+                        suffix: ' %', 
+                        tenormax: 99,
+                        thousandSeparator: '.', 
+                        decimalSeparator: ',', 
+                        decimalScale:3}
                     }} />
                 </Grid>
                 <Grid item md={12} xs={12}>
@@ -536,7 +756,13 @@ export function ProdukToolbar(props) {
                     margin="dense"
                     fullWidth
                     InputProps={{
-                      inputComponent: NumberFormatTenor as any,
+                      inputComponent: NumberFormatHelper as any,
+                      inputProps: { 
+                        suffix: ' thn',
+                        tenormax: 99,
+                        thousandSeparator: '.', 
+                        decimalSeparator: ',', 
+                        decimalScale:3}
                     }} />
                 </Grid>
                 <Grid item md={12} xs={12}>
@@ -573,70 +799,8 @@ export function ProdukToolbar(props) {
           </div>
         </DialogActions>
       </Dialog>
-
-      {/* <Dialog
-        fullScreen={fullScreen}
-        open={openAdvanceSearch}
-        onClose={closeSearchModal}
-        fullWidth={true}
-        maxWidth={'sm'}
-        aria-labelledby="responsive-dialog-title">
-        <DialogTitle id="alert-dialog-title">{"Cari Data Produk"}</DialogTitle>
-        <DialogContent>
-          <form autoComplete="off" noValidate>
-            <Grid container spacing={3}>
-              <Grid item xs={6}>
-                <Autocomplete
-                  freeSolo
-                  id="free-solo-2-demo"
-                  disableClearable
-                  options={fiturproduk.map((p) => p.namaFiturProduk)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Nama Produk"
-                      margin="dense"
-                      variant="outlined"
-                      InputProps={{ ...params.InputProps, type: 'search' }}
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item md={12} xs={12}>
-                <Autocomplete
-                  freeSolo
-                  id="free-solo-2-demo"
-                  disableClearable
-                  options={tipeProduk.map((t) => t.tipe)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Nama Tipe"
-                      margin="dense"
-                      variant="outlined"
-                      InputProps={{ ...params.InputProps, type: 'search' }}
-                    />
-                  )}
-                />
-              </Grid>
-            </Grid>
-          </form>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeSearchModal} color="primary" autoFocus>
-            Search
-          </Button>
-        </DialogActions>
-      </Dialog> */}
-
     </div>
   );
 }
-
-ProdukToolbar.propTypes = {
-  className: PropTypes.string,
-  fiturproduk: PropTypes.any,
-  tipeproduk: PropTypes.any
-};
 
 export default ProdukToolbar;

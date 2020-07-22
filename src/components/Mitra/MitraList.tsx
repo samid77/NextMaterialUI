@@ -1,4 +1,5 @@
 import React, { useState, Fragment, useEffect } from 'react';
+import { AppState } from '../../redux/reducers';
 import clsx from 'clsx';
 import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
@@ -27,7 +28,7 @@ import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import TimerRoundedIcon from '@material-ui/icons/TimerRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import Chip from '@material-ui/core/Chip';
-import { yellow, red } from '@material-ui/core/colors';
+import { yellow, red, green } from '@material-ui/core/colors';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -42,14 +43,14 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { useDispatch } from 'react-redux';
-import { MitraData } from '../../interfaces/MitraData';
+import { useDispatch, useSelector } from 'react-redux';
+import { MitraData, DaftarMitra, MitraDataListState } from '../../interfaces/MitraData';
 import { updateMitraData, deleteMitraData } from '../../redux/actions/MitraDataAction';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import InputMask from 'react-input-mask';
-import NumberFormat from 'react-number-format';
+import { NumberFormatHelper } from '../../helpers/NumberFormatHelper';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme:Theme) => ({
   root: {},
@@ -103,143 +104,62 @@ const useStyles = makeStyles((theme:Theme) => ({
     top: theme.spacing(1),
     color: theme.palette.grey[500],
   },
+  wrapper: {
+    margin: theme.spacing(1),
+    position: 'relative',
+  },
+  buttonProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
   buttons: {},
   tableRow: {},
   dialogAction: {},
 }));
 
-interface NamaMitraType {
-  nama: string;
-}
-
-interface NumberProps {
-  inputRef: (instance: NumberFormat | null) => void;
-  onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string;
-}
-
-const NumberFormatTargetNominal = (props: NumberProps) =>  {
-  const { inputRef, onChange, ...other } = props;
-  return (
-    <NumberFormat
-      {...other}
-      isAllowed={(values) => {
-          const { formattedValue, floatValue } = values;
-          return formattedValue === "" || floatValue <= 999999999;
-      }}
-      getInputRef={inputRef}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      thousandSeparator={'.'}
-      decimalSeparator={','}
-      isNumericString
-      allowLeadingZeros={false}
-      defaultValue={0}
-      allowNegative={false}
-      prefix="Rp. "
-    />
-  );
-}
-
-const NumberFormatMaximalLimit = (props: NumberProps) =>  {
-  const { inputRef, onChange, ...other } = props;
-  return (
-    <NumberFormat
-      {...other}
-      isAllowed={(values) => {
-          const { formattedValue, floatValue } = values;
-          return formattedValue === "" || floatValue <= 999999999;
-      }}
-      getInputRef={inputRef}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      thousandSeparator={'.'}
-      decimalSeparator={','}
-      isNumericString
-      allowLeadingZeros={false}
-      defaultValue={0}
-      allowNegative={false}
-      prefix="Rp. "
-    />
-  );
-}
-
-const NumberFormatTargetUnit = (props: NumberProps) =>  {
-  const { inputRef, onChange, ...other } = props;
-  return (
-    <NumberFormat
-      {...other}
-      isAllowed={(values) => {
-          const { formattedValue, floatValue } = values;
-          return formattedValue === "" || floatValue <= 999999999;
-      }}
-      getInputRef={inputRef}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      thousandSeparator={'.'}
-      decimalSeparator={','}
-      isNumericString
-      allowLeadingZeros={false}
-      defaultValue={0}
-      allowNegative={false}
-      suffix=" unit"
-    />
-  );
-}
-
-const daftarMitra = [
-  { nama: 'Bank Negara Indonesia - BNI'},
-  { nama: 'Bank Central Asia - BCA'},
-  { nama: 'Bank DKI'},
-  { nama: 'Bank OCBC NISP'},
-  { nama: 'Bank Tabungan Negara - BTN'}
-];
-
 let totalData = 0;
 const validateMitraProps = (val) => {
-  if(typeof(val) === 'object') {
+  if(typeof(val) === 'object' && val !== null) {
     return totalData = Object.keys(val).length
   } else {
     return totalData;
   }
 }
 
+const daftarMitra = [
+  { id:"ac954e5f-b55f-4849-b614-97e2ea91cbed", namaMitra: 'Bank Negara Indonesia - BNI'},
+  { id:"b76067a8-3e35-4ddd-8282-7d662f20469d", namaMitra: 'Bank Central Asia - BCA'},
+  { id:"1e90f800-48f5-4086-a74b-dcddd92b2a6f", namaMitra: 'Bank DKI'},
+  { id:"6f36868a-a9f9-43ea-aef0-c177ddb52286", namaMitra: 'Bank OCBC NISP'},
+  { id:"87e9d04e-2a31-4cea-b66d-9923407de6e6", namaMitra: 'Bank Tabungan Negara - BTN'},
+  { id:"6ee9a834-a9a9-4d2a-95e0-5dc990abc567", namaMitra: 'TEST_MITRA1 - updated'},
+  { id:"6ee9a834-a9a9-4d2a-95e0-4dc780bdf020", namaMitra: 'TEST_MITRA1'},
+  { id:"8637de20-def8-4e98-9401-1f38a354264b", namaMitra: 'TEST_MITRA2'},
+  { id:"1ac52c32-9557-437d-9f3d-a7adcd683e70", namaMitra: 'TEST_MITRA3'},
+  { id:"0d7050bf-faec-44c5-9fbb-48e824baa2ec", namaMitra: 'TEST_MITRA4'},
+];
+
 export function MitraList(props) {
   const defaultValues: MitraData = {
-    id: 0,
-    nama: '',
-    tanggalPKS: '',
-    pksStartDate: '',
-    pksEndDate: '',
-    tanggalLimit: '',
-    limitStartDate: '',
-    limitEndDate: '',
+    id: '',
+    namaMitra: '',
+    tanggalMulaiPKS: '',
+    tanggalAkhirPKS: '',
+    tanggalMulaiLimit: '',
+    tanggalAkhirLimit: '',
     targetUnit: 0,
     targetNominal: 0,
-    maxLimit: 0,
-    approvalStatus: 1,
-    createdAt: ''
+    maksimalLimit: 0,
+    sisaLimit: 0,
+    approvalStatus: '',
   };
 
   const { className, mitra, ...rest } = props;
+  const mitraDataState: MitraDataListState = useSelector((state: AppState) => state.mitraData);
   validateMitraProps(mitra);
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -249,12 +169,14 @@ export function MitraList(props) {
   const [page, setPage] = useState(0);
   const [successAlert, setSuccessAlert] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
-  const [mitraId, setMitraId] = useState(0);
+  const [mitraId, setMitraId] = useState('');
   const [openForm, setOpenForm] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [namamitra, setNamaMitra] = React.useState<any | null>(daftarMitra[0]);
   const [values, setValues] = useState(defaultValues);
+  const [loading, setLoading] = useState(false);
+  const [errorAlert, setErrorAlert] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -270,52 +192,89 @@ export function MitraList(props) {
     });
   };
 
-  const [pksStartDate, setPksStartDate] = React.useState(new Date());
-  const handlePksStartDateChange = (date: Date | null) => {
-    setPksStartDate(date);
-    values.pksStartDate = date.toString();
-    values.tanggalPKS = date.toString();
+  const [tanggalMulaiPKS, settanggalMulaiPKS] = React.useState(new Date());
+  const handletanggalMulaiPKSChange = (date: Date | null) => {
+    settanggalMulaiPKS(date);
+    values.tanggalMulaiPKS = date.toString();
   };
-  const [pksEndDate, setPksEndDate] = React.useState(new Date());
-  const handlePksEndDateChange = (date: Date | null) => {
-    setPksEndDate(date);
-    values.pksEndDate = date.toString();
+  const [tanggalAkhirPKS, settanggalAkhirPKS] = React.useState(new Date());
+  const handletanggalAkhirPKSChange = (date: Date | null) => {
+    settanggalAkhirPKS(date);
+    values.tanggalAkhirPKS = date.toString();
   };
-  const [limitStartDate, setLimitStartDate] = React.useState(new Date());
-  const handleLimitStartDateChange = (date: Date | null) => {
-    setLimitStartDate(date);
-    values.limitStartDate = date.toString();
-    values.tanggalLimit = date.toString();
+  const [tanggalMulaiLimit, settanggalMulaiLimit] = React.useState(new Date());
+  const handletanggalMulaiLimitChange = (date: Date | null) => {
+    settanggalMulaiLimit(date);
+    values.tanggalMulaiLimit = date.toString();
   };
-  const [limitEndDate, setLimitEndDate] = React.useState(new Date());
-  const handleLimitEndDateChange = (date: Date | null) => {
-    setLimitEndDate(date);
-    values.limitEndDate = date.toString();
+  const [tanggalAkhirLimit, settanggalAkhirLimit] = React.useState(new Date());
+  const handletanggalAkhirLimitChange = (date: Date | null) => {
+    settanggalAkhirLimit(date);
+    values.tanggalAkhirLimit = date.toString();
   };
 
+  const displayDate = (d) => {
+    let date = new Date(d);
+      if ( isNaN(date .getTime())) {
+        return d;
+      } else {
+        const  month = new Array();
+        month[0] = "Jan";
+        month[1] = "Feb";
+        month[2] = "Mar";
+        month[3] = "Apr";
+        month[4] = "Mei";
+        month[5] = "Jun";
+        month[6] = "Jul";
+        month[7] = "Agu";
+        month[8] = "Sept";
+        month[9] = "Oct";
+        month[10] = "Nov";
+        month[11] = "Decs";
+
+        let day = date.getDate();
+        return day  + " " +month[date.getMonth()] + " " + date.getFullYear();
+      }
+  }
+
   const parseTargetUnit = (tgrunit) => {
-      return tgrunit.toString().split('').reverse().join('').match(/.{1,3}/g).map(function(x){
-          return x.split('').reverse().join('')
-      }).reverse();
+    return tgrunit.toString().split('').reverse().join('').match(/.{1,3}/g).map(function(x){
+        return x.split('').reverse().join('')
+    }).reverse();
+  }
+
+  const formatDate = (date) => {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
   }
 
   const openFormModal = (currentMitra) => {
     values.id = currentMitra.id;
     setMitraId(currentMitra.id);
-    const indexMitra = daftarMitra.findIndex(d => d.nama === currentMitra.nama);
+    const indexMitra = daftarMitra.findIndex(d => d.namaMitra === currentMitra.namaMitra);
     setNamaMitra(daftarMitra[indexMitra]);
-    values.nama = daftarMitra[indexMitra].nama;
+    values.namaMitra = daftarMitra[indexMitra].namaMitra;
     values.targetNominal = currentMitra.targetNominal;
     values.targetUnit = currentMitra.targetUnit;
-    values.maxLimit = currentMitra.maxLimit;
-    values.tanggalPKS = currentMitra.pksStartDate;
-    values.pksStartDate = currentMitra.pksStartDate;
-    setPksEndDate(currentMitra.pksEndDate);
-    values.pksEndDate = currentMitra.pksEndDate;
-    values.tanggalLimit = currentMitra.limitStartDate;
-    values.limitStartDate = currentMitra.limitStartDate;
-    values.limitEndDate = currentMitra.limitEndDate;
-    setLimitEndDate(currentMitra.limitEndDate);
+    values.maksimalLimit = currentMitra.maksimalLimit;
+    values.sisaLimit = currentMitra.sisaLimit;
+    settanggalMulaiPKS(currentMitra.tanggalMulaiPKS);
+    values.tanggalMulaiPKS = currentMitra.tanggalMulaiPKS;
+    settanggalAkhirPKS(currentMitra.tanggalAkhirPKS);
+    values.tanggalAkhirPKS = currentMitra.tanggalAkhirPKS;
+    values.tanggalMulaiLimit = currentMitra.tanggalMulaiLimit;
+    settanggalMulaiLimit(currentMitra.tanggalMulaiLimit);
+    values.tanggalAkhirLimit = currentMitra.tanggalAkhirLimit;
+    settanggalAkhirLimit(currentMitra.tanggalAkhirLimit);
     setOpenForm(true);
   };
 
@@ -331,7 +290,7 @@ export function MitraList(props) {
     setRowsPerPage(event.target.value);
   };
 
-  const openDeleteConfirm = (id: number) => {
+  const openDeleteConfirm = (id: string) => {
     setMitraId(id);
     setOpenDeleteConfirm(true);
   };
@@ -339,6 +298,14 @@ export function MitraList(props) {
   const closeDeleteConfirm = () => {
     setOpenDeleteConfirm(false);
   };
+
+  const isEmpty = (obj) => {
+      for(var key in obj) {
+          if(obj.hasOwnProperty(key))
+              return false;
+      }
+      return true;
+  }
 
   const deleteDataMitra = () => {
     try {
@@ -350,20 +317,36 @@ export function MitraList(props) {
     }
   }
 
+
+
   const currency = new Intl.NumberFormat('in-IN', {
     style: 'currency',
     currency: 'IDR',
   });
 
   const updateData = () => {
-    values.nama = namamitra.nama;
+    values.namaMitra = namamitra.namaMitra;
+    values.tanggalMulaiPKS = formatDate(tanggalMulaiPKS);
+    values.tanggalAkhirPKS = formatDate(tanggalAkhirPKS)
+    values.tanggalMulaiLimit = formatDate(tanggalMulaiLimit);
+    values.tanggalAkhirLimit = formatDate(tanggalAkhirLimit);
     values.targetUnit = parseInt(values.targetUnit.toString().split(' '). join(''));
     values.targetNominal = parseInt(values.targetNominal.toString().split(' '). join(''));
-    values.maxLimit = parseInt(values.maxLimit.toString().split(' '). join(''));
+    values.maksimalLimit = parseInt(values.maksimalLimit.toString().split(' '). join(''));
     try {
-      dispatch(updateMitraData(values));
-      setSuccessAlert(true);
-      setOpenForm(false);
+      setLoading(true);
+      setTimeout(() => {
+        dispatch(updateMitraData(values));
+        if(mitraDataState.response === 400 || mitraDataState.response === 500) {
+          setErrorAlert(true);
+          setLoading(false)
+        } else {
+          setErrorAlert(false);
+          setOpenForm(false);
+          setLoading(false);
+          setSuccessAlert(true);
+        }
+      }, 2000);
     } catch (error) {
       console.error(error.message);
     }
@@ -413,14 +396,15 @@ export function MitraList(props) {
                   <Table>
                     <TableHead className={classes.customTableHead}>
                       <TableRow>
-                        <TableCell className={classes.tableClass}>Nama</TableCell>
-                        <TableCell className={classes.tableClass}>Tanggal PKS</TableCell>
-                        <TableCell className={classes.tableClass}>Tanggal Limit</TableCell>
-                        <TableCell className={classes.tableClass}>Target Unit</TableCell>
-                        <TableCell className={classes.tableClass}>Target Nominal</TableCell>
-                        <TableCell className={classes.tableClass}>Maksimal Limit</TableCell>
-                        <TableCell className={classes.tableClass}>Approval Status</TableCell>
-                        <TableCell className={classes.tableClass}>Actions</TableCell>
+                        <TableCell data-testid="kolomNamaMitra" className={classes.tableClass}>Nama Mitra</TableCell>
+                        <TableCell data-testid="kolomTanggalPKS" className={classes.tableClass}>Tanggal PKS</TableCell>
+                        <TableCell data-testid="kolomTanggalLimit" className={classes.tableClass}>Tanggal Limit</TableCell>
+                        <TableCell data-testid="kolomTargetUnit" className={classes.tableClass}>Target Unit</TableCell>
+                        <TableCell data-testid="kolomTargetNominal" className={classes.tableClass}>Target Nominal</TableCell>
+                        <TableCell data-testid="kolomMaksimalLimit" className={classes.tableClass}>Maksimal Limit</TableCell>
+                        <TableCell data-testid="kolomSisaLimit" className={classes.tableClass}>Sisa Limit</TableCell>
+                        <TableCell data-testid="kolomApprovalStatus" className={classes.tableClass}>Approval Status</TableCell>
+                        <TableCell className={classes.tableClass}>Aksi</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -430,53 +414,52 @@ export function MitraList(props) {
                               <CircularProgress />
                             </TableCell>
                           </TableRow> 
-                        : mitra.slice(0, rowsPerPage).map(m => (
-                        <TableRow
-                            className={classes.tableRow}
-                            hover
-                            key={m.id}
-                        >
-                          <TableCell>
-                            <div className={classes.nameContainer}>
-                                <Typography variant="body1" className={classes.tableDataClass}>{m.nama}</Typography>
-                            </div>
-                          </TableCell>
-                          <TableCell className={classes.tableDataClass}>{m.tanggalPKS.substring(0,10)}</TableCell>
-                          <TableCell className={classes.tableDataClass}>{m.tanggalLimit.substring(0,10)}</TableCell>
-                          <TableCell className={classes.tableDataClass}>{parseTargetUnit(m.targetUnit).join('.')}</TableCell>
-                          <TableCell className={classes.tableDataClass}>{currency.format(m.targetNominal)}</TableCell>
-                          <TableCell className={classes.tableDataClass}>{currency.format(m.maxLimit)}</TableCell>
-                          <TableCell>
-                            {m.approvalStatus === 3 
-                              ?  <Chip
-                                    icon={<CheckCircleRoundedIcon />}
-                                    label='Disetujui'
-                                    color="primary"
-                                  /> 
-                              : m.approvalStatus === 2 ? <Chip
-                                  icon={<CancelRoundedIcon className={classes.ditolakChip}/>}
-                                  label='Ditolak'
-                                  className={classes.ditolakChip}
-                                />
-                              : <Chip
-                                  icon={<TimerRoundedIcon className={classes.menungguChip}/>}
-                                  label='Menunggu Persetujuan'
-                                  className={classes.menungguChip}
-                                />
-                            }
-                          </TableCell>
-                          <TableCell>
-                              <div>
-                                  <IconButton onClick={() => openDeleteConfirm(m.id)} aria-label="delete">
-                                      <DeleteIcon />
-                                  </IconButton>
-                                  <IconButton onClick={() => openFormModal(m)} aria-label="edit">
-                                      <EditRoundedIcon />
-                                  </IconButton>
-                              </div>
+                        : mitra === null || isEmpty(mitra.Result) ? <TableRow>
+                          <TableCell align="center" colSpan={8} rowSpan={5}>
+                            <img src={'/images/nodata.jpg'} height="400" width="400"/>
                           </TableCell>
                         </TableRow>
-                      ))}
+                        : mitra.Result.slice(0, rowsPerPage).map(m => (
+                            <TableRow className={classes.tableRow} hover key={m.id}>
+                              <TableCell className={classes.tableDataClass}>{m.namaMitra}</TableCell>
+                              <TableCell className={classes.tableDataClass}>{displayDate(m.tanggalMulaiPKS.substring(0,10))}</TableCell>
+                              <TableCell className={classes.tableDataClass}>{displayDate(m.tanggalMulaiLimit.substring(0,10))}</TableCell>
+                              <TableCell className={classes.tableDataClass}>{parseTargetUnit(m.targetUnit).join('.')}</TableCell>
+                              <TableCell className={classes.tableDataClass}>{currency.format(m.targetNominal)}</TableCell>
+                              <TableCell className={classes.tableDataClass}>{currency.format(m.maksimalLimit)}</TableCell>
+                              <TableCell className={classes.tableDataClass}>{currency.format(m.sisaLimit)}</TableCell>
+                              <TableCell>
+                                {m.approvalStatus === '1' 
+                                  ?  <Chip
+                                        icon={<CheckCircleRoundedIcon />}
+                                        label='Disetujui'
+                                        color="primary"
+                                      /> 
+                                  : m.approvalStatus === '2' ? <Chip
+                                      icon={<CancelRoundedIcon className={classes.ditolakChip}/>}
+                                      label='Ditolak'
+                                      className={classes.ditolakChip}
+                                    />
+                                  : <Chip
+                                      icon={<TimerRoundedIcon className={classes.menungguChip}/>}
+                                      label='Menunggu Persetujuan'
+                                      className={classes.menungguChip}
+                                    />
+                                }
+                              </TableCell>
+                              <TableCell>
+                                  <div>
+                                      <IconButton onClick={() => openDeleteConfirm(m.id)} aria-label="delete">
+                                          <DeleteIcon />
+                                      </IconButton>
+                                      <IconButton onClick={() => openFormModal(m)} aria-label="edit">
+                                          <EditRoundedIcon />
+                                      </IconButton>
+                                  </div>
+                              </TableCell>
+                            </TableRow>
+                          ))
+                      }
                     </TableBody>
                   </Table>
               </TableContainer>
@@ -517,95 +500,95 @@ export function MitraList(props) {
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <Grid container spacing={3}>
                       <Grid item md={12} xs={12}>
-                      <Autocomplete
-                        id="namamitra"
-                        autoComplete
-                        disableClearable
-                        options={daftarMitra}
-                        getOptionLabel={(option: NamaMitraType) => option.nama}
-                        value={namamitra}
-                        onChange={(event: any, newValue: string | null) => {
-                          setNamaMitra(newValue);
-                        }}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="Nama Mitra"
-                            margin="dense"
-                            variant="outlined"
-                            required={true}
-                            InputProps={{ ...params.InputProps, type: 'search' }}
-                          />
-                        )}
-                      />
+                        <Autocomplete
+                          id="namamitra"
+                          autoComplete
+                          disableClearable
+                          options={daftarMitra}
+                          getOptionLabel={(option: DaftarMitra) => option.namaMitra}
+                          value={namamitra}
+                          onChange={(event: any, newValue: string | null) => {
+                            setNamaMitra(newValue);
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Nama Mitra"
+                              margin="dense"
+                              variant="outlined"
+                              required={true}
+                              InputProps={{ ...params.InputProps, type: 'search' }}
+                            />
+                          )}
+                        />
                       </Grid>
                       <Grid item md={12} xs={12} className={classes.dateLabel}>
                         <Divider />
                         <h3>Tanggal PKS</h3>
                       </Grid>
                       <Grid item md={6} xs={12}>
-                      <KeyboardDatePicker
-                        variant="inline"
-                        format="dd/MM/yyyy"
-                        margin="dense"
-                        id="pksStartDate"
-                        label="Dari"
-                        value={values.pksStartDate}
-                        onChange={handlePksStartDateChange}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
-                      />
+                        <KeyboardDatePicker
+                          variant="inline"
+                          format="dd/MM/yyyy"
+                          margin="dense"
+                          id="tanggalMulaiPKS"
+                          label="Dari"
+                          value={values.tanggalMulaiPKS}
+                          onChange={handletanggalMulaiPKSChange}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                          }}
+                        />
                       </Grid>
                       <Grid item md={6} xs={12}>
-                      <KeyboardDatePicker
-                        variant="inline"
-                        format="dd/MM/yyyy"
-                        margin="dense"
-                        id="pksEndDate"
-                        minDate={pksStartDate}
-                        minDateMessage={'Tanggal harus setelah tanggal mulai PKS'}
-                        label="Sampai"
-                        value={pksEndDate}
-                        onChange={handlePksEndDateChange}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
-                        />
+                        <KeyboardDatePicker
+                          variant="inline"
+                          format="dd/MM/yyyy"
+                          margin="dense"
+                          id="tanggalAkhirPKS"
+                          minDate={tanggalMulaiPKS}
+                          minDateMessage={'Tanggal harus setelah tanggal mulai PKS'}
+                          label="Sampai"
+                          value={tanggalAkhirPKS}
+                          onChange={handletanggalAkhirPKSChange}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                          }}
+                          />
                       </Grid>
                       <Grid item md={12} xs={12} className={classes.dateLabel}>
                         <Divider />
                         <h3>Tanggal Limit</h3>
                       </Grid>
                       <Grid item md={6} xs={12}>
-                      <KeyboardDatePicker
-                        variant="inline"
-                        format="dd/MM/yyyy"
-                        margin="dense"
-                        id="limitStartDate"
-                        label="Dari"
-                        value={values.limitStartDate}
-                        onChange={handleLimitStartDateChange}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
-                      />
+                        <KeyboardDatePicker
+                          variant="inline"
+                          format="dd/MM/yyyy"
+                          margin="dense"
+                          id="tanggalMulaiLimit"
+                          label="Dari"
+                          value={values.tanggalMulaiLimit}
+                          onChange={handletanggalMulaiLimitChange}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                          }}
+                        />
                       </Grid>
                       <Grid item md={6} xs={12}>
-                      <KeyboardDatePicker
-                        variant="inline"
-                        format="dd/MM/yyyy"
-                        margin="dense"
-                        id="limitEndDate"
-                        minDate={limitStartDate}
-                        minDateMessage={'Tanggal harus setelah tanggal mulai Limit'}
-                        label="Sampai"
-                        value={limitEndDate}
-                        onChange={handleLimitEndDateChange}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
-                      />
+                        <KeyboardDatePicker
+                          variant="inline"
+                          format="dd/MM/yyyy"
+                          margin="dense"
+                          id="tanggalAkhirLimit"
+                          minDate={tanggalMulaiLimit}
+                          minDateMessage={'Tanggal harus setelah tanggal mulai Limit'}
+                          label="Sampai"
+                          value={tanggalAkhirLimit}
+                          onChange={handletanggalAkhirLimitChange}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                          }}
+                        />
                       </Grid>
                       <Grid item md={12} xs={12}>
                         <TextField
@@ -619,7 +602,13 @@ export function MitraList(props) {
                           margin="dense"
                           fullWidth
                           InputProps={{
-                            inputComponent: NumberFormatTargetUnit as any,
+                            inputComponent: NumberFormatHelper as any,
+                            inputProps: { 
+                              suffix: ' unit', 
+                              tenormax: 999999999,
+                              thousandSeparator: '.',
+                              decimalSeparator: ','
+                            }
                           }} />
                       </Grid>
                       <Grid item md={12} xs={12}>
@@ -634,24 +623,64 @@ export function MitraList(props) {
                           margin="dense"
                           fullWidth
                           InputProps={{
-                            inputComponent: NumberFormatTargetNominal as any,
+                            inputComponent: NumberFormatHelper as any,
+                            inputProps: { 
+                              prefix: 'Rp. ', 
+                              tenormax: 999999999,
+                              thousandSeparator: '.',
+                              decimalSeparator: ','
+                            }
                           }} />
                       </Grid>
                       <Grid item md={12} xs={12}>
-                        <InputMask
-                          mask="999 999 999 999"
-                          value={values.maxLimit}
-                          onChange={handleChange}>
-                          {() => <TextField
-                              fullWidth
-                              label="Maksimal Limit"
-                              margin="dense"
-                              name="maxLimit"
-                              type="text"
-                              variant="outlined"
-                          />}
-                        </InputMask>
+                        <TextField
+                          label="Sisa Limit"
+                          value={values.sisaLimit}
+                          onChange={handleChange}
+                          name="sisaLimit"
+                          id="sisaLimit" 
+                          required={true}
+                          variant="outlined"
+                          disabled
+                          margin="dense"
+                          fullWidth
+                          InputProps={{
+                            inputComponent: NumberFormatHelper as any,
+                            inputProps: { 
+                              prefix: 'Rp. ', 
+                              tenormax: 99999999999999,
+                              thousandSeparator: '.',
+                              decimalSeparator: ','}
+                          }} />
                       </Grid>
+                      <Grid item md={12} xs={12}>
+                        <TextField
+                          label="Maksimal Limit"
+                          value={values.maksimalLimit}
+                          onChange={handleChange}
+                          name="maksimalLimit"
+                          id="maksimalLimit" 
+                          required={true}
+                          variant="outlined"
+                          margin="dense"
+                          fullWidth
+                          InputProps={{
+                            inputComponent: NumberFormatHelper as any,
+                            inputProps: { 
+                              prefix: 'Rp. ', 
+                              tenormax: 99999999999999,
+                              thousandSeparator: '.',
+                              decimalSeparator: ','}
+                          }} />
+                      </Grid>
+                       <Grid item md={12} xs={12}>
+                        {errorAlert 
+                          ? <Alert severity="error">
+                              <AlertTitle>Update Mitra Data Failed</AlertTitle>
+                              {mitraDataState.error.msg}
+                            </Alert> 
+                          : null}
+                        </Grid>
                   </Grid>
               </MuiPickersUtilsProvider>
             </CardContent>
@@ -659,17 +688,21 @@ export function MitraList(props) {
           </form>
         </DialogContent>
         <DialogActions className={classes.dialogAction}>
-          <Button
-              color="secondary"
-              variant="contained"
-              startIcon={<SaveRoundedIcon />}
-              disabled={
-                values.targetUnit === 0 || 
-                values.targetNominal === 0 || 
-                values.maxLimit === 0 }
-              onClick={updateData}>
-              Update Data
-          </Button>
+          <div className={classes.wrapper}>
+            <Button
+                color="secondary"
+                variant="contained"
+                startIcon={<SaveRoundedIcon />}
+                disabled={
+                  values.targetUnit === 0 || 
+                  values.targetNominal === 0 || 
+                  values.maksimalLimit === 0 ||
+                  loading}
+                onClick={updateData}>
+                Update Data
+            </Button>
+            {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+          </div>
         </DialogActions>
       </Dialog>
 
@@ -680,7 +713,9 @@ export function MitraList(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description">
         <DialogTitle id="alert-dialog-title">
-          <Typography variant="h2">Hapus data mitra ini?</Typography>
+          <div>
+            <Typography variant="h2">Hapus data mitra ini?</Typography>
+          </div>
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -696,8 +731,7 @@ export function MitraList(props) {
           </Button>
         </DialogActions>
       </Dialog>
-
-      
+            
     </Fragment>
   );
 }

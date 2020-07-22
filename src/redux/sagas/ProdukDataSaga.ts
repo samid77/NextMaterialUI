@@ -16,7 +16,11 @@ import {
     updateProdukDataSuccess, 
     updateProdukDataError,
     deleteProdukDataSuccess, 
-    deleteProdukDataError
+    deleteProdukDataError,
+    exportCSVProdukSuccess, 
+    exportCSVProdukError,
+    exportExcelProdukSuccess, 
+    exportExcelProdukError,
 } from '../actions/ProdukDataAction';
 import { 
     GET_PRODUK, 
@@ -29,13 +33,18 @@ import {
     DELETE_PRODUK,
     DELETE_PRODUK_SUCCESS,
     SEARCH_PRODUK,
-    RESET_SEARCH_PRODUK
+    SEARCH_ADV_PRODUK,
+    RESET_SEARCH_PRODUK,
+    EXPORTCSV_PRODUK,
+    EXPORTEXCEL_PRODUK
 } from '../constants/ProdukConstants';
 import { HttpService } from '../../helpers/HttpService';
+import FileDownload from 'js-file-download';
+import { isNullOrUndefined } from 'util';
   
 function* workerSagaProdukData(action: ProdukDataAction) {
     try {
-        const response = yield call(HttpService.get, 'http://localhost:3000/api/master-data/produk', {});
+        const response = yield call(HttpService.get, '/api/master-data/produk', {});
         
         if (response.status === 200) {
             yield put(produkDataSuccess(response.data));
@@ -43,13 +52,13 @@ function* workerSagaProdukData(action: ProdukDataAction) {
             yield put(produkDataError(response.statusText));
         }
     } catch (error) {
-        yield put(produkDataError(error.message));
+        yield put(produkDataError(error));
     }
 }
 
 function* workerSagaGetProdukFiturData(action: ProdukDataAction) {
     try {
-        const response = yield call(HttpService.get, 'http://localhost:3000/api/master-data/produk/fitur-produk', {});
+        const response = yield call(HttpService.get, '/api/master-data/produk/fitur-produk', {});
         
         if (response.status === 200) {
             yield put(getProdukFiturDataSuccess(response.data));
@@ -57,13 +66,13 @@ function* workerSagaGetProdukFiturData(action: ProdukDataAction) {
             yield put(getProdukFiturDataError(response.statusText));
         }
     } catch (error) {
-        yield put(produkDataError(error.message));
+        yield put(produkDataError(error));
     }
 }
 
 function* workerSagaGetProdukTipeData(action: ProdukDataAction) {
     try {
-        const response = yield call(HttpService.get, 'http://localhost:3000/api/master-data/produk/tipe-produk', {});
+        const response = yield call(HttpService.get, '/api/master-data/produk/tipe-produk', {});
         
         if (response.status === 200) {
             yield put(getProdukTipeDataSuccess(response.data));
@@ -71,7 +80,7 @@ function* workerSagaGetProdukTipeData(action: ProdukDataAction) {
             yield put(getProdukTipeDataError(response.statusText));
         }
     } catch (error) {
-        yield put(produkDataError(error.message));
+        yield put(produkDataError(error));
     }
 }
 
@@ -92,7 +101,7 @@ function* workerSagaAddProdukData(action: ProdukDataAction) {
         const headers = {
             'Content-Type': 'application/json'
         }
-        const response = yield call(HttpService.post, 'http://localhost:3000/api/master-data/produk', data, headers);
+        const response = yield call(HttpService.post, '/api/master-data/produk', data, headers);
 
         if (response.status === 200) {
             yield put(addProdukDataSuccess(response.status))
@@ -122,7 +131,7 @@ function* workerSagaUpdateProdukData(action: ProdukDataAction) {
         const headers = {
             'Content-Type': 'application/json'
         }
-        const response = yield call(HttpService.put, `http://localhost:3000/api/master-data/produk/${data.id}`, data, headers);
+        const response = yield call(HttpService.put, `/api/master-data/produk/${data.id}`, data, headers);
 
         if (response.status === 200) {
             yield put(updateProdukDataSuccess(response.data))
@@ -139,7 +148,7 @@ function* workerSagaDeleteProdukData(action: any) {
         const headers = {
             'Content-Type': 'application/json'
         }
-        const response = yield call(HttpService.delete, `http://localhost:3000/api/master-data/produk/${action.data}`, null, headers);
+        const response = yield call(HttpService.delete, `/api/master-data/produk/${action.data}`, null, headers);
         if (response.status === 200) {
             yield put(deleteProdukDataSuccess(response.status))
         } else {
@@ -154,7 +163,7 @@ function* workerSagaDeleteProdukData(action: any) {
 function* workerSagaSearchProdukData(action: ProdukDataAction) {
     try {
         const keywords = action.data
-        const response = yield call(HttpService.get, `http://localhost:3001/dataproduk?q=${keywords}`, {});
+        const response = yield call(HttpService.get, `/api/master-data/produk?q=${keywords}`, {});
         
         if (response.status === 200) {
             yield put(produkDataSuccess(response.data));
@@ -162,7 +171,66 @@ function* workerSagaSearchProdukData(action: ProdukDataAction) {
             yield put(produkDataError(response.statusText));
         }
     } catch (error) {
-        yield put(produkDataError(error.message));
+        yield put(produkDataError(error));
+    }
+}
+
+function* workerSagaExportCSV(action: ProdukDataAction) {
+    const requestOption = {
+        'responseType': 'arraybuffer'
+    }
+    try {
+        const response = yield call(HttpService.get, `/api/master-data/produk/export/csv`, null, requestOption);
+        FileDownload(response.data, 'master_data_produk.csv');
+        if (response.status === 200) {
+            yield put(exportCSVProdukSuccess(response.status))
+        } else {
+            yield put(exportCSVProdukError(response.statusText));
+        }
+    } catch (error) {
+        yield put(exportCSVProdukError(error));
+    }
+}
+
+function* workerSagaExportExcel(action: ProdukDataAction) {
+    const requestOption = {
+        'responseType': 'arraybuffer'
+    }
+    try {
+        const response = yield call(HttpService.get, `/api/master-data/produk/export/excel`, null, requestOption);
+        FileDownload(response.data, 'master_data_produk.xlsx');
+        if (response.status === 200) {
+            yield put(exportExcelProdukSuccess(response.status))
+        } else {
+            yield put(exportExcelProdukError(response.statusText));
+        }
+    } catch (error) {
+        yield put(exportExcelProdukError(error));
+    }
+}
+
+function* workerSagaSearchAdvProdukData(action: ProdukDataAction) {
+    try {
+        const params = action.data;
+        const data: any = {
+            namaFiturProduk: action.data.namaFiturProdukfilter,
+            namaTipeProduk: action.data.namaTipeProdukfilter,
+            namaSegmen: action.data.namaSegmenfilter,
+            penghasilanDari: action.data.penghasilanDarifilter,
+            penghasilanSampai: action.data.penghasilanSampaifilter,
+            plafon: action.data.plafonfilter,
+            sukuBunga: action.data.sukuBungafilter,
+            tenor: action.data.tenorfilter,
+        }
+        const response = yield call(HttpService.get, `/api/master-data/produk?namaFiturProduk=${data.namaFiturProduk === 'Semua Produk' ? '' : data.namaFiturProduk}&namaTipeProduk=${data.namaTipeProduk}&namaSegmen=${data.namaSegmen}&penghasilanDari=${data.penghasilanDari}&penghasilanSampai=${data.penghasilanSampai}&plafon=${isNaN(data.plafon) ? '' : data.plafon}&sukuBunga=${isNaN(data.sukuBunga) ? '' : data.sukuBunga}&tenor=${isNaN(data.tenor) ? '' : data.tenor}&penghasilanDariOpr=>=&penghasilanSampaiOpr=<=`, {});
+        
+        if (response.status === 200) {
+            yield put(produkDataSuccess(response.data));
+        } else {
+            yield put(produkDataError(response.statusText));
+        }
+    } catch (error) {
+        yield put(produkDataError(error));
     }
 }
 
@@ -178,6 +246,9 @@ export const watcherProdukData = [
     takeLatest(DELETE_PRODUK, workerSagaDeleteProdukData),
     takeLatest(DELETE_PRODUK_SUCCESS, workerSagaProdukData),
     takeLatest(SEARCH_PRODUK, workerSagaSearchProdukData),
+    takeLatest(SEARCH_ADV_PRODUK, workerSagaSearchAdvProdukData),
     takeLatest(RESET_SEARCH_PRODUK, workerSagaProdukData),
+    takeLatest(EXPORTCSV_PRODUK, workerSagaExportCSV),
+    takeLatest(EXPORTEXCEL_PRODUK, workerSagaExportExcel)
 ];
   

@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import HouseRoundedIcon from '@material-ui/icons/HouseRounded';
 import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme:Theme) => ({
@@ -53,18 +53,18 @@ export function TotalProfit(props) {
               gutterBottom
               variant="body2"
             >
-              TOTAL PROFIT
+              JUMLAH REALISASI (SAMPLE)
             </Typography>
             <Typography
               color="inherit"
               variant="h3"
             >
-              $23,200
+              3500 UNIT 
             </Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <AttachMoneyIcon className={classes.icon} />
+              <HouseRoundedIcon className={classes.icon} />
             </Avatar>
           </Grid>
         </Grid>

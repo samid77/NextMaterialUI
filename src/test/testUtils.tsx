@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import { Provider } from 'react-redux';
 import { Store, Persistore } from '../redux/core/store';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -20,3 +20,4 @@ export * from '@testing-library/react'
 
 // override render method
 export { customRender as render }
+// export { customCleanup as cleanup }

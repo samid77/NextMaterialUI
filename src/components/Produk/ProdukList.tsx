@@ -36,12 +36,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import { ProdukData, ProdukDataListState } from '../../interfaces/ProdukData';
 import { updateProdukData, deleteProdukData } from '../../redux/actions/ProdukDataAction';
-import NumberFormat from 'react-number-format';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { green } from '@material-ui/core/colors';
+import { NumberFormatHelper } from '../../helpers/NumberFormatHelper';
 
 const useStyles = makeStyles((theme:Theme) => ({
   root: {},
@@ -110,128 +110,6 @@ interface TipeProdukType {
   namaTipeProduk: string;
 }
 
-interface NumberFormatCustomProps {
-  inputRef: (instance: NumberFormat | null) => void;
-  onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string;
-}
-
-const NumberFormatPenghasilan = (props: NumberFormatCustomProps) =>  {
-  const { inputRef, onChange, ...other } = props;
-  return (
-    <NumberFormat
-      {...other}
-      isAllowed={(values) => {
-          const { formattedValue, floatValue } = values;
-          return formattedValue === "" || floatValue <= 999999999;
-      }}
-      isNumericString
-      allowLeadingZeros={false}
-      defaultValue={0}
-      allowNegative={false}
-      prefix="Rp. "
-      getInputRef={inputRef}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      thousandSeparator={'.'}
-      decimalSeparator={','}
-    />
-  );
-}
-
-const NumberFormatTenor = (props: NumberFormatCustomProps) =>  {
-  const { inputRef, onChange, ...other } = props;
-  return (
-    <NumberFormat
-      {...other}
-      isAllowed={(values) => {
-          const { formattedValue, floatValue } = values;
-          return formattedValue === "" || floatValue <= 40;
-      }}
-      thousandSeparator={'.'}
-      decimalSeparator={','}
-      isNumericString
-      allowLeadingZeros={false}
-      getInputRef={inputRef}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      defaultValue={0}
-      allowNegative={false}
-      suffix=" thn"
-    />
-  );
-}
-
-const NumberFormatSukuBunga = (props: NumberFormatCustomProps) =>  {
-  const { inputRef, onChange, ...other } = props;
-  return (
-    <NumberFormat
-      {...other}
-      isAllowed={(values) => {
-          const { formattedValue, floatValue } = values;
-          return formattedValue === "" || floatValue <= 99;
-      }}
-      getInputRef={inputRef}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      thousandSeparator={'.'}
-      decimalSeparator={','}
-      isNumericString
-      allowLeadingZeros={true}
-      defaultValue={0}
-      allowNegative={false}
-      suffix=" %"
-    />
-  );
-}
-
-const NumberFormatPlafon = (props: NumberFormatCustomProps) =>  {
-  const { inputRef, onChange, ...other } = props;
-  return (
-    <NumberFormat
-      {...other}
-      isAllowed={(values) => {
-          const { formattedValue, floatValue } = values;
-          return formattedValue === "" || floatValue <= 9999999999;
-      }}
-      getInputRef={inputRef}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      defaultValue={0}
-      allowNegative={false}
-      prefix="Rp. "
-      thousandSeparator={'.'}
-      decimalSeparator={','}
-      isNumericString
-      allowLeadingZeros={true}
-    />
-  );
-}
-
 let totalData = 0;
 const validateProdukProps = (val) => {
   if(typeof(val) === 'object') {
@@ -277,6 +155,7 @@ export function ProdukList(props) {
   const [loading, setLoading] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
   const [errorUpdateAlert, setErrorUpdateAlert] = useState(false);
+  const [displaynamaproduk, setdisplaynamaproduk] = useState('');
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -291,6 +170,14 @@ export function ProdukList(props) {
       [event.target.name]: event.target.value
     });
   };
+
+  const isEmpty = (obj) => {
+    for(var key in obj) {
+      if(obj.hasOwnProperty(key))
+        return false;
+    }
+    return true;
+  }
 
   const openFormModal = (currentProduct) => {
     values.id = currentProduct.id;
@@ -322,8 +209,9 @@ export function ProdukList(props) {
     setRowsPerPage(event.target.value);
   };
 
-  const openDeleteConfirm = (id: number) => {
-    setProdukId(id);
+  const openDeleteConfirm = (currentProduk) => {
+    setProdukId(currentProduk.id);
+    setdisplaynamaproduk(currentProduk.namaFiturProduk);
     setOpenDeleteConfirm(true);
   };
 
@@ -353,6 +241,7 @@ export function ProdukList(props) {
     }
   }
 
+
   const updateData = () => {
     values.idFiturProduk = namaproduk.id;
     values.namaFiturProduk = namaproduk.namaFiturProduk;
@@ -367,7 +256,6 @@ export function ProdukList(props) {
       setLoading(true);
       setTimeout(() => {
         dispatch(updateProdukData(values));
-        console.log(`produkDataState: ${JSON.stringify(produkDataState)}`)
         if(produkDataState.response === 400 || produkDataState.response === 500) {
           setErrorUpdateAlert(true);
           setLoading(false)
@@ -421,7 +309,7 @@ export function ProdukList(props) {
             </React.Fragment>
           } 
         show={successAlert} onConfirm={() => setSuccessAlert(false)}>
-        Data is successfully updated!
+        Data Pembiayaan berhasil di update
       </SweetAlert>
       <SweetAlert success title="Data Deleted!" 
           customButtons={
@@ -437,7 +325,7 @@ export function ProdukList(props) {
             </React.Fragment>
           } 
         show={deleteSuccess} onConfirm={() => setSuccessAlert(false)}>
-        Data is successfully updated!
+        Data Pembiayaan berhasil dihapus!
       </SweetAlert>
       <Card
         {...rest}
@@ -449,14 +337,14 @@ export function ProdukList(props) {
                   <Table>
                     <TableHead className={classes.customTableHead}>
                       <TableRow>
-                        <TableCell className={classes.tableClass}>Nama Produk</TableCell>
-                        <TableCell className={classes.tableClass}>Tipe Produk</TableCell>
-                        <TableCell className={classes.tableClass}>Nama Segmen</TableCell>
-                        <TableCell className={classes.tableClass}>Penghasilan</TableCell>
-                        <TableCell className={classes.tableClass}>Plafon</TableCell>
-                        <TableCell className={classes.tableClass}>Suku Bunga</TableCell>
-                        <TableCell className={classes.tableClass}>Tenor</TableCell>
-                        <TableCell className={classes.tableClass}>Actions</TableCell>
+                        <TableCell data-testid="kolomJenisPembiayaan" className={classes.tableClass}>Jenis Pembiayaan</TableCell>
+                        <TableCell data-testid="kolomBentukPembiayaan" className={classes.tableClass}>Bentuk Pembiayaan</TableCell>
+                        <TableCell data-testid="kolomNamaSegmen" className={classes.tableClass}>Nama Segmen</TableCell>
+                        <TableCell data-testid="kolomPenghasilan" className={classes.tableClass}>Penghasilan</TableCell>
+                        <TableCell data-testid="kolomPlafon" className={classes.tableClass}>Plafon</TableCell>
+                        <TableCell data-testid="kolomSukuBunga" className={classes.tableClass}>Suku Bunga</TableCell>
+                        <TableCell data-testid="kolomTenor" className={classes.tableClass}>Tenor</TableCell>
+                        <TableCell className={classes.tableClass}>Aksi</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -466,13 +354,14 @@ export function ProdukList(props) {
                               <CircularProgress />
                             </TableCell>
                           </TableRow> 
+                        : produk === null || isEmpty(produk.Result) ? <TableRow>
+                          <TableCell align="center" colSpan={8} rowSpan={5}>
+                            <img src={'/images/nodata.jpg'} height="400" width="400"/>
+                          </TableCell>
+                        </TableRow>
                         : produk.Result.slice(0, rowsPerPage).map(p => (
                         <TableRow className={classes.tableRow} hover key={p.id}>
-                          <TableCell>
-                            <div className={classes.produkNameContainer}>
-                              <Typography variant="body1" className={classes.tableDataClass}>{p.namaFiturProduk}</Typography>
-                            </div>
-                          </TableCell>
+                          <TableCell className={classes.tableDataClass}>{p.namaFiturProduk}</TableCell>
                           <TableCell className={classes.tableDataClass}>{p.namaTipeProduk}</TableCell>
                           <TableCell className={classes.tableDataClass}>{p.namaSegmen}</TableCell>
                           <TableCell className={classes.tableDataClass}>{currency.format(p.penghasilanDari) +' ' + ' s/d ' + ' '+ currency.format(p.penghasilanSampai)}</TableCell>
@@ -481,7 +370,7 @@ export function ProdukList(props) {
                           <TableCell className={classes.tableDataClass}>{p.tenor} tahun</TableCell>
                           <TableCell>
                             <div>
-                              <IconButton onClick={() => openDeleteConfirm(p.id)} aria-label="delete">
+                              <IconButton onClick={() => openDeleteConfirm(p)} aria-label="delete">
                                 <DeleteIcon />
                               </IconButton>
                               <IconButton onClick={() => openFormModal(p)} aria-label="edit">
@@ -516,7 +405,9 @@ export function ProdukList(props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          <Typography variant="h2">Hapus data produk ini?</Typography>
+          <div>
+            <Typography variant="h2">Hapus data {displaynamaproduk}?</Typography>
+          </div>
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -529,7 +420,7 @@ export function ProdukList(props) {
               variant="contained" 
               className={classes.buttons} 
               onClick={closeDeleteConfirm} 
-              color="secondary"
+              color="primary"
               disabled={loading}>
               Batal
             </Button>
@@ -555,7 +446,7 @@ export function ProdukList(props) {
       >
         <DialogTitle id="editdataProduk">
           <MuiDialogTitle disableTypography className={classes.dialogTitleSection}>
-            <Typography variant="h5">Edit Data Produk</Typography>
+            <Typography variant="h5">Edit Data Pembiayaan</Typography>
             {openForm ? (
               <IconButton aria-label="close" className={classes.closeButton} onClick={closeFormModal}>
                 <CloseIcon />
@@ -581,7 +472,7 @@ export function ProdukList(props) {
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Nama produk"
+                        label="Jenis Pembiayaan"
                         margin="dense"
                         variant="outlined"
                         required={true}
@@ -604,7 +495,7 @@ export function ProdukList(props) {
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Tipe Produk"
+                        label="Bentuk Pembiayaan"
                         margin="dense"
                         variant="outlined"
                         required={true}
@@ -645,7 +536,13 @@ export function ProdukList(props) {
                     margin="dense"
                     fullWidth
                     InputProps={{
-                      inputComponent: NumberFormatPenghasilan as any,
+                      inputComponent: NumberFormatHelper as any,
+                      inputProps: { 
+                        prefix: 'Rp. ', 
+                        tenormax: 999999999,
+                        thousandSeparator: '.', 
+                        decimalSeparator: ',',
+                        decimalScale: 2}
                     }} />
                 </Grid>
                 <Grid item md={6} xs={12}>
@@ -659,7 +556,13 @@ export function ProdukList(props) {
                     onChange={handleChange}
                     variant="outlined"
                     InputProps={{
-                      inputComponent: NumberFormatPenghasilan as any,
+                      inputComponent: NumberFormatHelper as any,
+                      inputProps: { 
+                        prefix: 'Rp. ', 
+                        tenormax: 999999999,
+                        thousandSeparator: '.', 
+                        decimalSeparator: ',',
+                        decimalScale: 2 }
                     }}/>
                 </Grid>
                 <Grid item md={12} xs={12}>
@@ -674,7 +577,13 @@ export function ProdukList(props) {
                     margin="dense"
                     fullWidth
                     InputProps={{
-                      inputComponent: NumberFormatPlafon as any,
+                      inputComponent: NumberFormatHelper as any,
+                      inputProps: { 
+                        prefix: 'Rp. ', 
+                        tenormax: 9999999999,
+                        thousandSeparator: '.', 
+                        decimalSeparator: ',',
+                        decimalScale:2}
                     }} />
                 </Grid>
                 <Grid item md={12} xs={12}>
@@ -689,7 +598,13 @@ export function ProdukList(props) {
                     margin="dense"
                     fullWidth
                     InputProps={{
-                      inputComponent: NumberFormatSukuBunga as any,
+                      inputComponent: NumberFormatHelper as any,
+                      inputProps: { 
+                        suffix: ' %', 
+                        tenormax: 99,
+                        thousandSeparator: '.', 
+                        decimalSeparator: ',', 
+                        decimalScale:3}
                     }} />
                 </Grid>
                 <Grid item md={12} xs={12}>
@@ -704,7 +619,13 @@ export function ProdukList(props) {
                     margin="dense"
                     fullWidth
                     InputProps={{
-                      inputComponent: NumberFormatTenor as any,
+                      inputComponent: NumberFormatHelper as any,
+                      inputProps: { 
+                        suffix: ' thn', 
+                        tenormax: 99,
+                        thousandSeparator: '.', 
+                        decimalSeparator: ',', 
+                        decimalScale:3}
                     }} />
                 </Grid>
                 <Grid item md={12} xs={12}>

@@ -73,10 +73,7 @@ export function SidebarNav(props) {
 
   return (
     <Fragment>
-      <List
-        {...rest}
-        className={clsx(classes.root, className)}
-      >
+      <List {...rest} className={clsx(classes.root, className)}>
         {pages.map(page => (
           <Fragment key={page.title}>
             <ListItem
@@ -88,12 +85,12 @@ export function SidebarNav(props) {
                 <Button className={classes.button}>
                 {layoutState.indexPage 
                   ? <Fragment>
-                    <Skeleton animation="wave" variant="circle" width={40} height={40} /> <Skeleton animation="wave" style={{marginLeft: '1vw'}}variant="text" width={130} height={30}/>
-                  </Fragment>
+                      <Skeleton animation="wave" variant="circle" width={40} height={40} /> <Skeleton animation="wave" style={{marginLeft: '1vw'}}variant="text" width={130} height={30}/>
+                    </Fragment>
                   : <Fragment>
-                    <div className={classes.icon}>{page.icon}</div>
-                    {page.title}
-                  </Fragment>}
+                      <div className={classes.icon}>{page.icon}</div>
+                      {page.title}
+                    </Fragment>}
                 </Button>
               </Link>
             </ListItem>

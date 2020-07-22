@@ -63,7 +63,7 @@ export function TotalUsers(props) {
               gutterBottom
               variant="body2"
             >
-              TOTAL USERS
+              TOTAL PENGGUNA (SAMPLE)
             </Typography>
             <Typography variant="h3">1,600</Typography>
           </Grid>

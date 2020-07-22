@@ -68,8 +68,8 @@ const doFetch = (requestOptions: AxiosRequestConfig, url: string) => {
 export const HttpService = {
   get(url: string, headers?: object, reqOptions?: object) {
     try {
-      // const requestOptions: any = getRequestOptions('GET', null, headers, reqOptions);
-      return doFetch({}, url);
+      const requestOptions: any = getRequestOptions('GET', null, headers, reqOptions);
+      return doFetch(requestOptions, url);
     } catch (error) {
       const errorMessage = `error at get request method with error: ${error.message}`;
       console.log(errorMessage);

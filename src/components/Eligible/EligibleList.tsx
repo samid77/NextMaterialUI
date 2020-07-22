@@ -31,13 +31,24 @@ const useStyles = makeStyles((theme: any) => ({
   },
   actions: {
     justifyContent: 'flex-end'
-  }
+  },
+  divider: {
+    marginTop: theme.spacing(1),
+    backgroundColor: '#00B45A'
+  },
 }));
 
 export function EligibleList(props) {
   const { className, ...rest } = props;
-
   const classes = useStyles();
+  const parameterList = [
+    {id: 1, content: "Peserta adalah WNI"},
+    {id: 2, content: "Peserta aktif dengan masa tabungan minimal 12 bulan"},
+    {id: 3, content: "Untuk KPR / KBR, peserta belum memiliki rumah"},
+    {id: 4, content: "Peserta hanya dapat menerima satu kali pembiayaan Tapera"},
+    {id: 5, content: "Untuk pengajuan KPR / KBR, peserta belum pernah menerima bantuan Bapertarum atau bantuan perumahan pada data stakeholder lainnya"},
+    {id: 6, content: "Untuk KPR / KBR, peserta yang suami / istrinya juga merupakan peserta Tapera dilakukan pengecekan kepada database suami dan istri tersebut"},
+  ]
 
   return (
     <Card
@@ -48,40 +59,15 @@ export function EligibleList(props) {
         title="Parameter Eligible"
         variant="h1"
       />
-      <Divider />
+      <Divider className={classes.divider}/>
       <CardContent>
         <div className={classes.listContainer}>
             <List component="nav">
-                <ListItem>
-                    <ListItemIcon>
-                        <SendRoundedIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Peserta aktif dengan masa tabungan minimal 12 bulan" />
+              {parameterList.map(p => (
+                <ListItem key={p.id}>
+                  <ListItemText primary={p.content} />
                 </ListItem>
-                <ListItem>
-                    <ListItemIcon>
-                        <SendRoundedIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Untuk KPR / KBR, peserta belum memiliki rumah" />
-                </ListItem>
-                <ListItem>
-                    <ListItemIcon>
-                        <SendRoundedIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Peserta hanya dapat menerima satu kali pembiayaan Tapera" />
-                </ListItem>
-                <ListItem>
-                    <ListItemIcon>
-                        <SendRoundedIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Untuk pengajuan KPR / KBR, peserta belum pernah menerima bantuan Bapertarum atau bantuan perumahan pada data stakeholder lainnya" />
-                </ListItem>
-                <ListItem>
-                    <ListItemIcon>
-                        <SendRoundedIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Untuk KPR / KBR, peserta yang suami / istrinya juga merupakan peserta Tapera dilakukan pengecekan kepada database suami dan istri tersebut" />
-                </ListItem>
+              ))}
             </List>
         </div>
       </CardContent>
