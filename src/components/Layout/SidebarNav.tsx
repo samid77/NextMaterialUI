@@ -33,7 +33,10 @@ const useStyles = makeStyles((theme:Theme) => ({
     height: 24,
     display: 'flex',
     alignItems: 'center',
-    marginRight: theme.spacing(1)
+    marginRight: '0.2vw'
+  },
+  menuItem: {
+    fontSize: '0.85rem'
   },
   active: {
     color: colors.blueGrey[800],
@@ -75,7 +78,7 @@ export function SidebarNav(props) {
     <Fragment>
       <List {...rest} className={clsx(classes.root, className)}>
         {pages.map(page => (
-          <Fragment key={page.title}>
+          <div key={page.title}>
             <ListItem
               className={classes.item}
               disableGutters
@@ -89,12 +92,12 @@ export function SidebarNav(props) {
                     </Fragment>
                   : <Fragment>
                       <div className={classes.icon}>{page.icon}</div>
-                      {page.title}
+                      <div className={classes.menuItem}>{page.title}</div>
                     </Fragment>}
                 </Button>
               </Link>
             </ListItem>
-          </Fragment>
+          </div>
         ))}
       </List>
     </Fragment>

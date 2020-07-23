@@ -114,7 +114,7 @@ export function PesertaPrioritasList(props) {
       month[8] = "Sept";
       month[9] = "Oct";
       month[10] = "Nov";
-      month[11] = "Decs";
+      month[11] = "Des";
       
       let day = date.getDate();
       return day  + " " +month[date.getMonth()] + " " + date.getFullYear();

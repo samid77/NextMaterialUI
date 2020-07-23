@@ -22,13 +22,6 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '100%',
       marginTop: theme.spacing(15)
     },
-    background: {
-      display: 'flex',
-      backgroundImage: 'url(/images/houses.jpg)',
-      backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center',
-    },
     loadingText: {
       marginTop: theme.spacing(2)
     },
@@ -52,11 +45,6 @@ export default function Search() {
   return(
     <div className={classes.root}>
       <Grid className={classes.grid} container justify="center">
-        <Grid item>
-          <img src={'/images/background_001.svg'} />
-        </Grid>
-      </Grid>
-      <Grid container justify="center">
         <Grid item>
           <LinearProgress className={classes.loading}/>
           <Typography

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,6 +42,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
 import CloseIcon from '@material-ui/icons/Close';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import usePrevious from '../../helpers/usePrevious';
 
 
 const useStyles = makeStyles((theme:Theme) => ({
@@ -175,6 +176,30 @@ export function ProdukToolbar(props) {
   const dispatch = useDispatch();
   const { className, fiturproduk, tipeproduk, ...rest } = props;
   const produkDataState: ProdukDataListState = useSelector((state: AppState) => state.produkData);
+  const prevResponse = usePrevious(produkDataState.action);
+  useEffect(() => {
+    if(prevResponse !== undefined && prevResponse !== produkDataState.action) {
+      if(produkDataState.action === 'ADD_PRODUK_ERROR') {
+        setErrorAlert(true);
+        setLoading(false)
+      } else if(produkDataState.action === 'ADD_PRODUK_SUCCESS') {
+        values.idFiturProduk =  '';
+        values.namaFiturProduk = '';
+        values.idTipeProduk =  '';
+        values.namaTipeProduk = '';
+        values.namaSegmen =  null;
+        values.penghasilanDari =  0;
+        values.penghasilanSampai =  0;
+        values.plafon = 0;
+        values.sukuBunga = 0;
+        values.tenor = 0;
+        setErrorAlert(false);
+        setOpenForm(false);
+        setLoading(false);
+        setSuccessAlert(true);
+      }
+    } 
+  }, [produkDataState.action]);
   const [openForm, setOpenForm] = React.useState(false);
   const [openAdvanceSearch, setOpenAdvanceSearch] = React.useState(false);
   const [successAlert, setSuccessAlert] = React.useState(false);
@@ -262,18 +287,6 @@ export function ProdukToolbar(props) {
     }
   }
 
-  const resetSearchForm = () => {
-    filterVal.idFiturProdukfilter = ''
-    filterVal.namaFiturProdukfilter = ''
-    filterVal.idTipeProdukfilter = ''
-    filterVal.namaTipeProdukfilter = ''
-    filterVal.penghasilanDarifilter = 0
-    filterVal.penghasilanSampaifilter = 0
-    filterVal.plafonfilter = 0
-    filterVal.sukuBungafilter = 0
-    filterVal.tenorfilter = 0
-  }
-
   const addProduk = () => {
     values.idFiturProduk = namaproduk.id
     values.namaFiturProduk = namaproduk.namaFiturProduk;
@@ -286,19 +299,7 @@ export function ProdukToolbar(props) {
     values.tenor = parseInt(values.tenor.toString().split(' ').join(''));
     try {
       setLoading(true);
-      setTimeout(() => {
-        dispatch(addProdukData(values));
-        console.log(`produk resp: ${produkDataState.response}`);
-        if(produkDataState.response === 400 || produkDataState.response === 500) {
-          setErrorAlert(true);
-          setLoading(false)
-        } else {
-          setErrorAlert(false);
-          setOpenForm(false);
-          setLoading(false);
-          setSuccessAlert(true);
-        }
-      }, 2000);
+      dispatch(addProdukData(values));
     } catch (err) {
       console.error(err.message);
     }
@@ -310,7 +311,7 @@ export function ProdukToolbar(props) {
         success 
         title="Data Added!" 
         customButtons={
-          <React.Fragment>
+          <Fragment>
             <Button
                 color="primary"
                 variant="contained"
@@ -318,7 +319,7 @@ export function ProdukToolbar(props) {
                 onClick={() => setSuccessAlert(false)}>
               <a style={{color: "white", textDecoration: "none"}}>OK</a>
             </Button>
-          </React.Fragment>
+          </Fragment>
         } 
         show={successAlert} 
         onConfirm={() => setSuccessAlert(false)}>

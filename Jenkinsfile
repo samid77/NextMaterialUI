@@ -16,8 +16,8 @@ node ('master'){
     // def nexusDockerDevRepoGCP = 'http://192.168.43.176:8123'
     // def nexusDockerDevRepoALI = 'http://192.168.43.176:8124'
 
-    def memLimit = '700Mi'
-    def cpuLimit = '150m'
+    def memLimit = '1Gi'
+    def cpuLimit = '500m'
     def imagePullSecret = 'nexus-dev-repo'
     def serviceTypeGKE = 'LoadBalancer'
     def serviceTypeALI = 'NodePort'

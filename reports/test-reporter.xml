@@ -1,78 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
     <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/PesertaPrioritas/test/pesertaPrioritas.test.tsx">
-        <testCase name="PesertaPrioritasList component should named NoPeserta" duration="632"/>
-        <testCase name="PesertaPrioritasList component should named Nama Peserta" duration="210"/>
-        <testCase name="PesertaPrioritasList component should named Pemberi Kerja" duration="116"/>
-        <testCase name="PesertaPrioritasList component should named No Ponsel" duration="133"/>
-        <testCase name="PesertaPrioritasList component should named Alamat" duration="248"/>
-        <testCase name="PesertaPrioritasList component should named Skor" duration="190"/>
+        <testCase name="PesertaPrioritasList component should named NoPeserta" duration="465"/>
+        <testCase name="PesertaPrioritasList component should named Nama Peserta" duration="229"/>
+        <testCase name="PesertaPrioritasList component should named Pemberi Kerja" duration="140"/>
+        <testCase name="PesertaPrioritasList component should named No Ponsel" duration="191"/>
+        <testCase name="PesertaPrioritasList component should named Alamat" duration="139"/>
+        <testCase name="PesertaPrioritasList component should named Skor" duration="100"/>
     </file>
     <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/Produk/test/produk.test.tsx">
-        <testCase name="ProdukList component should named Jenis Pembiayaan" duration="451"/>
-        <testCase name="ProdukList component should named Bentuk Pembiayaan" duration="174"/>
-        <testCase name="ProdukList component should named Nama Segmen" duration="205"/>
-        <testCase name="ProdukList component should named Penghasilan" duration="152"/>
-        <testCase name="ProdukList component should named Plafon" duration="140"/>
-        <testCase name="ProdukList component should named Suku Bunga" duration="137"/>
-        <testCase name="ProdukList component should named Tenor" duration="100"/>
+        <testCase name="ProdukList component should named Jenis Pembiayaan" duration="531"/>
+        <testCase name="ProdukList component should named Bentuk Pembiayaan" duration="391"/>
+        <testCase name="ProdukList component should named Nama Segmen" duration="309"/>
+        <testCase name="ProdukList component should named Penghasilan" duration="159"/>
+        <testCase name="ProdukList component should named Plafon" duration="242"/>
+        <testCase name="ProdukList component should named Suku Bunga" duration="253"/>
+        <testCase name="ProdukList component should named Tenor" duration="350"/>
     </file>
     <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/Mitra/test/mitra.test.tsx">
-        <testCase name="MitraList component should named Nama Mitra" duration="404"/>
-        <testCase name="MitraList component should named Tanggal PKS" duration="176"/>
-        <testCase name="MitraList component should named Tanggal Limit" duration="131"/>
-        <testCase name="MitraList component should named Target Nominal" duration="177"/>
-        <testCase name="MitraList component should named Maksimal Limit" duration="229"/>
-        <testCase name="MitraList component should named Approval Status" duration="161"/>
+        <testCase name="MitraList component should named Nama Mitra" duration="540"/>
+        <testCase name="MitraList component should named Tanggal PKS" duration="330"/>
+        <testCase name="MitraList component should named Tanggal Limit" duration="188"/>
+        <testCase name="MitraList component should named Target Nominal" duration="217"/>
+        <testCase name="MitraList component should named Maksimal Limit" duration="307"/>
+        <testCase name="MitraList component should named Approval Status" duration="318"/>
     </file>
     <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/Dashboard/test/dashboard.test.tsx">
-        <testCase name="LatestOrders component LatestOrders component rendered" duration="242"/>
-        <testCase name="LatestProducts component LatestProducts component rendered" duration="96"/>
-        <testCase name="StatusBullet component StatusBullet component rendered" duration="8"/>
-        <testCase name="TasksProgress component TasksProgress component rendered" duration="59"/>
-    </file>
-    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/SkenarioKuota/test/skenariokuota.test.tsx">
-        <testCase name="SkenarioKuotaList component should named Nama Skenario" duration="244"/>
-        <testCase name="SkenarioKuotaList component should named Kuota" duration="128"/>
-        <testCase name="SkenarioKuotaList component should named Berlaku Dari" duration="113"/>
-        <testCase name="SkenarioKuotaList component should named Berlaku Sampai" duration="234"/>
+        <testCase name="LatestOrders component LatestOrders component rendered" duration="232"/>
+        <testCase name="LatestProducts component LatestProducts component rendered" duration="127"/>
+        <testCase name="StatusBullet component StatusBullet component rendered" duration="14"/>
+        <testCase name="TasksProgress component TasksProgress component rendered" duration="100"/>
     </file>
     <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/SkenarioPrioritas/test/skenarioprioritas.test.tsx">
-        <testCase name="SkenarioPrioritasList component should named Nama Skenario" duration="256"/>
-        <testCase name="SkenarioPrioritasList component should named Kriteria" duration="121"/>
-        <testCase name="SkenarioPrioritasList component should named Berlaku Dari" duration="123"/>
-        <testCase name="SkenarioPrioritasList component should named Berlaku Sampai" duration="175"/>
+        <testCase name="SkenarioPrioritasList component should named Nama Skenario" duration="352"/>
+        <testCase name="SkenarioPrioritasList component should named Kriteria" duration="284"/>
+        <testCase name="SkenarioPrioritasList component should named Berlaku Dari" duration="159"/>
+        <testCase name="SkenarioPrioritasList component should named Berlaku Sampai" duration="202"/>
     </file>
-    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/Eligible/test/eligible.test.tsx">
-        <testCase name="ChartEligible component ChartEligible component rendered" duration="39"/>
-        <testCase name="EligibleList component EligibleList component rendered" duration="44"/>
-        <testCase name="GrafikEligible component GrafikEligible component rendered" duration="67"/>
-    </file>
-    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/PesertaPrioritas/test/pesertaPrioritastoolbar.test.tsx">
-        <testCase name="PesertaPrioritasToolbar component PesertaPrioritasToolbar component rendered" duration="212"/>
-    </file>
-    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/SkenarioPrioritas/test/skenarioprioritastoolbar.test.tsx">
-        <testCase name="SkenarioPrioritasToolbar component SkenarioPrioritasToolbar component rendered" duration="366"/>
-    </file>
-    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/SkenarioPrioritas/test/skenarioprioritaslist.test.tsx">
-        <testCase name="SkenarioPrioritasList component SkenarioPrioritasList component rendered" duration="286"/>
-    </file>
-    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/SkenarioKuota/test/skenariokuotatoolbar.test.tsx">
-        <testCase name="SkenarioKuotaToolbar component SkenarioKuotaToolbar component rendered" duration="224"/>
-    </file>
-    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/PesertaPrioritas/test/pesertaPrioritaslist.test.tsx">
-        <testCase name="PesertaPrioritasList component PesertaPrioritasList component rendered" duration="402"/>
-    </file>
-    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/Produk/test/produklist.test.tsx">
-        <testCase name="ProdukList component ProdukList component rendered" duration="314"/>
-    </file>
-    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/SkenarioKuota/test/skenariokuotalist.test.tsx">
-        <testCase name="SkenarioKuotaList component SkenarioKuotaList component rendered" duration="529"/>
-    </file>
-    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/Mitra/test/mitralist.test.tsx">
-        <testCase name="MitraList component MitraList component rendered" duration="158"/>
+    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/SkenarioKuota/test/skenariokuota.test.tsx">
+        <testCase name="SkenarioKuotaList component should named Nama Skenario" duration="304"/>
+        <testCase name="SkenarioKuotaList component should named Kuota" duration="184"/>
+        <testCase name="SkenarioKuotaList component should named Berlaku Dari" duration="132"/>
+        <testCase name="SkenarioKuotaList component should named Berlaku Sampai" duration="182"/>
     </file>
     <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/Mitra/test/mitratoolbar.test.tsx">
-        <testCase name="MitraToolbar component MitraToolbar component rendered" duration="293"/>
+        <testCase name="MitraToolbar component MitraToolbar component rendered" duration="470"/>
+    </file>
+    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/SkenarioKuota/test/skenariokuotalist.test.tsx">
+        <testCase name="SkenarioKuotaList component SkenarioKuotaList component rendered" duration="271"/>
+    </file>
+    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/SkenarioPrioritas/test/skenarioprioritaslist.test.tsx">
+        <testCase name="SkenarioPrioritasList component SkenarioPrioritasList component rendered" duration="182"/>
+    </file>
+    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/Produk/test/produklist.test.tsx">
+        <testCase name="ProdukList component ProdukList component rendered" duration="313"/>
+    </file>
+    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/SkenarioPrioritas/test/skenarioprioritastoolbar.test.tsx">
+        <testCase name="SkenarioPrioritasToolbar component SkenarioPrioritasToolbar component rendered" duration="418"/>
+    </file>
+    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/SkenarioKuota/test/skenariokuotatoolbar.test.tsx">
+        <testCase name="SkenarioKuotaToolbar component SkenarioKuotaToolbar component rendered" duration="413"/>
+    </file>
+    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/Mitra/test/mitralist.test.tsx">
+        <testCase name="MitraList component MitraList component rendered" duration="221"/>
+    </file>
+    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/PesertaPrioritas/test/pesertaPrioritaslist.test.tsx">
+        <testCase name="PesertaPrioritasList component PesertaPrioritasList component rendered" duration="289"/>
+    </file>
+    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/PesertaPrioritas/test/pesertaPrioritastoolbar.test.tsx">
+        <testCase name="PesertaPrioritasToolbar component PesertaPrioritasToolbar component rendered" duration="332"/>
+    </file>
+    <file path="/Users/macbookpro/Documents/[MAIN] Source Codes/React/pmf--fe/src/components/Eligible/test/eligible.test.tsx">
+        <testCase name="ChartEligible component ChartEligible component rendered" duration="25"/>
+        <testCase name="EligibleList component EligibleList component rendered" duration="39"/>
+        <testCase name="GrafikEligible component GrafikEligible component rendered" duration="40"/>
     </file>
 </testExecutions>

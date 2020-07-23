@@ -66,7 +66,7 @@ export function Sidebar(props) {
       icon: <AccountBalanceRoundedIcon />
     },
     {
-      title: 'Master Data Produk',
+      title: 'Master Data Pembiayaan',
       href: '/produk',
       icon: <StarsRoundedIcon />
     },
@@ -88,6 +88,16 @@ export function Sidebar(props) {
     {
       title: 'Peserta Prioritas',
       href: '/pesertaprioritas',
+      icon: <AssignmentIndRoundedIcon />
+    },
+    {
+      title: 'Alokasi KIDT',
+      href: '/kidt',
+      icon: <AssignmentIndRoundedIcon />
+    },
+    {
+      title: 'KIDT Pemupukan',
+      href: '/kidtpmp',
       icon: <AssignmentIndRoundedIcon />
     },
   ];

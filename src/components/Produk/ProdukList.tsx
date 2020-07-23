@@ -42,6 +42,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { green } from '@material-ui/core/colors';
 import { NumberFormatHelper } from '../../helpers/NumberFormatHelper';
+import usePrevious from '../../helpers/usePrevious';
 
 const useStyles = makeStyles((theme:Theme) => ({
   root: {},
@@ -137,6 +138,41 @@ export function ProdukList(props) {
   const { className, produk, fiturproduk, tipeproduk, ...rest } = props;
   validateProdukProps(produk);
   const produkDataState: ProdukDataListState = useSelector((state: AppState) => state.produkData);
+  const prevResponse = usePrevious(produkDataState.action);
+  useEffect(() => {
+    if(prevResponse !== undefined && prevResponse !== produkDataState.action) {
+      if(produkDataState.action === 'UPDATE_PRODUK_ERROR') {
+        setErrorUpdateAlert(true);
+        setLoading(false)
+      } else if(produkDataState.action === 'UPDATE_PRODUK_SUCCESS') {
+        values.id = '';
+        values.idFiturProduk =  '';
+        values.namaFiturProduk = '';
+        values.idTipeProduk =  '';
+        values.namaTipeProduk = '';
+        values.namaSegmen =  null;
+        values.penghasilanDari =  0;
+        values.penghasilanSampai =  0;
+        values.plafon = 0;
+        values.sukuBunga = 0;
+        values.tenor = 0;
+        setErrorUpdateAlert(false);
+        setOpenForm(false);
+        setLoading(false);
+        setSuccessAlert(true);
+      } else if(produkDataState.action === 'DELETE_PRODUK_SUCCESS') {
+        setErrorAlert(false);
+        setDeleteSuccess(true);
+        setOpenDeleteConfirm(false);
+        setLoading(false);
+      } else if(produkDataState.action === 'DELETE_PRODUK_ERROR') {
+        setOpenDeleteConfirm(false);
+        setDeleteSuccess(false);
+        setErrorAlert(true);
+        setLoading(false)
+      }
+    } 
+  }, [produkDataState.action]);
   const dispatch = useDispatch();
   const classes = useStyles();
   const [deleteConfirm, setOpenDeleteConfirm] = React.useState(false);
@@ -222,20 +258,7 @@ export function ProdukList(props) {
   const deleteDataProduk = () => {
     try {
       setLoading(true);
-      setTimeout(() => {
-        dispatch(deleteProdukData(produkId));
-        if(produkDataState.response === 400 || produkDataState.response === 500) {
-          setOpenDeleteConfirm(false);
-          setDeleteSuccess(false);
-          setErrorAlert(true);
-          setLoading(false)
-        } else {
-          setErrorAlert(false);
-          setDeleteSuccess(true);
-          setOpenDeleteConfirm(false);
-          setLoading(false);
-        }
-      }, 2000);
+      dispatch(deleteProdukData(produkId));
     } catch (error) {
       console.error(error.message);
     }
@@ -254,18 +277,7 @@ export function ProdukList(props) {
     values.tenor = parseInt(values.tenor.toString().split(' ').join(''));
     try {
       setLoading(true);
-      setTimeout(() => {
-        dispatch(updateProdukData(values));
-        if(produkDataState.response === 400 || produkDataState.response === 500) {
-          setErrorUpdateAlert(true);
-          setLoading(false)
-        } else {
-          setErrorUpdateAlert(false);
-          setOpenForm(false);
-          setLoading(false);
-          setSuccessAlert(true);
-        }
-      }, 2000);
+      dispatch(updateProdukData(values));
     } catch (err) {
       console.error(err.message);
     }
@@ -279,9 +291,9 @@ export function ProdukList(props) {
 
   return (
     <Fragment>
-      <SweetAlert error title="Failed to delete data" 
+      <SweetAlert error title="Gagal menghapus data pembiayaan" 
           customButtons={
-            <React.Fragment>
+            <Fragment>
               <Button
                   color="primary"
                   variant="contained"
@@ -290,14 +302,14 @@ export function ProdukList(props) {
               >
                 <a style={{color: "white", textDecoration: "none"}}>OK</a>
               </Button>
-            </React.Fragment>
+            </Fragment>
           } 
         show={errorAlert} onConfirm={() => setErrorAlert(false)}>
         Failed to delete data from server!
       </SweetAlert>
-      <SweetAlert success title="Data Produk Updated!" 
+      <SweetAlert success title="Data berhasil diubah" 
           customButtons={
-            <React.Fragment>
+            <Fragment>
               <Button
                   color="primary"
                   variant="contained"
@@ -306,14 +318,14 @@ export function ProdukList(props) {
               >
                 <a style={{color: "white", textDecoration: "none"}}>OK</a>
               </Button>
-            </React.Fragment>
+            </Fragment>
           } 
         show={successAlert} onConfirm={() => setSuccessAlert(false)}>
-        Data Pembiayaan berhasil di update
+        Data Pembiayaan telah diubah dan tersimpan
       </SweetAlert>
-      <SweetAlert success title="Data Deleted!" 
+      <SweetAlert success title="Data terhapus" 
           customButtons={
-            <React.Fragment>
+            <Fragment>
               <Button
                   color="primary"
                   variant="contained"
@@ -322,10 +334,10 @@ export function ProdukList(props) {
               >
                 <a style={{color: "white", textDecoration: "none"}}>OK</a>
               </Button>
-            </React.Fragment>
+            </Fragment>
           } 
         show={deleteSuccess} onConfirm={() => setSuccessAlert(false)}>
-        Data Pembiayaan berhasil dihapus!
+        Data Pembiayaan berhasil dihapus dari sistem
       </SweetAlert>
       <Card
         {...rest}
@@ -405,9 +417,9 @@ export function ProdukList(props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          <div>
+          <Fragment>
             <Typography variant="h2">Hapus data {displaynamaproduk}?</Typography>
-          </div>
+          </Fragment>
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
